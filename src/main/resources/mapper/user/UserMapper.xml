@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.user.UserMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.user.TbUser">
+        <id property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
+        <result property="userRole" column="user_role" jdbcType="TINYINT"/>
+        <result property="userNick" column="user_nick" jdbcType="VARCHAR"/>
+        <result property="salt" column="salt" jdbcType="VARCHAR"/>
+        <result property="openId" column="open_id" jdbcType="VARCHAR"/>
+        <result property="photo" column="photo" jdbcType="VARCHAR"/>
+        <result property="provinceId" column="province_id" jdbcType="INTEGER"/>
+        <result property="cityId" column="city_id" jdbcType="INTEGER"/>
+        <result property="isUse" column="is_use" jdbcType="TINYINT"/>
+        <result property="score" column="score" jdbcType="INTEGER"/>
+        <result property="userLevel" column="user_level" jdbcType="TINYINT"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="TINYINT"/>
+        <result property="money" column="money" jdbcType="DECIMAL"/>
+    </resultMap>
+
+
+    <sql id="Base_Column">
+        user_id,username,password, mobile, create_time,last_login_time,
+        user_role,user_nick,salt, open_id, photo,province_id, city_id,is_use,score,user_level,money, delete_flag
+    </sql>
+
+    <sql id="Query_Column">
+        <where>
+            <if test="username != null and username != ''">
+                AND username = #{username, jdbcType=VARCHAR}
+            </if>
+            <if test="usernameLikeQuery != null and usernameLikeQuery != ''">
+                AND username LIKE CONCAT(#{usernameLikeQuery, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="mobile != null and mobile != ''">
+                AND mobile = #{mobile, jdbcType=VARCHAR}
+            </if>
+            <if test="userRole != null">
+                AND `user_role` = #{userRole, jdbcType=TINYINT}
+            </if>
+            <if test="isUse != null">
+                AND `is_use` = #{isUse, jdbcType=TINYINT}
+            </if>
+            <if test="deleteFlag != null">
+                AND `delete_flag` = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username, jdbcType=VARCHAR},
+            </if>
+            <if test="userRole != null">
+                `user_role` = #{userRole, jdbcType=TINYINT},
+            </if>
+            <if test="isUse != null">
+                `is_use` = #{isUse, jdbcType=TINYINT},
+            </if>
+            <if test="deleteFlag != null">
+                `delete_flag` = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+        </set>
+    </sql>
+
+    <!--  微信小程序：添加用户-->
+    <insert id="insertTbUser" useGeneratedKeys="true" keyProperty="userId">
+
+    </insert>
+
+
+
+    <!-- 存入数据库 -->
+    <insert id="insertRole">
+        INSERT INTO tb_role(role_value, name)
+        VALUES (#{roles}, #{name})
+    </insert>
+
+    <!-- 根据用户ID更改用户状态 -->
+    <update id="updateUserIsUseStatus">
+        UPDATE tb_user <include refid="Update_Column" />
+        WHERE user_id IN
+        <foreach collection="userIdValues" index="index" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <!-- 微信小程序：绑定手机号-->
+    <update id="updateMobile">
+        update tb_user
+        set mobile = #{phone}
+        where user_id = #{userId}
+    </update>
+
+    <select id="selectTbUserList" resultMap="baseResult">
+        SELECT
+        <include refid="Base_Column"/>
+        FROM tb_user
+        <include refid="Query_Column"/>
+        ORDER BY user_id DESC
+    </select>
+
+    <!-- 微信小程序：通过用户id获取信息 -->
+    <select id="selectUser" resultType="java.util.HashMap">
+        select user_id    as userId,
+               user_name  as userName,
+               mobile,
+               score,
+               user_level as userLevel,
+               money,
+               is_use     as isUse
+        from tb_user
+        where user_id = #{userId}
+    </select>
+
+    <!-- 通过openid查询是否有该用户 -->
+    <select id="selectUserByOpenId" resultType="java.lang.Integer">
+        select count(1)
+        from tb_user
+        where open_id = #{openid}
+          and is_del = 0
+    </select>
+
+    <!--  微信小程序：通过openid获取用户信息 -->
+    <select id="getUserByOpenId" resultType="java.util.HashMap">
+        select user_id as userId,is_use as isUse
+        from tb_user
+        where open_id = #{openid}
+          and is_del = 0
+    </select>
+
+    <!--   微信小程序：通过openid查看用户是否被禁用 -->
+    <select id="selectUserIsUse" resultType="java.lang.Integer">
+        select count(1)
+        from tb_user
+        where open_id = #{openid}
+          and is_del = 0
+          and is_use = 0
+    </select>
+
+    <!-- 微信小程序：验证手机号是否被绑定 -->
+    <select id="selectIsExistPhone" resultType="java.lang.Integer">
+        select count(1)
+        from tb_user
+        where user_id != #{userId}
+          and mobile = #{phone}
+          and is_del = 0
+    </select>
+
+
+    <select id="selectUserNameById" resultType="java.util.HashMap">
+        select mobile    as mobile,
+               user_name as userName
+        from tb_user
+        where user_id = #{userId}
+          and is_del = 0
+    </select>
+
+    <select id="selectUserScoreById" resultType="java.lang.Integer">
+        select score
+        from tb_user
+        where user_id = #{userId}
+          and is_del = 0
+    </select>
+</mapper>

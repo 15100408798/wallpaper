@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.store.ProductLabelMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.store.TbProductLabel">
+        <id column="product_label_id" property="productLabelId" jdbcType="SMALLINT"/>
+        <result column="product_label_name" property="productLabelName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="delete_flag" property="deleteFlag" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        product_label_id,
+        product_label_name,
+        create_time,
+        delete_flag
+    </sql>
+
+    <sql id="Query_Condition">
+        <where>
+            <if test="productLabelName != null and productLabelName != ''">
+                AND product_label_name = #{productLabelName, jdbcType=VARCHAR}
+            </if>
+            <if test="deleteFlag != null">
+                AND delete_flag = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </set>
+    </sql>
+
+    <!-- 新增商品类别 -->
+    <insert id="insertProductLabel">
+        INSERT INTO `tb_product_label` (`product_label_name`, `create_time`, `delete_flag`)
+        VALUES ( #{productLabelName, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP}, #{deleteFlag, jdbcType=TINYINT})
+    </insert>
+
+    <update id="updateProductLabel">
+        update tb_product_label
+        <include refid="Update_Column"/>
+        where product_label_id in
+        <foreach collection="productLabelIdValues" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectLabelList" resultMap="baseResult">
+        select
+        <include refid="Base_Column"/>
+        from tb_product_label
+        <include refid="Query_Condition"/>
+        order by product_label_id desc
+    </select>
+
+    <select id="shopLabel" resultType="java.util.HashMap">
+        select name,
+               product_class_id as productClassId
+        from tb_product_label
+        where delete_flag = 0
+          and type = #{typeId}
+        order by product_class_id desc
+    </select>
+</mapper>

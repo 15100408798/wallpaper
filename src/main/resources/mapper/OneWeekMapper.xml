@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.OneWeekMapper">
+    <select id="selectOneWeekCount" resultType="java.lang.Integer">
+        select count(1) from tb_week_money where delete_flag = 0
+    </select>
+    <select id="selectOneWeekList" resultType="java.util.HashMap">
+        select
+            w.week_money_id as weekMoneyId,
+            w.shop_id as shopId,s.shop_name as shopName,
+            substring(w.start_time,1,10) as startTime,substring(w.end_time,1,10) as endTime,
+            w.all_money as allMoney,w.pay_money as payMoney,w.status*1 as status
+        from tb_week_money as w
+        left join tb_shop as s on s.shop_id = w.shop_id
+        where w.delete_flag = 0 order by w.week_money_id desc
+    </select>
+</mapper>

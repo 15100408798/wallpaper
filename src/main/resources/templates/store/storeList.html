@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div class="container" style="background-color: white;margin-top:30px;">
+    <div class="row" style="padding-top: 30px;">
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-5">
+                    <label for="username" style="line-height: 35px;">用户账号:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input id="username" placeholder="用户账号" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-5">
+                    <label for="shopName" style="line-height: 35px;">商铺名称:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input id="shopName" placeholder="商铺名称" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-5">
+                    <label for="shopStatus" style="line-height: 35px;">上下架状态:</label>
+                </div>
+                <div class="col-sm-7">
+                    <select class="form-control" id="shopStatus">
+                        <option value="">请选择</option>
+                        <option value="1">上架</option>
+                        <option value="2">下架</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+        </div>
+    </div>
+    <hr style="border: 1px solid;"/>
+    <div class="row" style="margin: 50px 0px;">
+        <table id="storeList"></table>
+    </div>
+    <hr style="border: 1px solid;"/>
+    <div class="row" style="margin-bottom: 30px;">
+        <div class="col-sm-12">
+            <shiro:hasAnyRoles name="1">
+                <button type="button" class="btn btn-outline btn-primary">新增</button>
+                <button type="button" class="btn btn-outline btn-danger" onclick="delShop()">删除</button>
+                <button type="button" class="btn btn-outline btn-success" onclick="openProduct()">上架</button>
+                <button type="button" class="btn btn-outline btn-warning" onclick="disabledProduct()">下架</button>
+            </shiro:hasAnyRoles>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $table = $('#storeList');
+
+    $(function () {
+        $table.bootstrapTable({
+            url: 'layer/shop/selectStoreList',          //请求后台的URL（*）
+            method: 'GET',                      //请求方式（*）
+            //toolbar: '#toolbar',              //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "desc",                   //排序方式
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+            pageSize: 50,                     //每页的记录行数（*）
+            pageList: [20, 50, 100],        //可供选择的每页的行数（*）
+            search: false,                      //是否显示表格搜索
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列（选择显示的列）
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "shopId",              //每一行的唯一标识，一般为主键列
+            showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            //得到查询的参数
+            queryParams: function (params) {
+                //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                var temp = {
+                    size: params.limit,                         //页面大小
+                    page: (params.offset / params.limit) + 1,   //页码
+                    shopStatus : $('#shopStatus').val(),
+                    username : $('#username').val(),
+                    shopName : $('#shopName').val()
+                };
+                return temp;
+            },
+            columns: [{
+                checkbox: true,
+                visible: true                  //是否显示复选框
+            }, {
+                field: 'shopId',
+                title: '商店id'
+            }, {
+                field: 'shopName',
+                title: '商店名称'
+            }, {
+                field: 'shopLogo',
+                title: '商标',
+                formatter: function (value, row, index) {
+                    return "<img src='" + value + "' style='width: 100px;width: 100px;' alt='图片显示不正常'/>";
+                }
+            }, {
+                field: 'provinceId',
+                title: '省份'
+            },  {
+                field: 'cityId',
+                title: '城市'
+            }, {
+                field: 'areaId',
+                title: '县区'
+            }, {
+                field: 'address',
+                title: '详细地址'
+            }, {
+                field: 'detail',
+                title: '商户介绍'
+            }, {
+                field: 'shopScope',
+                title: '经营范围'
+            }, {
+                field: 'username',
+                title: '联系人账号'
+            },  {
+                field: 'userNick',
+                title: '联系人昵称'
+            }, {
+                field: 'userPhone',
+                title: '联系方式'
+            }, {
+                field: '',
+                title: '营业时间',
+                formatter: function (value, row, index) {
+                    return "<span class='label '>" + row.workTimeStart + "</span>" + "  --  " + "<span class='label '>" + row.workTimeEnd + "</span>";
+                }
+            }, {
+                field: 'shopType',
+                title: '类型',
+                formatter: function (value, row, index) {
+                    if (value == 1) {
+                        return "<span class='label label-primary'>壁纸</span>";
+                    } else if (value == 2) {
+                        return "<span class='label label-success'>装修</span>";
+                    } else if (value == 3) {
+                        return "<span class='label label-info'>其他</span>";
+                    } else {
+                        return "<span class='label label-danger'>未知状态</span>";
+                    }
+                }
+            }, {
+                field: 'status',
+                title: '上下架状态',
+                formatter: function (value, row, index) {
+                    if (value == 1) {
+                        return "<span class='label label-primary'>上架</span>";
+                    } else if (value == 2) {
+                        return "<span class='label label-default'>下架</span>";
+                    } else {
+                        return "<span class='label label-danger'>未知状态</span>";
+                    }
+                }
+            }, {
+                field: 'shopId',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    return "<button class='btn btn-outline btn-primary btn-sm'>编辑</button>";
+                }
+            }],
+            onLoadSuccess: function () {
+            },
+            onLoadError: function () {
+                window.location.href = "skip/common/error";
+            }
+        });
+    });
+
+    function select() {
+        $table.bootstrapTable('refresh');
+    }
+
+    function disabledProduct() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/shop/disabledStore', {shopIds: array.join(',')}, function (result) {
+                if (result.status != 200){
+                    alert(result.message);
+                } else {
+                    alert('下架成功')
+                }
+                $table.bootstrapTable('refresh')
+            })
+        }
+    }
+
+    function openProduct() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/shop/openStore', {shopIds: array.join(',')}, function (result) {
+                if (result.status != 200){
+                    alert(result.message);
+                } else {
+                    alert('上架成功')
+                }
+                $table.bootstrapTable('refresh')
+            })
+        }
+    }
+
+    function delShop() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/shop/delStore', {shopIds: array.join(',')}, function (result) {
+                if (result.status != 200){
+                    alert(result.message);
+                } else {
+                    alert('删除成功')
+                }
+                $table.bootstrapTable('refresh')
+            })
+        }
+    }
+
+
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据')
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.shopId);
+        })
+        return array;
+    }
+
+</script>
+</html>
+
+

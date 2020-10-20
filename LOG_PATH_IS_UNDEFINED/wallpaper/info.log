@@ -1,0 +1,60 @@
+2020-10-18 13:00:04.230 INFO  com.yushang.wallpaper.WallpaperApplication Line:50  - Starting WallpaperApplication on LAPTOP-80KEPNBB with PID 15556 (D:\Java\JavaProjects\wallpaper\wallpaper\target\classes started by lenovo in D:\Java\JavaProjects\wallpaper\wallpaper)
+2020-10-18 13:00:04.233 INFO  com.yushang.wallpaper.WallpaperApplication Line:679 - The following profiles are active: pro
+2020-10-18 13:00:07.810 INFO  org.apache.coyote.http11.Http11NioProtocol Line:173 - Initializing ProtocolHandler ["http-nio-18989"]
+2020-10-18 13:00:07.817 INFO  org.apache.catalina.core.StandardService Line:173 - Starting service [Tomcat]
+2020-10-18 13:00:07.817 INFO  org.apache.catalina.core.StandardEngine Line:173 - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2020-10-18 13:00:07.824 INFO  org.apache.catalina.core.AprLifecycleListener Line:173 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\JavaTools\JDK\JDK8\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Java\JavaTools\Xshell7\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Java\JavaTools\JDK\JDK8\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\Java\JavaTools\Navicat Premium\mysql-5.6.46-winx64\bin;D:\Java\JavaTools\RabbitMQ\erlang\erl10.7\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Java\JavaTools\Git\Git\cmd;D:\Java\JavaTools\Maven\apache-maven-3.5.3\bin;E:\Java\RailsInstaller\RailsInstaller\Git\cmd;E:\Java\RailsInstaller\RailsInstaller\Ruby2.3.3\bin;C:\Users\lenovo\AppData\Local\Microsoft\WindowsApps;D:\Java\JavaTools\IDEA\IntelliJ IDEA 2018.3.1\bin;;;.]
+2020-10-18 13:00:07.933 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/wallpaper] Line:173 - Initializing Spring embedded WebApplicationContext
+2020-10-18 13:00:08.116 INFO  com.zaxxer.hikari.HikariDataSource Line:110 - HikariPool-1 - Starting...
+2020-10-18 13:00:08.767 INFO  com.zaxxer.hikari.HikariDataSource Line:123 - HikariPool-1 - Start completed.
+2020-10-18 13:00:46.296 INFO  com.yushang.wallpaper.WallpaperApplication Line:50  - Starting WallpaperApplication on LAPTOP-80KEPNBB with PID 23312 (D:\Java\JavaProjects\wallpaper\wallpaper\target\classes started by lenovo in D:\Java\JavaProjects\wallpaper\wallpaper)
+2020-10-18 13:00:46.300 INFO  com.yushang.wallpaper.WallpaperApplication Line:679 - The following profiles are active: dev
+2020-10-18 13:00:49.896 INFO  org.apache.coyote.http11.Http11NioProtocol Line:173 - Initializing ProtocolHandler ["http-nio-18980"]
+2020-10-18 13:00:49.903 INFO  org.apache.catalina.core.StandardService Line:173 - Starting service [Tomcat]
+2020-10-18 13:00:49.903 INFO  org.apache.catalina.core.StandardEngine Line:173 - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2020-10-18 13:00:49.910 INFO  org.apache.catalina.core.AprLifecycleListener Line:173 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\JavaTools\JDK\JDK8\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Java\JavaTools\Xshell7\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Java\JavaTools\JDK\JDK8\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\Java\JavaTools\Navicat Premium\mysql-5.6.46-winx64\bin;D:\Java\JavaTools\RabbitMQ\erlang\erl10.7\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Java\JavaTools\Git\Git\cmd;D:\Java\JavaTools\Maven\apache-maven-3.5.3\bin;E:\Java\RailsInstaller\RailsInstaller\Git\cmd;E:\Java\RailsInstaller\RailsInstaller\Ruby2.3.3\bin;C:\Users\lenovo\AppData\Local\Microsoft\WindowsApps;D:\Java\JavaTools\IDEA\IntelliJ IDEA 2018.3.1\bin;;;.]
+2020-10-18 13:00:50.023 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/wallpaper] Line:173 - Initializing Spring embedded WebApplicationContext
+2020-10-18 13:00:50.204 INFO  com.zaxxer.hikari.HikariDataSource Line:110 - HikariPool-1 - Starting...
+2020-10-18 13:00:50.299 INFO  com.zaxxer.hikari.HikariDataSource Line:123 - HikariPool-1 - Start completed.
+2020-10-18 13:00:52.090 INFO  org.quartz.impl.StdSchedulerFactory Line:1208 - Using default implementation for ThreadExecutor
+2020-10-18 13:00:52.092 INFO  org.quartz.simpl.SimpleThreadPool Line:268 - Job execution threads will use class loader of thread: restartedMain
+2020-10-18 13:00:52.101 INFO  org.quartz.core.SchedulerSignalerImpl Line:61  - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2020-10-18 13:00:52.102 INFO  org.quartz.core.QuartzScheduler Line:229 - Quartz Scheduler v.2.3.0 created.
+2020-10-18 13:00:52.103 INFO  org.quartz.simpl.RAMJobStore Line:155 - RAMJobStore initialized.
+2020-10-18 13:00:52.103 INFO  org.quartz.core.QuartzScheduler Line:294 - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2020-10-18 13:00:52.104 INFO  org.quartz.impl.StdSchedulerFactory Line:1362 - Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+2020-10-18 13:00:52.104 INFO  org.quartz.impl.StdSchedulerFactory Line:1366 - Quartz scheduler version: 2.3.0
+2020-10-18 13:00:52.931 INFO  springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping Line:69  - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2020-10-18 13:00:53.960 INFO  org.quartz.impl.StdSchedulerFactory Line:1208 - Using default implementation for ThreadExecutor
+2020-10-18 13:00:53.961 INFO  org.quartz.core.SchedulerSignalerImpl Line:61  - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2020-10-18 13:00:53.961 INFO  org.quartz.core.QuartzScheduler Line:229 - Quartz Scheduler v.2.3.0 created.
+2020-10-18 13:00:53.961 INFO  org.quartz.simpl.RAMJobStore Line:155 - RAMJobStore initialized.
+2020-10-18 13:00:53.961 INFO  org.quartz.core.QuartzScheduler Line:294 - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2020-10-18 13:00:53.961 INFO  org.quartz.impl.StdSchedulerFactory Line:1362 - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2020-10-18 13:00:53.961 INFO  org.quartz.impl.StdSchedulerFactory Line:1366 - Quartz scheduler version: 2.3.0
+2020-10-18 13:00:53.962 INFO  org.quartz.core.QuartzScheduler Line:2287 - JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@ac1b4e0
+2020-10-18 13:00:54.190 INFO  springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper Line:151 - Context refreshed
+2020-10-18 13:00:54.208 INFO  springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper Line:154 - Found 2 custom documentation plugin(s)
+2020-10-18 13:00:54.238 INFO  springfox.documentation.spring.web.scanners.ApiListingReferenceScanner Line:41  - Scanning for api listing references
+2020-10-18 13:00:54.338 INFO  springfox.documentation.spring.web.scanners.ApiListingReferenceScanner Line:41  - Scanning for api listing references
+2020-10-18 13:00:54.506 INFO  org.quartz.core.QuartzScheduler Line:547 - Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2020-10-18 13:00:54.544 INFO  org.quartz.core.QuartzScheduler Line:547 - Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+2020-10-18 13:00:54.547 INFO  org.apache.coyote.http11.Http11NioProtocol Line:173 - Starting ProtocolHandler ["http-nio-18980"]
+2020-10-18 13:00:54.571 INFO  com.yushang.wallpaper.WallpaperApplication Line:59  - Started WallpaperApplication in 8.818 seconds (JVM running for 10.369)
+2020-10-18 13:00:54.575 INFO  com.yushang.wallpaper.WallpaperApplication Line:19  - ==========================================
+2020-10-18 13:00:54.575 INFO  com.yushang.wallpaper.WallpaperApplication Line:20  - ============= 项目启动成功 ===============
+2020-10-18 13:00:54.575 INFO  com.yushang.wallpaper.WallpaperApplication Line:21  - ==========================================

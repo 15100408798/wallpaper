@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.OrderMapper">
+    <insert id="saveShopOneWeek">
+        insert into tb_week_money(create_time, shop_id, start_time, end_time, all_money, pay_money) values (#{createTime},#{shopId},#{startTime},#{endTime},#{allMoney},#{payMoney})
+    </insert>
+
+    <!--  微信小程序： 获取我的订单-->
+    <select id="getOrderList" resultType="com.yushang.wallpaper.common.pojo.TbOrder">
+
+    </select>
+
+    <!-- 通过订单编号得出订单信息 -->
+    <select id="selectOrderByNo" resultType="com.yushang.wallpaper.common.pojo.TbOrder">
+
+    </select>
+
+    <!-- 通过订单id获得订单信息 -->
+    <select id="selectOrderById" resultType="com.yushang.wallpaper.common.pojo.TbOrder">
+
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(1) from tb_order where is_del = 0 and status != 1 and status != 6
+    </select>
+    <select id="selectStoreMoneyList" resultType="java.util.HashMap">
+         select
+            o.order_id as orderId,o.shop_id as shopId,s.shop_name as shopName,
+            substring(o.pay_time,1,10) as payTime,o.all_money as allMoney,o.score as score,o.pay_money as payMoney
+        from tb_order as o
+        left join tb_shop as s on o.shop_id = s.shop_id
+        where o.is_del = 0 and o.status != 1 and o.status != 6  order by o.order_id desc
+    </select>
+    <select id="selectSevenDayMoney" resultType="java.math.BigDecimal">
+        select sum(all_money) from tb_order where status != 1 and status != 6 and is_del = 0
+    </select>
+    <select id="selectPayMoney" resultType="java.math.BigDecimal">
+        select sum(pay_money) from tb_order where status != 1 and status != 6 and is_del = 0
+    </select>
+
+</mapper>

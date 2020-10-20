@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.log.LogMapper">
+
+    <sql id="Query_Column">
+        log.`system_log_id`,
+        log.`operate_id`,
+        log.`type`,
+        log.`is_success`,
+        log.`request_param`,
+        log.`request_uri`,
+        log.`method_name`,
+        log.`manager_ip`,
+        log.`create_time`,
+        log.`title`,
+        log.`operate_type`,
+        log.`tab_name`,
+        log.`session_id`
+    </sql>
+
+    <!-- 储存日志 -->
+    <insert id="insertLog" parameterType="com.yushang.wallpaper.common.pojo.log.TbLog">
+        insert into tb_log (`system_log_id`, `operate_id`, `type`, `is_success`, `request_param`, `request_uri`,
+                            `method_name`, `manager_ip`, `create_time`, `title`, `operate_type`, `tab_name`,
+                            `session_id`)
+        values (#{systemLogId}, #{operateId}, #{type}, #{isSuccess}, #{requestParam}, #{requestUri}, #{methodName},
+                #{managerIp}, #{createTime}, #{title}, #{operateType}, #{tabName}, #{sessionId})
+    </insert>
+
+    <select id="selectLogList" resultType="com.yushang.wallpaper.common.pojo.log.TbLog">
+        select
+        <include refid="Query_Column"/>
+        ,manager.username as userName,manager.user_nick as userNick
+        from tb_log log
+        left join tb_manager manager on manager.manager_id = log.operate_id
+        <where>
+            <if test="username != null and username != ''">
+                AND manager.username LIKE CONCAT(#{username, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="operateTypeValue != null and operateTypeValue != 0">
+                AND log.operate_type = #{operateTypeValue, jdbcType=TINYINT}
+            </if>
+        </where>
+        order by log.system_log_id desc
+    </select>
+
+
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.user.ManagerMapper">
+    <resultMap id="BaseManagerResult" type="com.yushang.wallpaper.common.pojo.user.TbManager">
+        <id column="manager_id" property="managerId" jdbcType="SMALLINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="user_nick" property="userNick" jdbcType="VARCHAR"/>
+        <result column="telphone" property="telphone" jdbcType="VARCHAR"/>
+        <result column="user_role" property="userRole" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="is_use" property="isUse" jdbcType="TINYINT"/>
+        <result column="delete_flag" property="deleteFlag" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        manager_id, username, `password`, salt,user_nick,telphone, user_role,create_time, last_login_time,is_use, delete_flag
+    </sql>
+
+    <sql id="Query_Column">
+        <where>
+            <if test="managerId != null">
+                AND `manager_id` = #{managerId, jdbcType=SMALLINT}
+            </if>
+            <if test="username != null and username != ''">
+                AND username = #{username, jdbcType=VARCHAR}
+            </if>
+            <if test="password != null and password != ''">
+                AND `password` = #{password, jdbcType=VARCHAR}
+            </if>
+            <if test="telphone != null and telphone != ''">
+                AND `telphone` LIKE CONCAT(#{telphone, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="userRole != null">
+                AND `user_role` = #{userRole, jdbcType=TINYINT}
+            </if>
+            <if test="isUse != null">
+                AND `is_use` = #{isUse, jdbcType=TINYINT}
+            </if>
+            <if test="deleteFlag != null">
+                AND `delete_flag` = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Sort_Column">
+        <choose>
+            <when test="sort != null and sort == 1">
+                order by create_time desc
+            </when>
+            <otherwise>
+                order by manager_id desc
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="username != null and username != ''">
+                 username = #{username, jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != ''">
+                `password` = #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="isUseStatus != null">
+                `isUse` = #{isUse, jdbcType=TINYINT},
+            </if>
+            <if test="deleteFlag != null">
+                `delete_flag` = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+            last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP}
+        </set>
+    </sql>
+
+    <!--  新增管理员信息 -->
+    <insert id="insertManagerInfo">
+        INSERT INTO `tb_manager` ( `username`, `password`, `salt`, `user_nick`, `telphone`,`user_role`, `create_time`, `is_use`, `delete_flag`)
+        VALUES (#{username}, #{password}, #{salt}, #{userNick}, #{telphone}, #{userRole}, #{createTime}, #{isUse}, #{deleteFlag});
+    </insert>
+
+    <!-- 查询管理员集合 -->
+    <select id="selectList" resultMap="BaseManagerResult">
+        select
+        <include refid="Base_Column"/>
+        from tb_manager
+        <include refid="Query_Column"/>
+        order by manager_id desc
+    </select>
+
+
+    <!-- 更新最后登陆时间 -->
+    <update id="updateTbManager">
+        UPDATE tb_manager
+        <include refid="Update_Column" />
+        WHERE manager_id in
+        <foreach collection="managerIdValues" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+
+</mapper>

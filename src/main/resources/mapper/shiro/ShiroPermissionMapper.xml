@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.shiro.ShiroPermissionMapper">
+
+    <!-- 根据角色列表查询权限列表 -->
+    <select id="getPermissionByAccount" resultType="java.lang.String">
+        select p.value
+        from tb_permission p,
+             tb_role_permission rp
+        where rp.role_id = #{roleId}
+          and rp.permission_id = p.permission_id
+    </select>
+
+    <!-- 根据账号id查询角色 -->
+    <select id="getRoleByAccount" resultType="java.lang.String">
+        select r.role_id
+        from tb_role r,
+             tb_manager_role mr
+        where mr.manager_id = #{managerId}
+          and mr.role_id = r.role_id
+    </select>
+
+    <!-- 保存权限 -->
+    <insert id="insertPermission" useGeneratedKeys="true" keyProperty="permissionId">
+        INSERT INTO tb_permission(value, name)
+        VALUES (#{value}, #{name})
+    </insert>
+
+    <!-- 存入权限与角色关系表 -->
+    <insert id="insertRolePermission">
+        INSERT INTO tb_role_permission(role_id, permission_id)
+        values (#{roleId}, #{permissionId})
+    </insert>
+
+    <!-- 获得权限集合  -->
+    <select id="selectPermissionList" resultType="java.lang.String">
+        SELECT `value` FROM tb_permission
+    </select>
+
+
+</mapper>

@@ -1,0 +1,90 @@
+﻿<!doctype html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="common/comm :: header_web"></head>
+<body style="background-color: gray;">
+	<div class="row"  id="mydiv" style="height:auto;">
+	    <div class="col-sm-2"></div>
+	    <div class="col-sm-8 content content-front">
+	        <div class="signinpanel" style="padding:30px;opacity:0.9;background-color: darkslategrey;">
+	        	<div class="row">
+	           		<div class="col-sm-7">
+		                <div class="signin-info" style="padding-left:20px;">
+		                    <div class="logopanel m-b">
+		                        <h1 style="color: white;">登录</h1>
+		                    </div>
+		                    <div class="m-b"></div>
+		                    <h4 style="color: white;">欢迎使用 <strong>  御尚壁纸  </strong></h4>
+		                </div>
+	           		</div>
+		            <div class="col-sm-5">
+		                <form id="loginForm" action="" method="post">
+		                    <h4 class="no-margins"></h4>
+		                    <p class="m-t-md" id="loadingMsg" style="font-size:18px;color:red;display:none;"></p>
+		                  	<input name="username" class="form-control" placeholder="用户名" />
+		                   	<input name="password" type="password" class="form-control" placeholder="密码" />
+		                    <input name="rememberMe" type="checkbox" style="margin-top: 20px;"/><span style="color: white;">记住我</span>
+					 </form>  
+		            <button onclick="login()" class="btn btn-success btn-block">登录</button>
+		            </div>
+		        </div>
+		        <div class="signup-footer" style="padding-left:20px;">
+		            <div class="pull-left">
+		                &copy;<span style="color:white;">登陆页面</span>
+		            </div>
+		        </div>
+	   		</div>
+	    </div>
+	    <div class="col-sm-2"></div>
+	</div>
+</body>
+<script th:src="@{/js/myself/canvas-particle.js}"></script>
+<script type="text/javascript">
+
+	function login(){
+		$.post('layer/user/submitLogin',{
+			username : $('[name=username]').val(),
+			password : $('[name=password]').val(),
+			rememberMe : $('[name=rememberMe]').val()
+		},function(result){
+			if (result.status == 200) {
+				console.log(result.rows)
+				window.location.href=result.rows;
+			} else {
+				$('#loadingMsg').show();
+				$('#loadingMsg').html(result.message);
+			}
+		});
+		
+	}
+	
+	$(function() {
+        //配置
+        var config = {
+            vx: 4,	//小球x轴速度,正为右，负为左
+            vy: 4,	//小球y轴速度
+            height: 2,	//小球高宽，其实为正方形，所以不宜太大
+            width: 2,
+            count: 200,		//点个数
+            color: "121, 162, 185", 	//点颜色
+            stroke: "130,255,255", 		//线条颜色
+            dist: 6000, 	//点吸附距离
+            e_dist: 20000, 	//鼠标吸附加速距离
+            max_conn: 10 	//点到点最大连接数
+        }
+        //调用
+        CanvasParticle(config);
+		KickOutUser();
+
+	});
+
+	function KickOutUser() {
+		var _href = window.location.href+"";
+		console.log(_href);
+		//返回某个指定的字符串值在字符串中首次出现的位置
+		if (_href && _href.indexOf("?kickout") != -1){
+			$('#loadingMsg').show();
+			$('#loadingMsg').html('您已经被踢出，请重新登录！');
+		}
+	}
+</script>
+</html>

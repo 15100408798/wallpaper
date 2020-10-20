@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.store.ProductMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.store.TbProduct">
+        <id column="product_id" property="productId" jdbcType="INTEGER"/>
+        <result column="shop_id" property="shopId" jdbcType="INTEGER"/>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="product_img" property="productImg" jdbcType="VARCHAR"/>
+        <result column="product_content" property="productContent" jdbcType="VARCHAR"/>
+        <result column="product_type" property="productType" jdbcType="TINYINT"/>
+        <result column="home_top_flag" property="homeTopFlag" jdbcType="TINYINT"/>
+        <result column="product_status" property="productStatus" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="delete_flag" property="deleteFlag" jdbcType="TINYINT"/>
+        <result column="photo" property="photo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        product.product_id, product.shop_id, product.product_name, product.product_img, product.product_content, product.product_type,
+        product.home_top_flag, product.product_status, product.create_time, product.last_update_time, product.delete_flag, product.photo
+    </sql>
+
+    <sql id="Query_Condition">
+        <where>
+            <if test="deleteFlag != null">
+                AND product.delete_flag = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="deleteFlag != null">
+                product.delete_flag = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+            <if test="homeTopFlag != null">
+                product.home_top_flag = #{homeTopFlag, jdbcType=TINYINT},
+            </if>
+            <if test="productStatus != null">
+                product.product_status = #{productStatus, jdbcType=TINYINT},
+            </if>
+            <if test="lastUpdateTime != null">
+                product.Last_update_time = #{lastUpdateTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+    </sql>
+
+    <sql id="forProductId">
+        WHERE product_id IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </sql>
+
+    <!--  更新商品信息 -->
+    <update id="updateProductInfo">
+        UPDATE tb_product product <include refid="Update_Column" />
+        WHERE product.product_id IN
+        <foreach collection="productIdValues" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 查询商品列表 -->
+    <select id="selectList" resultMap="baseResult">
+        SELECT <include refid="Base_Column" />
+        , shop.shop_name AS shopName
+        FROM tb_product AS product
+        LEFT JOIN tb_shop AS shop ON shop.shop_id = product.shop_id
+        <include refid="Query_Condition" />
+        ORDER BY product.product_id DESC
+    </select>
+
+    <select id="shopList" resultType="java.util.HashMap">
+        SELECT p.product_id                     as productId,
+               p.product_img                    as productImg,
+               p.product_name                   as productName,
+               IFNULL(MIN(s.product_price), "") as productPrice,
+               s.product_sku_id                 as productSkuId
+        FROM tb_product p
+                 LEFT JOIN tb_product_sku s ON s.status = 1 AND s.delete_flag = 0 AND s.product_id = p.product_id
+        WHERE p.delete_flag = 0
+          AND p.status = 1
+          AND p.all_type = #{type}
+        ORDER BY p.product_id DESC
+    </select>
+
+
+</mapper>

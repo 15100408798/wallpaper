@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.store.CouponMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.store.TbCoupon">
+        <id column="coupon_id" property="couponId" jdbcType="INTEGER"/>
+        <result column="shop_id" property="shopId" jdbcType="BIGINT"/>
+        <result column="coupon_name" property="couponName" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="type_value" property="typeValue" jdbcType="VARCHAR"/>
+        <result column="use_type" property="useType" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="delete_flag" property="deleteFlag" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        coupon.coupon_id,coupon.shop_id,coupon.coupon_name,coupon.start_time,coupon.end_time,
+        coupon.type,coupon.type_value,coupon.use_type, coupon.create_time,coupon.delete_flag
+    </sql>
+
+    <sql id="Query_Column">
+        <where>
+            <if test="shopId != null">
+                AND coupon.shop_id = #{shopId, jdbcType=BIGINT}
+            </if>
+            <if test="deleteFlag != null">
+                AND coupon.delete_flag = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+        </set>
+    </sql>
+
+    <update id="updateCoupon">
+        update tb_coupon
+        <include refid="Update_Column"/>
+        where coupon_id in
+        <foreach collection="couponIdValues" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+
+    <select id="selectCouponList" resultMap="baseResult">
+        select
+        <include refid="Base_Column"/>
+        ,shop.shop_name as shopName
+        from tb_coupon as coupon
+        left join tb_shop as shop on shop.shop_id = coupon.shop_id
+        <include refid="Query_Column"/>
+        order by coupon.coupon_id desc
+    </select>
+
+</mapper>

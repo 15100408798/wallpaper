@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.store.ProductSkuMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.store.TbProductSku">
+        <id column="product_sku_id" property="productSkuId" jdbcType="INTEGER" />
+        <result column="product_label_id" property="productLabelId" jdbcType="INTEGER" />
+        <result column="product_sku_name" property="productSkuName" jdbcType="VARCHAR" />
+        <result column="product_sku_size" property="productSkuSize" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="product_sku_status" property="productSkuStatus" jdbcType="TINYINT" />
+        <result column="delete_flag" property="deleteFlag" jdbcType="TINYINT" />
+    </resultMap>
+
+    <sql id="Base_Column">
+        sku.product_sku_id, sku.product_label_id, sku.product_sku_name, sku.product_sku_size, sku.create_time,
+        sku.last_update_time, sku.product_sku_status, sku.delete_flag
+    </sql>
+
+
+    <sql id="Query_Condition">
+        <where>
+            <if test="productSkuStatus != null">
+                AND sku.product_sku_status = #{productSkuStatus, jdbcType=TINYINT}
+            </if>
+            <if test="deleteFlag != null">
+                AND sku.delete_flag = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="productSkuStatus != null">
+                sku.product_sku_status = #{productSkuStatus, jdbcType=TINYINT},
+            </if>
+            <if test="deleteFlag != null">
+                sku.delete_flag = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+        </set>
+    </sql>
+
+    <!-- 更新商品sku信息 -->
+    <update id="updateProductSkuInfo">
+      UPDATE tb_product_sku AS sku <include refid="Update_Column" />
+      WHERE sku.product_sku_id IN
+      <foreach collection="productSkuIdValues" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+    </update>
+
+    <!-- 查询商品sku集合 -->
+    <select id="selectSkuList" resultMap="baseResult">
+        SELECT <include refid="Base_Column" />
+        , productLabel.product_label_name AS productLabelName
+        FROM tb_product_sku AS sku
+        LEFT JOIN tb_product_label AS productLabel ON productLabel.product_label_id = sku.product_label_id
+        <include refid="Query_Condition" />
+        ORDER BY sku.product_sku_id DESC
+    </select>
+</mapper>
