@@ -64,29 +64,29 @@
                         </a>
                     </li>
                 </shiro:hasAnyRoles>
-                <shiro:hasAnyRoles name="1,2,3">
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-columns"></i>
-                            <span class="nav-label">活动管理</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level" id="showAcitveUL">
-                            <li>
-                                <a class="J_menuItem" title="活动列表" th:href="@{/skip/active/activeList}">活动列表</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" title="报名列表" th:href="@{/skip/signUp}">报名列表</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" title="报名列表" th:href="@{/skip/video}">报名列表</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" title="热门词汇" th:href="@{/skip/hotActive}">热门词汇</a>
-                            </li>
-                        </ul>
-                    </li>
-                </shiro:hasAnyRoles>
+                <!--<shiro:hasAnyRoles name="1,2,3">-->
+                    <!--<li>-->
+                        <!--<a href="#">-->
+                            <!--<i class="fa fa-columns"></i>-->
+                            <!--<span class="nav-label">活动管理</span>-->
+                            <!--<span class="fa arrow"></span>-->
+                        <!--</a>-->
+                        <!--<ul class="nav nav-second-level" id="showAcitveUL">-->
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" title="活动列表" th:href="@{/skip/active/activeList}">活动列表</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" title="报名列表" th:href="@{/skip/signUp}">报名列表</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" title="报名列表" th:href="@{/skip/video}">报名列表</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="J_menuItem" title="热门词汇" th:href="@{/skip/hotActive}">热门词汇</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</shiro:hasAnyRoles>-->
                 <shiro:hasAnyRoles name="1,2">
                     <li>
                         <a href="#">
@@ -120,7 +120,7 @@
                                 <a class="J_menuItem" title="订单管理" href="orderManager/shopOrderManager">订单管理</a>
                             </li>
                             <li>
-                                <a class="J_menuItem" title="评论管理" href="order/commentlist">评论管理</a>
+                                <a class="J_menuItem" title="评论管理" th:href="@{/skip/order/commentlist}">评论管理</a>
                             </li>
                         </ul>
                     </li>
@@ -137,7 +137,10 @@
                                 <a class="J_menuItem" title="反馈管理" th:href="@{/skip/other/feekbackList}">反馈管理</a>
                             </li>
                             <li>
-                                <a class="J_menuItem" title="会员折扣管理" th:href="@{/skip/system/rebateList}">会员折扣管理</a>
+                                <a class="J_menuItem" title="会员折扣管理" th:href="@{/skip/other/rebateList}">会员折扣管理</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" title="城市管理" th:href="@{/skip/other/cityList}">城市管理</a>
                             </li>
                         </ul>
                     </li>

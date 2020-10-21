@@ -83,6 +83,27 @@ public class UserLoginLogEnum implements LogEnum {
     public static final String UP_SKU = "UP_SKU";   // 上架商品Sku信息
     public static final String DOWN_SKU = "DOWN_SKU";   // 下架商品Sku信息
 
+    /**
+     * ---------------------------------------------- 城市 City ----------------------------------------------------------------
+     */
+    public static final String CITY_LIST = "CITY_LIST";  // 城市信息列表查询
+    public static final String DEL_CITY = "DEL_CITY";  // 删除城市信息
+    public static final String ADD_CITY = "ADD_CITY";  // 新增城市信息
+
+    /**
+     * ---------------------------------------------- 会员折扣 Rebate ----------------------------------------------------------------
+     */
+    public static final String REBATE_LIST = "REBATE_LIST";  // 会员折扣信息列表查询
+    public static final String DEL_REBATE = "DEL_REBATE";  // 删除会员折扣信息
+    public static final String ADD_REBATE = "ADD_REBATE";  // 新增会员折扣信息
+
+    /**
+     * ---------------------------------------------- 评论 Comment ----------------------------------------------------------------
+     */
+    public static final String COMMENT_LIST = "COMMENT_LIST";  // 评论信息列表查询
+    public static final String DEL_COMMENT = "DEL_COMMENT";  // 删除评论信息
+    public static final String UP_COMMENT = "UP_COMMENT";   // 上架评论信息
+    public static final String DOWN_COMMENT = "DOWN_COMMENT";   // 下架评论信息
 
 
 }

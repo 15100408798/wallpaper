@@ -8,23 +8,16 @@
         <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-5">
-                    <label for="username" style="line-height: 35px;">管理员账号:</label>
+                    <label for="userLevel" style="line-height: 35px;">会员级别:</label>
                 </div>
                 <div class="col-sm-7">
-                    <input id="username" placeholder="管理员账号" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="userRole" style="line-height: 35px;">管理员身份:</label>
-                </div>
-                <div class="col-sm-7">
-                    <select class="form-control" id="userRole">
+                    <select class="form-control" id="userLevel">
                         <option value="">请选择</option>
-                        <option value="1">超级管理员</option>
-                        <option value="2">管理员</option>
+                        <option value="0">普通用户</option>
+                        <option value="1">VIP1</option>
+                        <option value="2">VIP2</option>
+                        <option value="3">VIP3</option>
+                        <option value="4">VIP4</option>
                     </select>
                 </div>
             </div>
@@ -32,29 +25,17 @@
         <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-5">
-                    <label for="telphone" style="line-height: 35px;">管理员手机号:</label>
+                    <label for="commentStatus" style="line-height: 35px;">上下架状态:</label>
                 </div>
                 <div class="col-sm-7">
-                    <input id="telphone" maxlength="11" placeholder="管理员手机号" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="isUse" style="line-height: 35px;">管理员状态:</label>
-                </div>
-                <div class="col-sm-7">
-                    <select class="form-control" id="isUse">
+                    <select class="form-control" id="commentStatus">
                         <option value="">请选择</option>
-                        <option value="0">可用</option>
-                        <option value="1">禁用</option>
+                        <option value="0">上架</option>
+                        <option value="1">下架</option>
                     </select>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row" style="padding-top: 30px;">
         <div class="col-sm-3">
             <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
         </div>
@@ -66,13 +47,13 @@
     <hr style="border: 1px solid;"/>
     <div class="row" style="margin-bottom: 30px;">
         <div class="col-sm-12">
-            <shiro:hasRole name="1">
+            <shiro:hasRole name="1,2">
                 <button type="button" class="btn btn-outline btn-primary" data-toggle="modal" data-target="#myModal"
                         id="insertFun" onclick="addManager()">新增
                 </button>
-                <button type="button" class="btn btn-outline btn-danger" onclick="delManager()">删除</button>
-                <button type="button" class="btn btn-outline btn-success" onclick="openManager()">开启</button>
-                <button type="button" class="btn btn-outline btn-warning" onclick="disabledManager()">禁用</button>
+                <button type="button" class="btn btn-outline btn-danger" onclick="deleteComment()">删除</button>
+                <button type="button" class="btn btn-outline btn-danger" onclick="upComment()">上架</button>
+                <button type="button" class="btn btn-outline btn-danger" onclick="downComment()">下架</button>
             </shiro:hasRole>
         </div>
     </div>
@@ -104,7 +85,7 @@
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
             //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-            uniqueId: "managerId",              //每一行的唯一标识，一般为主键列
+            uniqueId: "commentId",              //每一行的唯一标识，一般为主键列
             showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                  //是否显示父子表
@@ -114,11 +95,8 @@
                 var temp = {
                     size: params.limit,                         //页面大小
                     page: (params.offset / params.limit) + 1,   //页码
-                    managerId: $('#managerId').val(),
-                    username: $('#username').val(),
-                    userRole: $('#userRole').val(),
-                    telphone: $('#telphone').val(),
-                    isUse : $('#isUse').val()
+                    userLevel: $('#userLevel').val(),
+                    commentStatus: $('#commentStatus').val()
                 };
                 return temp;
             },
@@ -126,51 +104,66 @@
                 checkbox: true,
                 visible: true                  //是否显示复选框
             }, {
+                field: 'orderNo',
+                title: '订单编号'
+            }, {
+                field: 'orderItemId',
+                title: '订单详情id'
+            }, {
+                field: 'content',
+                title: '评论内容'
+            },{
+                field: 'imgs',
+                title: '评论照片'
+            },{
+                field: 'productId',
+                title: '商品id'
+            },{
+                field: 'productName',
+                title: '商品名称'
+            },{
+                field: 'skuName',
+                title: 'sku名称'
+            },{
+                field: 'userId',
+                title: '用户id'
+            }, {
                 field: 'username',
-                title: '账号'
+                title: '用户账号'
             }, {
                 field: 'userNick',
-                title: '昵称'
+                title: '用户昵称'
             }, {
-                field: 'telphone',
-                title: '手机'
+                field: 'userLevel',
+                title: '用户等级'
             }, {
-                field: 'userRole',
-                title: '角色',
-                formatter: function (value, row, index) {
-                    if (value == 1) {
-                        return "<span class='label label-primary'>超级管理员</span>";
-                    } else if (value == 2) {
-                        return "<span class='label label-success'>管理员</span>";
-                    }
-                }
+                field: 'scroeService',
+                title: '服务态度'
             }, {
-                field: 'isUse',
-                title: '开启/禁用',
+                field: 'scoreDesc',
+                title: '描述相符(几颗星)'
+            }, {
+                field: 'scoreTotal',
+                title: '总体评价'
+            }, {
+                field: 'status',
+                title: '上下架状态',
                 formatter: function (value, row, index) {
                     if (value == 0) {
-                        return "<span class='label label-primary'>开启</span>";
+                        return "<span class='label label-primary'>上架</span>";
                     } else if (value == 1) {
-                        return "<span class='label label-success'>禁用</span>";
+                        return "<span class='label label-success'>下架</span>";
+                    } else {
+                        return "<span class='label label-danger'>未知状态</span>";
                     }
                 }
             }, {
                 field: 'createTime',
                 title: '创建时间'
             }, {
-                field: 'lastLoginTime',
-                title: '最后登陆时间'
-            }, {
-                field: 'managerId',
-                title: '操作',
-                width: 120,
-                align: 'center',
-                valign: 'middle',
-                formatter: function (value, row, index) {
-                    return "<button class='btn btn-outline btn-primary btn-sm' id='updateFun' data-toggle='modal' data-target='#myModal'>编辑</button>";
-                },
-                events: onclickEvent
-            },],
+                field: 'lastUpdateTime',
+                title: '最后一次更新时间'
+            }, ],
             onLoadSuccess: function () {
             },
             onLoadError: function () {
@@ -183,35 +176,47 @@
         $table.bootstrapTable('refresh');
     }
 
-    function disabledManager() {
+    function downComment() {
         var array = common();
         if (array != false) {
             //发送数据库
-            $.post('layer/manager/disabledManager', {managerIds: array.join(',')}, function (result) {
-                $table.bootstrapTable('refresh')
-                alert('禁用成功')
+            $.post('layer/comment/downComment', {commentIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    alert('下架成功')
+                    $table.bootstrapTable('refresh')
+                } else {
+                    alert(result.message)
+                }
             })
         }
     }
 
-    function openManager() {
+    function upComment() {
         var array = common();
         if (array != false) {
             //发送数据库
-            $.post('layer/manager/openManager', {managerIds: array.join(',')}, function (result) {
-                $table.bootstrapTable('refresh')
-                alert('开启成功')
+            $.post('layer/comment/upComment', {commentIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    alert('上架成功')
+                    $table.bootstrapTable('refresh')
+                } else {
+                    alert(result.message)
+                }
             })
         }
     }
 
-    function delManager() {
+    function deleteComment() {
         var array = common();
         if (array != false) {
             //发送数据库
-            $.post('layer/manager/deleteManager', {managerIds: array.join(',')}, function (result) {
-                $table.bootstrapTable('refresh')
-                alert('删除成功')
+            $.post('layer/comment/deleteComment', {commentIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    alert('删除成功')
+                    $table.bootstrapTable('refresh')
+                } else {
+                    alert(result.message)
+                }
             })
         }
     }
@@ -227,47 +232,11 @@
         var array = [];
         //循环遍历
         $.each(selOption, function (index, row) {
-            array.push(row.managerId);
+            array.push(row.commentId);
         })
         return array;
     }
 
-    function addManager() {
-        $('#myModalLabel').html('添加管理员');
-        $('#showModal').load('skip/user/managerAdd');
-    }
-
-    $('#addFun').on('click', function () {
-        var username =  $(" input[ name='username' ] ").val();
-        if (username == null || username.trim() == ''){
-            alert("请输入账号");
-            return;
-        }
-        var password =  $(" input[ name='password' ] ").val();
-        if (password == null || password.trim() == ''){
-            alert("请输入密码");
-            return;
-        }
-        var userNick = $(" input[ name='userNick' ] ").val();
-        if (userNick == null || userNick.trim() == ''){
-            alert("请输入昵称");
-            return;
-        }
-        var telphone = $(" input[ name='telphone' ] ").val();
-        if (telphone == null || telphone.trim() == ''){
-            alert("请输入手机号");
-            return;
-        }
-        var data = $("#showModal").serialize();
-        setService('layer/manager/insertManager', data);
-    });
-
-    window.onclickEvent = {
-        'click #updateFun': function (e, value, row, index) {
-            $('#myModalLabel').html('修改管理员');
-            $('#showModal').load('skip/user/managerAdd');
-        }
-    }
 
 </script>
 </html>
