@@ -12,6 +12,7 @@ public class UserLoginLogEnum implements LogEnum {
      */
     public static final String USER_LOGIN = "USER_LOGIN";   // 管理员登录
     public static final String MANAGER_LIST = "MANAGER_LIST";   // 管理员列表查询
+    public static final String MANAGER_INFO = "MANAGER_INFO";   // 管理员信息查询
     public static final String DEL_MANAGER = "DEL_MANAGER";     // 删除管理员
     public static final String OPEN_MANAGER = "OPEN_MANAGER";   // 开启管理员
     public static final String DISABLED_MANAGER = "DISABLED_MANAGER";   // 禁用管理员

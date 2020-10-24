@@ -3,6 +3,8 @@ package com.yushang.wallpaper.layer.service.impl.user;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
+import com.yushang.wallpaper.common.config.enums.ValidEnum;
+import com.yushang.wallpaper.common.config.exception.ValidException;
 import com.yushang.wallpaper.common.mapper.user.ManagerMapper;
 import com.yushang.wallpaper.common.pojo.user.TbManager;
 import com.yushang.wallpaper.common.utils.MD5Utils;
@@ -92,5 +94,29 @@ public class ManagerServiceImpl implements ManagerService {
         return ResultFul.getSuccessTotal(insertCount);
     }
 
+    /**
+     * 查询管理员信息
+     *
+     * @param managerQueryModel 查询参数
+     * @return 管理员信息
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public ResultFul selectInfo(ManagerQueryModel managerQueryModel) throws ValidException {
+        /* 校验参数 */
+        Objects.requireNonNull(managerQueryModel);
+        managerQueryModel.setPage(1);
+        managerQueryModel.setSize(1);
+        Objects.requireNonNull(managerQueryModel.getManagerId(), "管理员ID不能为Null");
+        // 查询管理员信息
+        Page<TbManager> tbManagerPage = managerMapper.selectList(managerQueryModel);
+        List<TbManager> tbManagerList = tbManagerPage.getResult();
+        if (CollectionUtils.isEmpty(tbManagerList)) {
+            throw new ValidException(ValidEnum.NO_FOUND_INFO);
+        } else if (tbManagerList.size() != 1) {
+            throw new ValidException(ValidEnum.SELECT_INFO_ERROR);
+        }
+        return ResultFul.getSuccessList(tbManagerList, tbManagerPage.getTotal());
+    }
 
 }

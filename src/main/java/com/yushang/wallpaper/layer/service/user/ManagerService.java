@@ -1,6 +1,7 @@
 package com.yushang.wallpaper.layer.service.user;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
+import com.yushang.wallpaper.common.config.exception.ValidException;
 import com.yushang.wallpaper.layer.model.user.ManagerInsertModel;
 import com.yushang.wallpaper.layer.model.user.ManagerQueryModel;
 import com.yushang.wallpaper.layer.model.user.ManagerUpdateModel;
@@ -38,6 +39,12 @@ public interface ManagerService {
     @NonNull
     ResultFul insertManager(@NonNull ManagerInsertModel managerInsertModel);
 
-
-
+    /**
+     * 查询管理员信息
+     *
+     * @param managerQueryModel 查询参数
+     * @return 管理员信息
+     */
+    @NonNull
+    ResultFul selectInfo(@NonNull ManagerQueryModel managerQueryModel) throws ValidException;
 }

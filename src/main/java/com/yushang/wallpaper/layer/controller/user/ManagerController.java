@@ -3,6 +3,7 @@ package com.yushang.wallpaper.layer.controller.user;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
+import com.yushang.wallpaper.common.config.exception.ValidException;
 import com.yushang.wallpaper.layer.model.enums.user.UserLoginLogEnum;
 import com.yushang.wallpaper.layer.model.user.ManagerInsertModel;
 import com.yushang.wallpaper.layer.model.user.ManagerQueryModel;
@@ -73,5 +74,14 @@ public class ManagerController {
         return managerService.insertManager(managerInsertModel);
     }
 
+    @PermissionName(value = "查询管理员信息")
+    @RequiresPermissions(value = {"manager:selectInfo"})
+    @RequiresRoles(value = {"1"})
+    @Log(title = "查询管理员信息", tabName = "tb_manager", operateType = 1, logEnum = UserLoginLogEnum.MANAGER_INFO)
+    @RequestMapping(value = {"selectInfo"})
+    public ResultFul selectInfo(ManagerQueryModel managerQueryModel) throws ValidException {
+        managerQueryModel.setDeleteFlag(0);
+        return managerService.selectInfo(managerQueryModel);
+    }
 
 }
