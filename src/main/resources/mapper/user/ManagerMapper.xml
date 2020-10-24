@@ -75,7 +75,7 @@
     </sql>
 
     <!--  新增管理员信息 -->
-    <insert id="insertManagerInfo">
+    <insert id="insertManagerInfo" keyProperty="managerId" useGeneratedKeys="true">
         INSERT INTO `tb_manager` ( `username`, `password`, `salt`, `user_nick`, `telphone`,`user_role`, `create_time`, `is_use`, `delete_flag`)
         VALUES (#{username}, #{password}, #{salt}, #{userNick}, #{telphone}, #{userRole}, #{createTime}, #{isUse}, #{deleteFlag});
     </insert>

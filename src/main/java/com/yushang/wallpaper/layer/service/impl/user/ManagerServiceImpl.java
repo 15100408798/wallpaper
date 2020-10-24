@@ -6,10 +6,13 @@ import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.config.enums.ValidEnum;
 import com.yushang.wallpaper.common.config.exception.ValidException;
 import com.yushang.wallpaper.common.mapper.user.ManagerMapper;
+import com.yushang.wallpaper.common.mapper.user.ManagerRoleMapper;
+import com.yushang.wallpaper.common.pojo.shiro.TbManagerRole;
 import com.yushang.wallpaper.common.pojo.user.TbManager;
 import com.yushang.wallpaper.common.utils.MD5Utils;
 import com.yushang.wallpaper.layer.model.user.ManagerInsertModel;
 import com.yushang.wallpaper.layer.model.user.ManagerQueryModel;
+import com.yushang.wallpaper.layer.model.user.ManagerRoleUpdateModel;
 import com.yushang.wallpaper.layer.model.user.ManagerUpdateModel;
 import com.yushang.wallpaper.layer.service.user.ManagerService;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,8 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Resource
     private ManagerMapper managerMapper;
+    @Resource
+    private ManagerRoleMapper managerRoleMapper;
 
     /**
      * 查询管理员集合
@@ -64,6 +69,20 @@ public class ManagerServiceImpl implements ManagerService {
         managerUpdateModel.setManagerIdValues(managerIdValues);
         // 更新管理员信息
         int updateCount = managerMapper.updateTbManager(managerUpdateModel);
+        if (updateCount != 1) {
+            throw new RuntimeException("更新管理员失败");
+        }
+        /** 删除管理员角色关系表信息 */
+        ManagerRoleUpdateModel managerRoleUpdateModel = new ManagerRoleUpdateModel();
+        if (managerUpdateModel.getDeleteFlag() != null || managerUpdateModel.getUserRole() != null) {
+            managerRoleUpdateModel.setDeleteFlag(managerUpdateModel.getDeleteFlag());
+            managerRoleUpdateModel.setManagerIdValues(managerIdValues);
+            managerRoleUpdateModel.setRoleId(managerUpdateModel.getUserRole());
+            int updateManagerRoleCount = managerRoleMapper.updateManagerRoleInfo(managerRoleUpdateModel);
+            if (updateManagerRoleCount != managerIdValues.length) {
+                throw new RuntimeException("更新管理员角色关系表失败");
+            }
+        }
         return ResultFul.getSuccessTotal(updateCount);
     }
 
@@ -80,17 +99,37 @@ public class ManagerServiceImpl implements ManagerService {
         /* 校验参数 */
         Objects.requireNonNull(managerInsertModel);
         managerInsertModel.validInsertInfoIsNotNull();
-        // 用户名不能重复
-        Page<TbManager> tbManagerPage = managerMapper.selectList(new ManagerQueryModel(managerInsertModel.getUsername()));
-        List<TbManager> tbManagerList = tbManagerPage.getResult();
-        if (!CollectionUtils.isEmpty(tbManagerList)) {
+        /** 用户名不能重复 */
+        Page<TbManager> usernameManagerPage = managerMapper.selectList(new ManagerQueryModel(managerInsertModel.getUsername()));
+        if (!CollectionUtils.isEmpty(usernameManagerPage.getResult())) {
             return ResultFul.getErrorMessage("用户名不能重复");
         }
+        /** 校验手机号，手机号不能为重复 */
+        ManagerQueryModel phoneQueryModel = new ManagerQueryModel();
+        phoneQueryModel.setTelphone(managerInsertModel.getTelphone());
+        Page<TbManager> phoneManagerPage = managerMapper.selectList(phoneQueryModel);
+        if (!CollectionUtils.isEmpty(phoneManagerPage.getResult())) {
+            return ResultFul.getErrorMessage("手机号已经存在");
+        }
+        /** 新增管理员信息 */
         managerInsertModel.setSalt(managerInsertModel.getUsername());
         managerInsertModel.setPassword(MD5Utils.disrect(managerInsertModel.getPassword(), managerInsertModel.getUsername()));
         managerInsertModel.setCreateTime(new Date());
         managerInsertModel.setDeleteFlag((byte) 0);
         int insertCount = managerMapper.insertManagerInfo(managerInsertModel);
+        if (insertCount != 1) {
+            throw new RuntimeException("新增管理员失败");
+        }
+        /** 添加角色表信息 */
+        TbManagerRole tbManagerRole = new TbManagerRole();
+        tbManagerRole.setManagerId(managerInsertModel.getManagerId());
+        tbManagerRole.setRoleId(managerInsertModel.getUserRole());
+        tbManagerRole.setCreateTime(new Date());
+        tbManagerRole.setDeleteFlag((byte) 0);
+        int insertRoleCount = managerRoleMapper.insertManagerRoleInfo(tbManagerRole);
+        if (insertRoleCount != 1) {
+            throw new RuntimeException("新增管理员角色信息失败");
+        }
         return ResultFul.getSuccessTotal(insertCount);
     }
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.user.ManagerRoleMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.shiro.TbManagerRole">
+        <id property="id" column="id" jdbcType="SMALLINT"/>
+        <result property="managerId" column="manager_id" jdbcType="SMALLINT"/>
+        <result property="roleId" column="role_id" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        id, manager_id, role_id, create_time, delete_flag
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId, jdbcType=TINYINT},
+            </if>
+        </set>
+    </sql>
+
+    <!-- 添加管理员角色表信息 -->
+    <insert id="insertManagerRoleInfo">
+        INSERT INTO tb_manager_role(`manager_id`, `role_id`, `create_time`, `delete_flag`)
+        VALUES (#{managerId}, #{roleId}, #{createTime}, #{deleteFlag})
+    </insert>
+
+    <!-- 更新管理员角色表信息 -->
+    <update id="updateManagerRoleInfo">
+        UPDATE tb_manager_role <include refid="Update_Column" />
+        WHERE  manager_id IN
+        <foreach collection="managerIdValues" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+</mapper>

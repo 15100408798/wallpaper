@@ -60,11 +60,6 @@ public interface UserMapper {
      */
     int selectIsExistPhone(@Param("userId") int userId, @Param("phone") String phone);
 
-    /**
-     * 存入数据库
-     */
-    void insertRole(@Param("roles") String rolesResource, @Param("name") String name);
-
     HashMap<String, Object> selectUserNameById(@Param("userId") Integer userId);
 
     Integer selectUserScoreById(@Param("userId") Integer userId);

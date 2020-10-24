@@ -3,7 +3,7 @@ package com.yushang.wallpaper.layer.controller.user;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.pojo.user.TbManager;
-import com.yushang.wallpaper.layer.model.enums.user.UserLoginLogEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
 import com.yushang.wallpaper.layer.model.user.ManagerQueryModel;
 import com.yushang.wallpaper.layer.model.user.UserLoginRequest;
 import com.yushang.wallpaper.layer.service.user.ManagerService;
@@ -39,7 +39,7 @@ public class LoginController {
     @Resource
     private ManagerService managerService;
 
-    @Log(logEnum = UserLoginLogEnum.USER_LOGIN, title = "管理员登录", tabName = "tb_manager")
+    @Log(logEnum = LogEnum.USER_LOGIN, title = "管理员登录", tabName = "tb_manager")
     @ApiOperation(notes = "管理员登录", value = "submitLogin")
     @PostMapping(value = "submitLogin")
     @ResponseBody

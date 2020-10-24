@@ -73,14 +73,6 @@
 
     </insert>
 
-
-
-    <!-- 存入数据库 -->
-    <insert id="insertRole">
-        INSERT INTO tb_role(role_value, name)
-        VALUES (#{roles}, #{name})
-    </insert>
-
     <!-- 根据用户ID更改用户状态 -->
     <update id="updateUserIsUseStatus">
         UPDATE tb_user <include refid="Update_Column" />

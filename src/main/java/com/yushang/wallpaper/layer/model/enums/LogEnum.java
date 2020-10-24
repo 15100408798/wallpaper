@@ -1,11 +1,11 @@
-package com.yushang.wallpaper.layer.model.enums.user;
-
-import com.yushang.wallpaper.layer.model.enums.base.LogEnum;
+package com.yushang.wallpaper.layer.model.enums;
 
 /**
  * 日志枚举类
  */
-public class UserLoginLogEnum implements LogEnum {
+public class LogEnum {
+
+    public static final String UNKNOW = "UNKNOW";  // 不明操作
 
     /**
      * ---------------------------------------------- 管理员 MANAGER ----------------------------------------------------------------
@@ -26,9 +26,16 @@ public class UserLoginLogEnum implements LogEnum {
     public static final String OPEN_USER = "OPEN_USER";   // 开启用户
     public static final String DISABLED_USER = "DISABLED_USER";   // 禁用用户
 
+    /**
+     * ---------------------------------------------- 角色 ROLE ----------------------------------------------------------------
+     */
+    public static final String ROLE_LIST = "ROLE_LIST";   // 角色列表查询
+    public static final String DEL_ROLE = "DEL_ROLE";     // 删除角色
+    public static final String ADD_ROLE = "ADD_ROLE";     // 新增角色
+
 
     /**
-     * ---------------------------------------------- 用户 USER ----------------------------------------------------------------
+     * ---------------------------------------------- 日志 LOG ----------------------------------------------------------------
      */
     public static final String LOG_LIST = "LOG_LIST";   // 日志列表查询
 
@@ -83,6 +90,12 @@ public class UserLoginLogEnum implements LogEnum {
     public static final String RED_SKU = "RED_SKU";   // 还原商品Sku信息
     public static final String UP_SKU = "UP_SKU";   // 上架商品Sku信息
     public static final String DOWN_SKU = "DOWN_SKU";   // 下架商品Sku信息
+
+    /**
+     * ---------------------------------------------- 客服管理 Custom  ----------------------------------------------------------------
+     */
+    public static final String CUSTOM_LIST = "CUSTOM_LIST";   // 客服管理列表查询
+    public static final String DEL_CUSTOM = "DEL_CUSTOM";     // 删除客服信息
 
 
 

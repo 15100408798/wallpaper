@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.user.RoleMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.shiro.TbRole">
+        <id property="roleId" column="role_id" jdbcType="TINYINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="TINYINT"/>
+    </resultMap>
+
+
+    <sql id="Base_Column">
+        role_id, create_time, name, delete_flag
+    </sql>
+
+    <sql id="Query_Column">
+        <where>
+            <if test="roleId != null">
+                AND `role_id` = #{roleId, jdbcType=TINYINT}
+            </if>
+            <if test="roleName != null and roleName != ''">
+                AND `name` = #{roleName, jdbcType=VARCHAR}
+            </if>
+            <if test="deleteFlag != null">
+                AND `delete_flag` = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="deleteFlag != null">
+                `delete_flag` = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+        </set>
+    </sql>
+
+    <!-- 新增角色信息 -->
+    <insert id="insertRole">
+      INSERT INTO tb_role(create_time, name, delete_flag)
+      VALUES (#{createTime}, #{roleName}, #{deleteFlag})
+    </insert>
+
+    <!-- 更新角色信息 -->
+    <update id="updateRoleInfo">
+      UPDATE tb_role <include refid="Update_Column" />
+      WHERE role_id IN
+      <foreach collection="roleIdValues" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+    </update>
+
+    <!-- 查询角色信息列表 -->
+    <select id="selectList" resultMap="baseResult">
+        SELECT <include refid="Base_Column" /> FROM tb_role
+        <include refid="Query_Column" />
+        ORDER BY role_id DESC
+    </select>
+
+
+</mapper>

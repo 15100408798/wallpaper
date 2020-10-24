@@ -21,6 +21,7 @@ public class ManagerUpdateModel extends BaseModel {
     private Integer deleteFlag;     // 删除状态：0-未删除，1-已删除
     private String username;     // 用户账号
     private String password;     // 用户密码
+    private Integer userRole;      // 用户级别：1-超级管理员，2-管理员
 
     public void validManageIdsIsNotNull () {
         Objects.requireNonNull(managerIds);

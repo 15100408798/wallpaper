@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * 用户管理
+ */
 @Setter
 @Getter
 @NoArgsConstructor
@@ -34,7 +37,7 @@ public class TbUser implements Serializable {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GTM+8")
-    @Column(nullable = false, columnDefinition = "datetime(6) comment '创建时间'")
+    @Column(nullable = false, columnDefinition = "timestamp(0) default CURRENT_TIMESTAMP comment '创建时间'")
     private Date createTime;    // 创建时间
 
     @Column(nullable = true, columnDefinition = "datetime(6) comment '最后登陆时间'")

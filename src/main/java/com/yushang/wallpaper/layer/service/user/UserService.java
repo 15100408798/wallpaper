@@ -30,19 +30,8 @@ public interface UserService {
     @NonNull
     ResultFul updateUserInfo(@NonNull UserUpdateModel userUpdateModel);
 
-    /**
-     * 存入数据库
-     */
-    void insertRole(String rolesResource);
-
     Integer selectUserScoreById(Integer userId);
 
-    Map<String, Object> selectCSList(int page, int size);
 
-    Map<String, Object> deleteSC(String ids);
-
-    Map<String, Object> openSC(String ids);
-
-    Map<String, Object> disabledSC(String ids);
 
 }

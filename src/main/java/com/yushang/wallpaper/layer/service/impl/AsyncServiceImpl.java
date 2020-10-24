@@ -1,6 +1,6 @@
 package com.yushang.wallpaper.layer.service.impl;
 
-import com.yushang.wallpaper.common.mapper.CustomeMapper;
+import com.yushang.wallpaper.common.mapper.CustomMapper;
 import com.yushang.wallpaper.common.mapper.OrderMapper;
 import com.yushang.wallpaper.layer.service.AsyncService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +16,7 @@ import java.util.HashMap;
 public class AsyncServiceImpl implements AsyncService {
 
     @Autowired
-    private CustomeMapper customeMapper;
-
-    @Autowired
     private OrderMapper orderMapper;
-
-    @Override
-    public void updateCustomeService(Byte customServiceId) {
-        customeMapper.updateCustomeService(customServiceId);
-    }
 
     @Override
     public void saveShopOneWeek(Long id, Date sevenDayTime, Date nowTime) {

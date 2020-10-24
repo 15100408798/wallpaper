@@ -3,7 +3,7 @@ package com.yushang.wallpaper.layer.controller.store;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.layer.model.enums.user.UserLoginLogEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
 import com.yushang.wallpaper.layer.model.store.CouponQueryModel;
 import com.yushang.wallpaper.layer.model.store.CouponUpdateModel;
 import com.yushang.wallpaper.layer.service.store.CouponService;
@@ -29,7 +29,7 @@ public class CouponController {
     @PermissionName(value = "查询优惠价列表")
     @RequiresPermissions(value = {"coupon:selectCouponList"})
     @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
-    @Log(title = "查询优惠价列表", tabName = "tb_coupon", operateType = 1, logEnum = UserLoginLogEnum.COUPON_LIST)
+    @Log(title = "查询优惠价列表", tabName = "tb_coupon", operateType = 1, logEnum = LogEnum.COUPON_LIST)
     @RequestMapping(value = {"selectCouponList"})
     public ResultFul selectCouponList(CouponQueryModel queryModel) {
         return couponService.selectCouponList(queryModel);
@@ -38,7 +38,7 @@ public class CouponController {
     @PermissionName(value = "删除优惠卷")
     @RequiresPermissions(value = {"coupon:deleteCoupon"})
     @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
-    @Log(title = "删除优惠卷", tabName = "tb_coupon", operateType = 2, logEnum = UserLoginLogEnum.DEL_COUPON)
+    @Log(title = "删除优惠卷", tabName = "tb_coupon", operateType = 2, logEnum = LogEnum.DEL_COUPON)
     @RequestMapping(value = {"deleteCoupon"})
     public ResultFul deleteCoupon(String ids) {
         CouponUpdateModel couponUpdateModel = new CouponUpdateModel();

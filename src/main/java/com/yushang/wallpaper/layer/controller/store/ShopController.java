@@ -3,7 +3,7 @@ package com.yushang.wallpaper.layer.controller.store;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.layer.model.enums.user.UserLoginLogEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
 import com.yushang.wallpaper.layer.model.store.ShopQueryModel;
 import com.yushang.wallpaper.layer.model.store.ShopUpdateModel;
 import com.yushang.wallpaper.layer.service.store.ShopService;
@@ -28,7 +28,7 @@ public class ShopController {
     @PermissionName(value = "查询商铺集合")
     @RequiresPermissions(value = {"shop:selectStoreList"})
     @RequiresRoles(value = {"1"}, logical = Logical.OR)
-    @Log(title = "查询商铺集合", tabName = "tb_shop", operateType = 1, logEnum = UserLoginLogEnum.SHOP_LIST)
+    @Log(title = "查询商铺集合", tabName = "tb_shop", operateType = 1, logEnum = LogEnum.SHOP_LIST)
     @RequestMapping(value = {"selectStoreList"})
     public ResultFul selectStoreList(ShopQueryModel shopQueryModel) {
         return shopService.selectStoreList(shopQueryModel);
@@ -38,7 +38,7 @@ public class ShopController {
     @PermissionName(value = "删除商铺")
     @RequiresPermissions(value = {"shop:delStore"})
     @RequiresRoles(value = {"1"}, logical = Logical.OR)
-    @Log(title = "删除商铺", tabName = "tb_shop", operateType = 2, logEnum = UserLoginLogEnum.DEL_SHOP)
+    @Log(title = "删除商铺", tabName = "tb_shop", operateType = 2, logEnum = LogEnum.DEL_SHOP)
     @RequestMapping(value = {"delStore"})
     public ResultFul delStore(ShopUpdateModel shopUpdateModel) {
         shopUpdateModel.setDeleteFlag(1);
@@ -49,7 +49,7 @@ public class ShopController {
     @PermissionName(value = "上架商铺")
     @RequiresPermissions(value = {"shop:openStore"})
     @RequiresRoles(value = {"1"})
-    @Log(title = "上架商铺", tabName = "tb_shop", operateType = 5, logEnum = UserLoginLogEnum.OPEN_SHOP)
+    @Log(title = "上架商铺", tabName = "tb_shop", operateType = 5, logEnum = LogEnum.OPEN_SHOP)
     @RequestMapping("openStore")
     public ResultFul openStore(ShopUpdateModel shopUpdateModel) {
         shopUpdateModel.setStatus(1);
@@ -60,7 +60,7 @@ public class ShopController {
     @PermissionName(value = "下架商铺")
     @RequiresPermissions(value = {"shop:disabledStore"})
     @RequiresRoles(value = {"1"})
-    @Log(title = "下架商铺", tabName = "tb_shop", operateType = 6, logEnum = UserLoginLogEnum.DIS_SHOP)
+    @Log(title = "下架商铺", tabName = "tb_shop", operateType = 6, logEnum = LogEnum.DIS_SHOP)
     @RequestMapping("disabledStore")
     public ResultFul disabledStore(ShopUpdateModel shopUpdateModel) {
         shopUpdateModel.setStatus(2);

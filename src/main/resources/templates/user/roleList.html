@@ -4,26 +4,34 @@
 <head th:include="common/comm :: header_web"></head>
 <body class="gray-bg">
 <div class="container" style="background-color: white;margin-top:30px;">
+    <div class="row" style="padding-top: 30px;">
+
+    </div>
+    <hr style="border: 1px solid;"/>
     <div class="row" style="margin: 50px 0px;">
-        <table id="customService"></table>
+        <table id="roleList"></table>
     </div>
     <hr style="border: 1px solid;"/>
     <div class="row" style="margin-bottom: 30px;">
         <div class="col-sm-12">
             <shiro:hasRole name="1">
-                <button type="button" class="btn btn-outline btn-primary">新增</button>
-                <button type="button" class="btn btn-outline btn-danger" onclick="deleteCustom()">删除</button>
+                <button type="button" class="btn btn-outline btn-primary" data-toggle="modal" data-target="#myModal"
+                        id="insertFun" onclick="addRole()">新增
+                </button>
+                <button type="button" class="btn btn-outline btn-danger" onclick="deleteRole()">删除</button>
             </shiro:hasRole>
         </div>
     </div>
 </div>
+<div th:include="common/comm::modalView"></div>
 </body>
+<script th:include="common/comm::modalBtn"></script>
 <script>
-    $table = $('#customService');
+    $table = $('#roleList');
 
     $(function () {
         $table.bootstrapTable({
-            url: 'layer/custom/selectList',          //请求后台的URL（*）
+            url: 'layer/role/selectList',          //请求后台的URL（*）
             method: 'GET',                      //请求方式（*）
             //toolbar: '#toolbar',              //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
@@ -33,8 +41,8 @@
             sortOrder: "desc",                   //排序方式
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-            pageSize: 20,                     //每页的记录行数（*）
-            pageList: [20, 50, 100],        //可供选择的每页的行数（*）
+            pageSize: 10,                     //每页的记录行数（*）
+            pageList: [10, 30, 50, 100],        //可供选择的每页的行数（*）
             search: false,                      //是否显示表格搜索
             strictSearch: true,
             showColumns: true,                  //是否显示所有的列（选择显示的列）
@@ -42,7 +50,7 @@
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
             //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-            uniqueId: "customId",              //每一行的唯一标识，一般为主键列
+            uniqueId: "roleId",              //每一行的唯一标识，一般为主键列
             showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                  //是否显示父子表
@@ -59,24 +67,21 @@
                 checkbox: true,
                 visible: true                  //是否显示复选框
             }, {
-                field: 'wxOpenId',
-                title: '微信号'
-            }, {
-                field: 'image',
-                title: '客服二维码',
-                formatter: function (value, row, index) {
-                    return '<img src="' + value + '" style="width: 100px;height: 100px;" alt="图片显示不正常"/>';
-                }
-            }, {
-                field: 'phone',
-                title: '手机号'
-            }, {
-                field: 'customName',
-                title: '客服名称'
+                field: 'name',
+                title: '角色名称'
             }, {
                 field: 'createTime',
                 title: '创建时间'
-            }, ],
+            }, {
+                field: 'roleId',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    return "<button class='btn btn-outline btn-primary btn-sm'>编辑</button>";
+                }
+            },],
             onLoadSuccess: function () {
             },
             onLoadError: function () {
@@ -87,21 +92,6 @@
 
     function select() {
         $table.bootstrapTable('refresh');
-    }
-
-    function deleteCustom() {
-        var array = common();
-        if (array != false) {
-            //发送数据库
-            $.post('layer/custom/deleteCustom', {customIds: array.join(',')}, function (result) {
-                if (result.status == 200) {
-                    alert('删除成功')
-                    $table.bootstrapTable('refresh')
-                } else {
-                    alert(result.message);
-                }
-            })
-        }
     }
 
     function common() {
@@ -115,11 +105,40 @@
         var array = [];
         //循环遍历
         $.each(selOption, function (index, row) {
-            array.push(row.customId);
+            array.push(row.roleId);
         })
         return array;
     }
 
+    function deleteRole() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/role/deleteRole', {roleIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    alert('删除成功')
+                    $table.bootstrapTable('refresh')
+                } else {
+                    alert(result.message);
+                }
+            })
+        }
+    }
+
+    function addRole() {
+        $('#myModalLabel').html('添加角色');
+        $('#showModal').load('skip/user/roleAdd');
+    }
+
+    $('#addFun').on('click', function () {
+        var roleName =  $(" input[ name='roleName' ] ").val();
+        if (roleName == null || roleName.trim() == ''){
+            alert("角色名称不能为空");
+            return;
+        }
+        var data = $("#showModal").serialize();
+        setService('layer/role/insertRole', data);
+    });
 </script>
 </html>
 

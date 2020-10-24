@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.CustomMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.user.TbCustom">
+        <id column="custom_id" property="customId" jdbcType="INTEGER" />
+        <result column="wx_open_id" property="wxOpenId" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="image" property="image" jdbcType="VARCHAR" />
+        <result column="custom_name" property="customName" jdbcType="VARCHAR" />
+        <result property="deleteFlag" column="delete_flag" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column" >
+        custom_id, wx_open_id, phone, image, custom_name, delete_flag, create_time, last_update_time
+    </sql>
+
+    <sql id="Query_Condition">
+        <where>
+            <if test="deleteFlag != null">
+                AND `delete_flag` = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_Condition">
+        <set>
+            <if test="deleteFlag != null">
+                `delete_flag` = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+            <if test="lastUpdateTime != null">
+                `last_update_time` = #{lastUpdateTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+    </sql>
+
+    <!-- 更新客户客服信息 -->
+    <update id="updateCustomInfo">
+      UPDATE tb_custom <include refid="Update_Condition" />
+      WHERE custom_id IN
+      <foreach collection="customIdValues" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+    </update>
+
+    <!-- 查询客户客服列表 -->
+    <select id="selectList" resultMap="baseResult">
+      SELECT <include refid="Base_Column" />
+      FROM tb_custom
+      <include refid="Query_Condition" />
+      ORDER BY custom_id DESC
+    </select>
+
+</mapper>

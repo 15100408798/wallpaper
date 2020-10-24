@@ -126,22 +126,24 @@ public class LogAspect {
             LOGGER.info("{}|{}|{}|{}", LoggerUtils.RESPONSE, log.logEnum(), sessionId, JSONObject.toJSONString(ret));
             /* 记录日志 */
             Short managerId = (Short) SecurityUtils.getSubject().getPrincipal();
-            TbLog tbLog = new TbLog();
-            tbLog.setCreateTime(new Date());
-            tbLog.setManagerIp(remoteAddr);
-            tbLog.setOperateId(managerId);
-            tbLog.setType("GET".equalsIgnoreCase(method) == true ? (byte) 1 : (byte) 2);
-            tbLog.setRequestUri(requestURI);
-            tbLog.setRequestParam(requestParam);
-            tbLog.setMethodName(methodName);
-            tbLog.setIsSuccess((byte) 1);
-            tbLog.setTitle(log.title());
-            tbLog.setTabName(log.tabName());
-            tbLog.setOperateType(log.operateType());
-            tbLog.setSessionId(sessionId);
-            //保存到数据库
+            if (managerId != null && log.operateType() != 1) {
+                TbLog tbLog = new TbLog();
+                tbLog.setCreateTime(new Date());
+                tbLog.setManagerIp(remoteAddr);
+                tbLog.setOperateId(managerId);
+                tbLog.setType("GET".equalsIgnoreCase(method) == true ? (byte) 1 : (byte) 2);
+                tbLog.setRequestUri(requestURI);
+                tbLog.setRequestParam(requestParam);
+                tbLog.setMethodName(methodName);
+                tbLog.setIsSuccess((byte) 1);
+                tbLog.setTitle(log.title());
+                tbLog.setTabName(log.tabName());
+                tbLog.setOperateType(log.operateType());
+                tbLog.setSessionId(sessionId);
+                //保存到数据库
 //            sendMessageService.saveLog(tbLog);
-            logService.insertLog(tbLog);
+                logService.insertLog(tbLog);
+            }
         } catch (Exception e) {
             LoggerUtils.error("调用方法后，返回信息前，发生异常。位置在" + methodNameThread.get(), e);
         }

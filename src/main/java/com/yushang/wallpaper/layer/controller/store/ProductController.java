@@ -3,7 +3,7 @@ package com.yushang.wallpaper.layer.controller.store;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.layer.model.enums.user.UserLoginLogEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
 import com.yushang.wallpaper.layer.model.store.ProductQueryModel;
 import com.yushang.wallpaper.layer.model.store.ProductUpdateModel;
 import com.yushang.wallpaper.layer.service.store.ProductService;
@@ -28,7 +28,7 @@ public class ProductController {
     @PermissionName(value = "查询商品集合")
     @RequiresPermissions(value = {"product:selectList"})
     @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
-    @Log(title = "查询商品集合", tabName = "tb_product", operateType = 1, logEnum = UserLoginLogEnum.PRODUCT_LIST)
+    @Log(title = "查询商品集合", tabName = "tb_product", operateType = 1, logEnum = LogEnum.PRODUCT_LIST)
     @RequestMapping(value = {"selectList"})
     public ResultFul selectList(ProductQueryModel reqModel) {
         return productService.selectList(reqModel);
@@ -38,7 +38,7 @@ public class ProductController {
     @PermissionName(value = "删除商品")
     @RequiresPermissions(value = {"product:delProduct"})
     @RequiresRoles(value = {"1"}, logical = Logical.OR)
-    @Log(title = "删除商品", tabName = "tb_product", operateType = 2, logEnum = UserLoginLogEnum.DEL_PRODUCT)
+    @Log(title = "删除商品", tabName = "tb_product", operateType = 2, logEnum = LogEnum.DEL_PRODUCT)
     @RequestMapping("delProduct")
     public ResultFul delProduct(ProductUpdateModel productUpdateModel) {
         productUpdateModel.setDeleteFlag(1);
@@ -49,7 +49,7 @@ public class ProductController {
     @PermissionName(value = "上架商品")
     @RequiresPermissions(value = {"product:openProduct"})
     @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
-    @Log(title = "上架商品", tabName = "tb_product", operateType = 5, logEnum = UserLoginLogEnum.UP_PRODUCT)
+    @Log(title = "上架商品", tabName = "tb_product", operateType = 5, logEnum = LogEnum.UP_PRODUCT)
     @RequestMapping("openProduct")
     public ResultFul openProduct(ProductUpdateModel productUpdateModel) {
         productUpdateModel.setProductStatus(0);
@@ -60,7 +60,7 @@ public class ProductController {
     @PermissionName(value = "下架商品")
     @RequiresPermissions(value = {"product:disabledProduct"})
     @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
-    @Log(title = "下架商品", tabName = "tb_product", operateType = 6, logEnum = UserLoginLogEnum.DOWN_PRODUCT)
+    @Log(title = "下架商品", tabName = "tb_product", operateType = 6, logEnum = LogEnum.DOWN_PRODUCT)
     @RequestMapping("disabledProduct")
     public ResultFul disabledProduct(ProductUpdateModel productUpdateModel) {
         productUpdateModel.setProductStatus(1);
@@ -71,7 +71,7 @@ public class ProductController {
     @PermissionName(value = "推荐商品")
     @RequiresPermissions(value = {"product:tuiProduct"})
     @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
-    @Log(title = "推荐商品", tabName = "tb_product", operateType = 7, logEnum = UserLoginLogEnum.TUI_PRODUCT)
+    @Log(title = "推荐商品", tabName = "tb_product", operateType = 7, logEnum = LogEnum.TUI_PRODUCT)
     @RequestMapping("tuiProduct")
     public ResultFul tuiProduct(ProductUpdateModel productUpdateModel) {
         productUpdateModel.setHomeTopFlag(1);
@@ -82,7 +82,7 @@ public class ProductController {
     @PermissionName(value = "不推荐商品")
     @RequiresPermissions(value = {"product:butuiProduct"})
     @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
-    @Log(title = "不推荐商品", tabName = "tb_product", operateType = 8, logEnum = UserLoginLogEnum.NO_TUI_PRODUCT)
+    @Log(title = "不推荐商品", tabName = "tb_product", operateType = 8, logEnum = LogEnum.NO_TUI_PRODUCT)
     @RequestMapping("butuiProduct")
     public ResultFul butuiProduct(ProductUpdateModel productUpdateModel) {
         productUpdateModel.setHomeTopFlag(0);

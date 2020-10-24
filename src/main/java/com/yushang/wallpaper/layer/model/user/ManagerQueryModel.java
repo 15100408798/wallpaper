@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * 管理员查询 -- Manager Query Model
+ */
 @Setter
 @Getter
 @NoArgsConstructor

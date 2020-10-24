@@ -38,22 +38,33 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="logo-element">cyclins</div>
+                    <div class="logo-element">御尚壁纸</div>
                 </li>
-                <shiro:hasRole name="1">
+                <shiro:hasAnyRoles name="1,2">
                     <li>
-                        <a class="J_menuItem" title="管理员管理" th:href="@{/skip/user/managerlist}">
-                            <i class="fa fa-columns"></i>
-                            <span class="nav-label">管理员管理</span>
-                        </a>
-                    </li>
-                </shiro:hasRole>
-                <shiro:hasAnyRoles name="1">
-                    <li>
-                        <a class="J_menuItem" title="用户管理" th:href="@{/skip/user/userlist}">
+                        <a href="#">
                             <i class="fa fa-columns"></i>
                             <span class="nav-label">用户管理</span>
+                            <span class="fa arrow"></span>
                         </a>
+                        <ul class="nav nav-second-level">
+                            <shiro:hasAnyRoles name="1">
+                                <li>
+                                    <a class="J_menuItem" title="管理员管理" th:href="@{/skip/user/managerlist}">管理员管理</a>
+                                </li>
+                                <li>
+                                    <a class="J_menuItem" title="角色管理" th:href="@{/skip/user/roleList}">角色管理</a>
+                                </li>
+                            </shiro:hasAnyRoles>
+                            <li>
+                                <a class="J_menuItem" title="用户管理" th:href="@{/skip/user/userlist}">用户列表</a>
+                            </li>
+                            <shiro:hasAnyRoles name="1">
+                                <li>
+                                    <a class="J_menuItem" title="客服中心" th:href="@{/skip/user/customService}">客服中心</a>
+                                </li>
+                            </shiro:hasAnyRoles>
+                        </ul>
                     </li>
                 </shiro:hasAnyRoles>
                 <shiro:hasAnyRoles name="1">
@@ -139,6 +150,11 @@
                             <li>
                                 <a class="J_menuItem" title="会员折扣管理" th:href="@{/skip/system/rebateList}">会员折扣管理</a>
                             </li>
+                            <shiro:hasAnyRoles name="1">
+                                <li>
+                                    <a class="J_menuItem" title="日志管理" th:href="@{/skip/log/loglist}">日志管理</a>
+                                </li>
+                            </shiro:hasAnyRoles>
                         </ul>
                     </li>
                 </shiro:hasAnyRoles>
@@ -167,20 +183,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="J_menuItem" title="客服中心" th:href="@{/skip/user/customService}">
-                            <i class="fa fa-columns"></i>
-                            <span class="nav-label">客服中心</span>
-                        </a>
-                    </li>
-                    <shiro:hasAnyRoles name="1">
-                        <li>
-                            <a class="J_menuItem" title="日志管理" th:href="@{/skip/log/loglist}">
-                                <i class="fa fa-columns"></i>
-                                <span class="nav-label">日志管理</span>
-                            </a>
-                        </li>
-                    </shiro:hasAnyRoles>
+
                 </shiro:hasRole>
             </ul>
         </div>
