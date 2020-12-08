@@ -1,6 +1,6 @@
 package com.yushang.wallpaper.weixin.controller;
 
-import com.yushang.wallpaper.service.user.UserService;
+import com.yushang.wallpaper.layer.router.user.UserService;
 import com.yushang.wallpaper.weixin.service.WXShopService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;

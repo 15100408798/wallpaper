@@ -15,7 +15,7 @@
                         <span style="color: red; height: 35px; line-height: 35px; float: right;">*</span>
                     </div>
                     <div class="col-sm-6">
-                        <input style="width: 200px; height: 35px;" class="form-control"
+                        <input style="width: 200px; height: 35px;" class="form-control" onblur="checkAccount($(this).val())"
                                type="text" autocomplete="off" id="username" required minlength="5"
                                maxlength="15" placeholder="账号应在5~15位之间"/>
                     </div>
@@ -157,10 +157,10 @@
         }, function (data) {
             if (data.status == 200) {
                 swal({
-                    'title' : '添加成功',
-                    'text' : '',
-                    'type' : 'success'
-                }, function() {
+                    'title': '添加成功',
+                    'text': '',
+                    'type': 'success'
+                }, function () {
                     window.location.reload(true);
                 });
             } else {
@@ -168,6 +168,26 @@
                 swal(data.message, '', 'warn')
             }
         })
+    }
+
+
+    // 检查账号是否注册
+    function checkAccount(username) {
+        if (username == "" || username.trim().length == 0) {
+            swal('尚未检测到账号', '请输入管理员账号', 'info');
+            return false;
+        } else if (username.trim().length < 5 || username.trim().length > 15) {
+            swal('账号长度应该在5~10之间', '请重新输入账号', 'info');
+            return false;
+        }
+        $.post(ctx + '/layer/manager/checkUsername', {username: username}, function (data) {
+            $('#h1').show();
+            if (data.status == 200) {
+                $('#h1').html(data.message).css('color', 'green');
+            } else {
+                $('#h1').html('调用失败，请联系技术人员').css('color', 'red');
+            }
+        });
     }
 </script>
 </html>

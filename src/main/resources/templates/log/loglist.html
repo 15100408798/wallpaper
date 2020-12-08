@@ -5,52 +5,17 @@
 <body class="gray-bg">
 <div class="container" style="background-color: white;margin-top:30px;">
     <div class="row" style="padding-top: 30px;">
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="username" style="line-height: 35px;">管理员账号:</label>
-                </div>
-                <div class="col-sm-7">
-                    <input id="username" placeholder="管理员账号" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="operateTypeValue" style="line-height: 35px;">操作类型:</label>
-                </div>
-                <div class="col-sm-7">
-                    <select class="form-control" id="operateTypeValue">
-                        <option value="0">请选择</option>
-                        <option value="1">查询</option>
-                        <option value="2">删除</option>
-                        <option value="3">开启</option>
-                        <option value="4">禁用</option>
-                        <option value="5">上架</option>
-                        <option value="6">下架</option>
-                        <option value="7">推荐</option>
-                        <option value="8">不推荐</option>
-                        <option value="9">处理</option>
-                        <option value="10">忽略</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
-        </div>
+        <div th:include="log/loglistQuery::logListQuery"></div>
     </div>
     <hr style="border: 1px solid;"/>
     <div class="row" style="margin: 50px 0px;">
-        <table id="log"></table>
+        <table id="logList"></table>
     </div>
     <hr style="border: 1px solid;margin-bottom: 30px;"/>
 </div>
 </body>
 <script>
-    $table = $('#log');
-
+    $table = $('#logList');
     $(function () {
         $table.bootstrapTable({
             url: 'layer/log/selectList',          //请求后台的URL（*）
@@ -93,13 +58,13 @@
             }, {
                 field: 'userName',
                 title: '操作人账号'
-            },  {
+            }, {
                 field: 'userNick',
                 title: '操作人昵称'
             }, {
                 field: 'title',
                 title: '操作名称'
-            },  {
+            }, {
                 field: 'isSuccess',
                 title: '请求响应状态',
                 formatter: function (value, row, index) {
@@ -147,9 +112,21 @@
                 field: 'managerIp',
                 title: '操作者的ip地址'
             }, {
+                field: 'sessionId',
+                title: '日志标识'
+            }, {
                 field: 'createTime',
                 title: '操作时间'
-            }, ],
+            }, {
+                field: 'requestParam',
+                title: '请求参数'
+            }, {
+                field: 'requestUri',
+                title: '方法路径'
+            }, {
+                field: 'tabName',
+                title: '操作表名'
+            },],
             onLoadSuccess: function (result) {
 
             },

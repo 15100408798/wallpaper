@@ -1,6 +1,6 @@
 package com.yushang.wallpaper.common.config.quartz;
 import com.yushang.wallpaper.common.utils.log.LoggerUtils;
-import com.yushang.wallpaper.service.store.ShopService;
+import com.yushang.wallpaper.layer.router.store.ShopService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

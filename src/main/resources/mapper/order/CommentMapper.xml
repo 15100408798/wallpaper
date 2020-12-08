@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.order.CommentMapper">
+    <resultMap id="baseResult" type="com.yushang.wallpaper.common.pojo.order.TbComment">
+        <id column="comment_id" property="commentId" jdbcType="BIGINT"/>
+        <result column="product_id" property="productId" jdbcType="BIGINT"/>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="delete_flag" property="deleteFlag" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        tcomment.comment_id,tcomment.product_id,tcomment.product_name,tcomment.`status`,tcomment.create_time,tcomment.delete_flag
+    </sql>
+
+    <sql id="Update_Column">
+        <set>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+            <if test="commentStatus != null">
+                `status` = #{commentStatus, jdbcType=TINYINT},
+            </if>
+        </set>
+    </sql>
+
+    <sql id="Query_Condition">
+        <where>
+            <if test="productId != null">
+                AND tcomment.product_id = #{productId, jdbcType=BIGINT}
+            </if>
+            <if test="commentStatus != null">
+                AND tcomment.status = #{commentStatus, jdbcType=TINYINT}
+            </if>
+            <if test="deleteFlag != null">
+                AND tcomment.delete_flag = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <update id="updateComment">
+        update tb_comment
+        <include refid="Update_Column"/>
+        where comment_id in
+        <foreach collection="commentIdValues" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectCommentList" resultMap="baseResult">
+        select
+        <include refid="Base_Column"/>
+        from tb_comment AS tcomment
+        <include refid="Query_Condition" />
+        order by tcomment.comment_id desc
+    </select>
+
+</mapper>

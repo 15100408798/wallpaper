@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div th:fragment="commonQuery">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="productId" style="line-height: 35px;">商品ID:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="productId" placeholder="商品ID" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="commentStatus" style="line-height: 35px;">处理状态:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="commentStatus">
+                    <option value="">请选择</option>
+                    <option value="0">上架</option>
+                    <option value="1">下架</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+    </div>
+</div>
+
+<script th:fragment="commentQueryFuntion">
+    function disabledComment() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/comment/disabledComment', {commentIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '下架成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'warn')
+                }
+            })
+        }
+    }
+
+    function openComment() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/comment/openComment', {commentIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '上架成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'warn')
+                }
+            })
+        }
+    }
+
+    function delComment() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/comment/deleteComment', {commentIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '删除成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'warn')
+                }
+            })
+        }
+    }
+
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据');
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.commentId);
+        })
+        return array;
+    }
+
+
+</script>
+</body>
+</html>

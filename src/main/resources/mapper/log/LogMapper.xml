@@ -37,7 +37,7 @@
             <if test="username != null and username != ''">
                 AND manager.username LIKE CONCAT(#{username, jdbcType=VARCHAR}, '%')
             </if>
-            <if test="operateTypeValue != null and operateTypeValue != 0">
+            <if test="operateTypeValue != null and operateTypeValue != ''">
                 AND log.operate_type = #{operateTypeValue, jdbcType=TINYINT}
             </if>
         </where>

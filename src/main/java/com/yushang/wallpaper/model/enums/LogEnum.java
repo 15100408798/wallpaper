@@ -76,6 +76,15 @@ public class LogEnum {
     public static final String OPEN_FEEDBACK = "OPEN_FEEDBACK";  // 处理反馈管理信息
 
     /**
+     * ---------------------------------------------- 评论管理 Comment ----------------------------------------------------------------
+     */
+    public static final String COMMENT_LIST = "COMMENT_LIST";  // 评论管理列表查询
+    public static final String DEL_COMMENT = "DEL_COMMENT";  // 删除评论管理信息
+    public static final String DISABLE_COMMENT = "DISABLE_COMMENT";  // 下架评论管理信息
+    public static final String OPEN_COMMENT = "OPEN_COMMENT";  // 上架评论管理信息
+
+
+    /**
      * ---------------------------------------------- 商户管理 Shop ----------------------------------------------------------------
      */
     public static final String SHOP_LIST = "SHOP_LIST";     // 商户管理列表查询
