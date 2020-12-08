@@ -2,7 +2,7 @@ package com.yushang.wallpaper.common.config.Shiro.permission;
 
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.pojo.shiro.TbPermission;
-import com.yushang.wallpaper.layer.service.user.ShiroPermissionService;
+import com.yushang.wallpaper.service.user.ShiroPermissionService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.context.ApplicationListener;

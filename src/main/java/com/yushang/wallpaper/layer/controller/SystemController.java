@@ -3,7 +3,7 @@ package com.yushang.wallpaper.layer.controller;
 
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
-import com.yushang.wallpaper.layer.service.SystemService;
+import com.yushang.wallpaper.service.SystemService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;

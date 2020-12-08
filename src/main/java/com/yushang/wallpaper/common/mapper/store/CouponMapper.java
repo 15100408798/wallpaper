@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper.store;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.store.TbCoupon;
-import com.yushang.wallpaper.layer.model.store.CouponQueryModel;
-import com.yushang.wallpaper.layer.model.store.CouponUpdateModel;
+import com.yushang.wallpaper.model.store.CouponQueryModel;
+import com.yushang.wallpaper.model.store.CouponUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

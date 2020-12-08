@@ -12,8 +12,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Configuration   //通过@Configruation注解，让spring来加载该类的配置
-@EnableSwagger2  //通过@EnableSwagger2注解来启用swagger2.
+//@Configuration   //通过@Configruation注解，让spring来加载该类的配置
+//@EnableSwagger2  //通过@EnableSwagger2注解来启用swagger2.
 public class SwaggerConfig {
 
     @Bean

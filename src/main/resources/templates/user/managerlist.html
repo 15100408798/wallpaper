@@ -1,62 +1,20 @@
 <!DOCTYPE html>
-<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:include="common/comm :: header_web"></head>
 <body class="gray-bg">
 <div class="container" style="background-color: white;margin-top:30px;">
     <div class="row" style="padding-top: 30px;">
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="username" style="line-height: 35px;">管理员账号:</label>
-                </div>
-                <div class="col-sm-7">
-                    <input id="username" placeholder="管理员账号" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="userRole" style="line-height: 35px;">管理员身份:</label>
-                </div>
-                <div class="col-sm-7">
-                    <select class="form-control" id="userRole">
-                        <option value="">请选择</option>
-                        <option value="1">超级管理员</option>
-                        <option value="2">管理员</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="telphone" style="line-height: 35px;">管理员手机号:</label>
-                </div>
-                <div class="col-sm-7">
-                    <input id="telphone" maxlength="11" placeholder="管理员手机号" class="form-control"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-5">
-                    <label for="isUse" style="line-height: 35px;">管理员状态:</label>
-                </div>
-                <div class="col-sm-7">
-                    <select class="form-control" id="isUse">
-                        <option value="">请选择</option>
-                        <option value="0">可用</option>
-                        <option value="1">禁用</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        <div th:include="user/managerQuery::managerQuery"></div>
     </div>
     <div class="row" style="padding-top: 30px;">
-        <div class="col-sm-3">
-            <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+        <div class="col-sm-12">
+            <shiro:hasRole name="1">
+                <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+                <button type="button" class="btn btn-outline btn-primary" onclick="addManager()">新增</button>
+                <button type="button" class="btn btn-outline btn-danger" onclick="delManager()">删除</button>
+                <button type="button" class="btn btn-outline btn-success" onclick="openManager()">开启</button>
+                <button type="button" class="btn btn-outline btn-warning" onclick="disabledManager()">禁用</button>
+            </shiro:hasRole>
         </div>
     </div>
     <hr style="border: 1px solid;"/>
@@ -64,25 +22,11 @@
         <table id="loginManager"></table>
     </div>
     <hr style="border: 1px solid;"/>
-    <div class="row" style="margin-bottom: 30px;">
-        <div class="col-sm-12">
-            <shiro:hasRole name="1">
-                <button type="button" class="btn btn-outline btn-primary" data-toggle="modal" data-target="#myModal"
-                        id="insertFun" onclick="addManager()">新增
-                </button>
-                <button type="button" class="btn btn-outline btn-danger" onclick="delManager()">删除</button>
-                <button type="button" class="btn btn-outline btn-success" onclick="openManager()">开启</button>
-                <button type="button" class="btn btn-outline btn-warning" onclick="disabledManager()">禁用</button>
-            </shiro:hasRole>
-        </div>
-    </div>
 </div>
-<div th:include="common/comm::modalView"></div>
 </body>
-<script th:include="common/comm::modalBtn"></script>
+<script th:include="user/managerQuery::managerQueryFuntion" />
 <script>
     $table = $('#loginManager');
-
     $(function () {
         $table.bootstrapTable({
             url: 'layer/manager/selectList',          //请求后台的URL（*）
@@ -115,10 +59,10 @@
                     size: params.limit,                         //页面大小
                     page: (params.offset / params.limit) + 1,   //页码
                     managerId: $('#managerId').val(),
-                    username: $('#username').val(),
-                    userRole: $('#userRole').val(),
-                    telphone: $('#telphone').val(),
-                    isUse : $('#isUse').val()
+                    username: $('#queryUsername').val(),
+                    userRole: $('#queryUserRole').val(),
+                    telphone: $('#queryTelphone').val(),
+                    isUse : $('#queryIsUse').val()
                 };
                 return temp;
             },
@@ -167,7 +111,7 @@
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
-                    return "<button class='btn btn-outline btn-primary btn-sm' id='updateFun' data-toggle='modal' data-target='#myModal'>编辑</button>";
+                    return "<button class='btn btn-outline btn-primary btn-sm' id='updateFun'>编辑</button>";
                 },
                 events: onclickEvent
             },],
@@ -181,104 +125,6 @@
 
     function select() {
         $table.bootstrapTable('refresh');
-    }
-
-    function disabledManager() {
-        var array = common();
-        if (array != false) {
-            //发送数据库
-            $.post('layer/manager/disabledManager', {managerIds: array.join(',')}, function (result) {
-                if (result.status == 200) {
-                    alert('禁用成功')
-                    $table.bootstrapTable('refresh')
-                } else {
-                    alert(result.message);
-                }
-            })
-        }
-    }
-
-    function openManager() {
-        var array = common();
-        if (array != false) {
-            //发送数据库
-            $.post('layer/manager/openManager', {managerIds: array.join(',')}, function (result) {
-                if (result.status == 200) {
-                    alert('开启成功')
-                    $table.bootstrapTable('refresh')
-                } else {
-                    alert(result.message);
-                }
-            })
-        }
-    }
-
-    function delManager() {
-        var array = common();
-        if (array != false) {
-            //发送数据库
-            $.post('layer/manager/deleteManager', {managerIds: array.join(',')}, function (result) {
-                if (result.status == 200) {
-                    alert('删除成功')
-                    $table.bootstrapTable('refresh')
-                } else {
-                    alert(result.message);
-                }
-            })
-        }
-    }
-
-    function common() {
-        //获得选中行
-        var selOption = $table.bootstrapTable("getSelections");
-        //进行判断是否勾选了
-        if (selOption.length == 0) {
-            alert('请选择数据');
-            return false;
-        }
-        var array = [];
-        //循环遍历
-        $.each(selOption, function (index, row) {
-            array.push(row.managerId);
-        })
-        return array;
-    }
-
-    function addManager() {
-        $('#myModalLabel').html('添加管理员');
-        $('#showModal').load('skip/user/managerAdd');
-    }
-
-    $('#addFun').on('click', function () {
-        var username =  $(" input[ name='username' ] ").val();
-        if (username == null || username.trim() == ''){
-            alert("账号不能为空");
-            return;
-        }
-        var password =  $(" input[ name='password' ] ").val();
-        if (password == null || password.trim() == ''){
-            alert("密码不能为空");
-            return;
-        }
-        var userNick = $(" input[ name='userNick' ] ").val();
-        if (userNick == null || userNick.trim() == ''){
-            alert("昵称不能为空");
-            return;
-        }
-        var telphone = $(" input[ name='telphone' ] ").val();
-        if (telphone == null || telphone.trim() == ''){
-            alert("手机号不能为空");
-            return;
-        }
-        var data = $("#showModal").serialize();
-        setService('layer/manager/insertManager', data);
-    });
-
-    window.onclickEvent = {
-        'click #updateFun': function (e, value, row, index) {
-            $('#myModalLabel').html('修改管理员');
-            $('#showModal').load('skip/user/managerAdd');
-        }
     }
 
 </script>

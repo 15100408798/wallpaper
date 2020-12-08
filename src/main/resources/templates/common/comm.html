@@ -100,68 +100,26 @@
     <script th:src="@{/js/myself/jquery.pager.js}"></script>
     <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
     <script th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
-</head>
 
-<body>
-<div th:fragment="modalView">
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <form method="post" id="showModal">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="closeBtn"
-                            data-dismiss="modal">关闭
-                    </button>
-                    <button type="button" class="btn btn-primary" id="addFun">
-                        添加
-                    </button>
-                    <button type="button" class="btn btn-primary" id="editFun">
-                        修改
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-</div>
-</body>
-<script th:fragment="modalBtn">
-    $('#insertFun').on('click', function () {
-        $('#editFun').hide()
-        $('#addFun').show()
-    });
-    $('#updateFun').on('click', function () {
-        $('#editFun').show()
-        $('#addFun').hide()
-    });
+    <script type="text/javascript">
+        var ctx = "/wallpaper";
 
-    function setService(url, param) {
-        $.ajax({
-            url: url,
-            data: param,
-            type: 'POST',
-            dataType: 'json',
-            success: function (result) {
-                if (result.status != 200) {
-                    alert(result.message)
-                } else {
-                    $table.bootstrapTable('refresh');
-                    $('#closeBtn').click();
-                }
-            },
-            error: function () {
-                window.location.href = "skip/common/error";
+        function locationCurrMenu() {
+            if ($(".page-tabs-content").children(".active").length > 0) {
+                preMenu = $(".page-tabs-content").children(".active")[0];
             }
-        });
-    }
-</script>
+        }
+
+        function addPage(title, url) {
+            $('#addPage').html(title);
+            $('#addPage').attr('href', url);
+            $('#addPage').attr('title', title);
+            $('#addPage').click();
+        }
+
+    </script>
+</head>
+<body>
+
+</body>
 </html>

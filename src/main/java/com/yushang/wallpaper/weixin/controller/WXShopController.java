@@ -1,7 +1,6 @@
 package com.yushang.wallpaper.weixin.controller;
 
-import com.yushang.wallpaper.common.config.aop.WxAop;
-import com.yushang.wallpaper.layer.service.user.UserService;
+import com.yushang.wallpaper.service.user.UserService;
 import com.yushang.wallpaper.weixin.service.WXShopService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,6 @@ public class WXShopController {
             @ApiResponse(code = 400,message = "响应失败")
     })
     @RequestMapping(value = "shopList",method = RequestMethod.GET,produces = "application/json")
-    @WxAop
     public Map<String,Object> shopList(
            @ApiParam(name = "type",value = "类型  1 咖啡  2 自行车商城  3 周边",required = true) @RequestParam(defaultValue = "1") Integer type,
            @ApiParam(name = "page",value = "页码",required = true) @RequestParam(defaultValue = "1") Integer page,
@@ -47,7 +45,6 @@ public class WXShopController {
             @ApiResponse(code = 400,message = "响应失败")
     })
     @RequestMapping(value = "shopLabel",method = RequestMethod.GET,produces = "application/json")
-    @WxAop
     public Map<String,Object> shopLabel(
             @ApiParam(name = "typeId",required = true,value = "分类类型 1 咖啡  2 商城  3 周边",defaultValue = "1") @RequestParam Byte typeId){
         return wxShopService.shopLabel(typeId);
@@ -67,7 +64,6 @@ public class WXShopController {
             @ApiImplicitParam(name = "sendType",value = "配送方式",required = false,paramType = "query",dataType = "Byte",defaultValue = "2"),
     })
     @RequestMapping(value = "addShoppingCart")
-    @WxAop
     public  Map<String,Object> addShoppingCart(
             @RequestParam Integer productId,@RequestParam Integer userId,@RequestParam Integer productSkuId,
             Short number,Byte sendType ){
@@ -90,7 +86,6 @@ public class WXShopController {
             @ApiImplicitParam(name = "size",value = "条数",required = true,paramType = "query",dataType = "Integer",defaultValue = "10")
     })
     @RequestMapping(value = "getWXBaoYang")
-    @WxAop
     public Map<String,Object> getWXBaoYang(
             @RequestParam(value = "longitude") String longitude,
             @RequestParam(value = "latitude") String latitude,
@@ -115,7 +110,6 @@ public class WXShopController {
             @ApiImplicitParam(name = "userId",value = "用户id",required = true,paramType = "query",dataType = "Integer")
     })
     @RequestMapping(value = "addSubsribe")
-    @WxAop
     public Map<String,Object> addSubsribe(
             @RequestParam(value = "shopId") Integer shopId,
             @RequestParam(value = "userId") Integer userId,
@@ -133,7 +127,6 @@ public class WXShopController {
             @ApiResponse(code = 200,message = "响应正常"),
             @ApiResponse(code = 400,message = "响应失败")
     })
-    @WxAop
     @RequestMapping(value="saveOrderInfo")
     public  Map<String,Object> saveOrderInfo(TbOrder order)throws Exception{
             //总价格

@@ -3,13 +3,14 @@ package com.yushang.wallpaper.common.utils.redis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-@Service
+@Component
 public class RedisUtils {
 
     @Autowired

@@ -13,4 +13,9 @@ public class CommonUtils {
         return RandomStringUtils.random(16, true, true);
     }
 
+    public static String makeUserToken() {
+        return RandomStringUtils.random(32, true, true);
+    }
+
+
 }

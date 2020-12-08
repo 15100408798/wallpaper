@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper.store;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.store.TbProductSku;
-import com.yushang.wallpaper.layer.model.store.ProductSkuQueryModel;
-import com.yushang.wallpaper.layer.model.store.ProductSkuUpdateModel;
+import com.yushang.wallpaper.model.store.ProductSkuQueryModel;
+import com.yushang.wallpaper.model.store.ProductSkuUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

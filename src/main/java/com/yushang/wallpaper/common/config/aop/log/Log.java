@@ -1,7 +1,7 @@
 package com.yushang.wallpaper.common.config.aop.log;
 
 import com.yushang.wallpaper.common.utils.StringTools;
-import com.yushang.wallpaper.layer.model.enums.LogEnum;
+import com.yushang.wallpaper.model.enums.LogEnum;
 
 import java.lang.annotation.*;
 

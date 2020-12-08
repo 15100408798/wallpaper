@@ -3,7 +3,7 @@ package com.yushang.wallpaper.common.config.rabbitmq.ReceiveMessage;
 import com.yushang.wallpaper.common.config.rabbitmq.config.ConstantsConfig;
 import com.yushang.wallpaper.common.pojo.log.TbLog;
 import com.yushang.wallpaper.common.utils.log.LoggerUtils;
-import com.yushang.wallpaper.layer.service.log.LogService;
+import com.yushang.wallpaper.service.log.LogService;
 import com.rabbitmq.client.Channel;
 
 import org.springframework.amqp.core.Message;

@@ -48,6 +48,9 @@
             <if test="deleteFlag != null">
                 AND `delete_flag` = #{deleteFlag, jdbcType=TINYINT}
             </if>
+            <if test="openid != null">
+                AND `open_id` = #{openid, jdbcType=VARCHAR}
+            </if>
         </where>
     </sql>
 
@@ -65,28 +68,24 @@
             <if test="deleteFlag != null">
                 `delete_flag` = #{deleteFlag, jdbcType=TINYINT},
             </if>
+            <if test="mobile != null">
+                `mobile` = #{mobile, jdbcType=VARCHAR},
+            </if>
         </set>
     </sql>
 
-    <!--  微信小程序：添加用户-->
-    <insert id="insertTbUser" useGeneratedKeys="true" keyProperty="userId">
+    <!--  添加用户-->
+    <insert id="insertTbUserInfo" useGeneratedKeys="true" keyProperty="userId">
 
     </insert>
 
-    <!-- 根据用户ID更改用户状态 -->
-    <update id="updateUserIsUseStatus">
+    <!-- 更新用户信息 -->
+    <update id="updateUserInfo">
         UPDATE tb_user <include refid="Update_Column" />
         WHERE user_id IN
         <foreach collection="userIdValues" index="index" item="userId" open="(" close=")" separator=",">
             #{userId}
         </foreach>
-    </update>
-
-    <!-- 微信小程序：绑定手机号-->
-    <update id="updateMobile">
-        update tb_user
-        set mobile = #{phone}
-        where user_id = #{userId}
     </update>
 
     <select id="selectTbUserList" resultMap="baseResult">
@@ -108,31 +107,6 @@
                is_use     as isUse
         from tb_user
         where user_id = #{userId}
-    </select>
-
-    <!-- 通过openid查询是否有该用户 -->
-    <select id="selectUserByOpenId" resultType="java.lang.Integer">
-        select count(1)
-        from tb_user
-        where open_id = #{openid}
-          and is_del = 0
-    </select>
-
-    <!--  微信小程序：通过openid获取用户信息 -->
-    <select id="getUserByOpenId" resultType="java.util.HashMap">
-        select user_id as userId,is_use as isUse
-        from tb_user
-        where open_id = #{openid}
-          and is_del = 0
-    </select>
-
-    <!--   微信小程序：通过openid查看用户是否被禁用 -->
-    <select id="selectUserIsUse" resultType="java.lang.Integer">
-        select count(1)
-        from tb_user
-        where open_id = #{openid}
-          and is_del = 0
-          and is_use = 0
     </select>
 
     <!-- 微信小程序：验证手机号是否被绑定 -->

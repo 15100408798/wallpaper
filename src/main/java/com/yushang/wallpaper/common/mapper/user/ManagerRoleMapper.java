@@ -1,7 +1,7 @@
 package com.yushang.wallpaper.common.mapper.user;
 
 import com.yushang.wallpaper.common.pojo.shiro.TbManagerRole;
-import com.yushang.wallpaper.layer.model.user.ManagerRoleUpdateModel;
+import com.yushang.wallpaper.model.user.ManagerRoleUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

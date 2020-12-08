@@ -65,7 +65,7 @@
                 `password` = #{password, jdbcType=VARCHAR},
             </if>
             <if test="isUseStatus != null">
-                `isUse` = #{isUse, jdbcType=TINYINT},
+                `is_use` = #{isUseStatus, jdbcType=TINYINT},
             </if>
             <if test="deleteFlag != null">
                 `delete_flag` = #{deleteFlag, jdbcType=TINYINT},

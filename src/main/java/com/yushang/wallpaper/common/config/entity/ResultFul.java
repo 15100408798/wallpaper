@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.apache.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -43,12 +44,6 @@ public class ResultFul implements Serializable {
         this.total = total;
     }
 
-    public static Map<String, Object> getMessageMap(String message) {
-        HashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("status", 400);
-        param.put("message", message);
-        return param;
-    }
 
     /**
      * 响应失败
@@ -62,12 +57,6 @@ public class ResultFul implements Serializable {
         return new ResultFul(HttpStatus.SC_BAD_REQUEST, message);
     }
 
-    public static Map<String, Object> getRowsMap(Object rows) {
-        HashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("status", 200);
-        param.put("rows", rows);
-        return param;
-    }
 
     /**
      * 响应成功
@@ -90,7 +79,7 @@ public class ResultFul implements Serializable {
      */
     @NonNull
     public static ResultFul getSuccessList(@Nullable List<?> rows, @NonNull long total) {
-        if (rows == null || rows.size() == 0 || rows.get(0) == null) {
+        if (CollectionUtils.isEmpty(rows) || rows.get(0) == null) {
             rows = new ArrayList(0);
         }
         return new ResultFul(rows, total);
@@ -128,4 +117,7 @@ public class ResultFul implements Serializable {
         return param;
     }
 
+    public static Map<String, Object> getRowsMap(List list) {
+        return null;
+    }
 }

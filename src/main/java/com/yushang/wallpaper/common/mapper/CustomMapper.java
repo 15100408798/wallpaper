@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.user.TbCustom;
-import com.yushang.wallpaper.layer.model.user.CustomQueryModel;
-import com.yushang.wallpaper.layer.model.user.CustomUpdateModel;
+import com.yushang.wallpaper.model.user.CustomQueryModel;
+import com.yushang.wallpaper.model.user.CustomUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

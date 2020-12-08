@@ -5,14 +5,6 @@
 <body class="gray-bg">
 <div class="container" style="background-color: white;margin-top:30px;">
     <div class="row" style="padding-top: 30px;">
-
-    </div>
-    <hr style="border: 1px solid;"/>
-    <div class="row" style="margin: 50px 0px;">
-        <table id="roleList"></table>
-    </div>
-    <hr style="border: 1px solid;"/>
-    <div class="row" style="margin-bottom: 30px;">
         <div class="col-sm-12">
             <shiro:hasRole name="1">
                 <button type="button" class="btn btn-outline btn-primary" data-toggle="modal" data-target="#myModal"
@@ -21,6 +13,14 @@
                 <button type="button" class="btn btn-outline btn-danger" onclick="deleteRole()">删除</button>
             </shiro:hasRole>
         </div>
+    </div>
+    <hr style="border: 1px solid;"/>
+    <div class="row" style="margin: 50px 0px;">
+        <table id="roleList"></table>
+    </div>
+    <hr style="border: 1px solid;"/>
+    <div class="row" style="margin-bottom: 30px;">
+
     </div>
 </div>
 <div th:include="common/comm::modalView"></div>

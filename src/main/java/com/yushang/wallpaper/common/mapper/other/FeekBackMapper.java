@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper.other;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.other.TbFeekback;
-import com.yushang.wallpaper.layer.model.other.FeedbackQueryModel;
-import com.yushang.wallpaper.layer.model.other.FeedbackUpdateModel;
+import com.yushang.wallpaper.model.other.FeedbackQueryModel;
+import com.yushang.wallpaper.model.other.FeedbackUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

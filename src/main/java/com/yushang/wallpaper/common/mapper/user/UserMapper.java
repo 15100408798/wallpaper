@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper.user;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.user.TbUser;
-import com.yushang.wallpaper.layer.model.user.UserQueryModel;
-import com.yushang.wallpaper.layer.model.user.UserUpdateModel;
+import com.yushang.wallpaper.model.user.UserQueryModel;
+import com.yushang.wallpaper.model.user.UserUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,34 +26,17 @@ public interface UserMapper {
      * @param userUpdateModel 用户信息
      * @return 受影响条数
      */
-    int updateUserIsUseStatus(UserUpdateModel userUpdateModel);
+    int updateUserInfo(UserUpdateModel userUpdateModel);
 
     HashMap<String, Object> selectUser(@Param("userId") int userId);
 
     /**
-     * 微信小程序：通过openid查询是否有该用户
+     * 添加用户
+     *
+     * @param tbUser 用户信息
+     * @return 受影响条数
      */
-    int selectUserByOpenId(@Param("openid") String openid);
-
-    /**
-     * 微信小程序：通过openid获取用户信息
-     */
-    HashMap<String, Object> getUserByOpenId(@Param("openid") String openid);
-
-    /**
-     * 微信小程序：添加用户
-     */
-    void insertTbUser(TbUser tbUser);
-
-    /**
-     * 微信小程序：通过openid查看用户是否被禁用
-     */
-    int selectUserIsUse(@Param("openid") String openid);
-
-    /**
-     * 微信小程序：绑定手机号
-     */
-    void updateMobile(@Param("userId") int userId, @Param("phone") String phone);
+    int insertTbUserInfo(TbUser tbUser);
 
     /**
      * 微信小程序：验证手机号是否被绑定

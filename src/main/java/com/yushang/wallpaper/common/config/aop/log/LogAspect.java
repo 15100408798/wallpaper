@@ -5,7 +5,6 @@ import com.yushang.wallpaper.common.config.rabbitmq.SendMessage.SendMessageServi
 import com.yushang.wallpaper.common.pojo.log.TbLog;
 import com.yushang.wallpaper.common.utils.CommonUtils;
 import com.yushang.wallpaper.common.utils.log.LoggerUtils;
-import com.yushang.wallpaper.layer.service.log.LogService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -37,14 +35,10 @@ public class LogAspect {
     @Autowired
     private SendMessageService sendMessageService;
 
-    @Resource
-    private LogService logService;
-
     private ThreadLocal<LogThreadLocal> methodNameThread = new ThreadLocal<LogThreadLocal>();
 
     @Pointcut(value = "@annotation(com.yushang.wallpaper.common.config.aop.log.Log)")
     public void log() {
-
     }
 
     /**
@@ -141,8 +135,7 @@ public class LogAspect {
                 tbLog.setOperateType(log.operateType());
                 tbLog.setSessionId(sessionId);
                 //保存到数据库
-//            sendMessageService.saveLog(tbLog);
-                logService.insertLog(tbLog);
+                sendMessageService.saveLog(tbLog);
             }
         } catch (Exception e) {
             LoggerUtils.error("调用方法后，返回信息前，发生异常。位置在" + methodNameThread.get(), e);
