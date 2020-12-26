@@ -62,7 +62,8 @@
                     page: (params.offset / params.limit) + 1,   //页码
                     feedbackStatus: $('#feedbackStatus').val(),
                     username: $('#username').val(),
-                    deleteFlag: 0
+                    deleteFlag: 0,
+                    userPhone : $('#userPhone').val()
                 };
                 return temp;
             },
@@ -72,6 +73,9 @@
             }, {
                 field: 'username',
                 title: '用户账号'
+            },  {
+                field: 'userPhone',
+                title: '用户手机号'
             }, {
                 field: 'content',
                 title: '反馈内容'

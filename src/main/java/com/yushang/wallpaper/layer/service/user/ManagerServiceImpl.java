@@ -9,18 +9,19 @@ import com.yushang.wallpaper.common.mapper.user.ManagerRoleMapper;
 import com.yushang.wallpaper.common.pojo.shiro.TbManagerRole;
 import com.yushang.wallpaper.common.pojo.user.TbManager;
 import com.yushang.wallpaper.common.utils.MD5Utils;
-import com.yushang.wallpaper.model.user.ManagerInsertModel;
-import com.yushang.wallpaper.model.user.ManagerQueryModel;
-import com.yushang.wallpaper.model.user.ManagerRoleUpdateModel;
-import com.yushang.wallpaper.model.user.ManagerUpdateModel;
+import com.yushang.wallpaper.layer.model.user.ManagerRoleUpdateModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerInsertModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerQueryModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerUpdateModel;
 import com.yushang.wallpaper.layer.router.user.ManagerService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -28,9 +29,9 @@ import java.util.Objects;
 @Service
 public class ManagerServiceImpl implements ManagerService {
 
-    @Resource
+    @Autowired
     private ManagerMapper managerMapper;
-    @Resource
+    @Autowired
     private ManagerRoleMapper managerRoleMapper;
 
     /**
@@ -65,6 +66,25 @@ public class ManagerServiceImpl implements ManagerService {
         String managerIds = managerUpdateModel.getManagerIds();
         String[] managerIdValues = managerIds.split(",");
         managerUpdateModel.setManagerIdValues(managerIdValues);
+        /** 登录名不能重复 */
+        ManagerQueryModel managerQueryModel = new ManagerQueryModel();
+        managerQueryModel.setNotManagerId(Integer.parseInt(managerUpdateModel.getManagerIds()));
+        if (StringUtils.isNotBlank(managerUpdateModel.getUsername())) {
+            managerQueryModel.setUsername(managerUpdateModel.getUsername());
+            Page<TbManager> usernameManagerPage = managerMapper.selectList(managerQueryModel);
+            if (!CollectionUtils.isEmpty(usernameManagerPage.getResult())) {
+                return ResultFul.getErrorMessage("用户名不能重复");
+            }
+        }
+        /** 校验手机号，手机号不能为重复 */
+        if (StringUtils.isNotBlank(managerUpdateModel.getTelphone())) {
+            managerQueryModel.setUsername(null);
+            managerQueryModel.setTelphone(managerUpdateModel.getTelphone());
+            Page<TbManager> phoneManagerPage = managerMapper.selectList(managerQueryModel);
+            if (!CollectionUtils.isEmpty(phoneManagerPage.getResult())) {
+                return ResultFul.getErrorMessage("手机号已经存在");
+            }
+        }
         // 更新管理员信息
         int updateCount = managerMapper.updateTbManager(managerUpdateModel);
         if (updateCount != managerIdValues.length) {
@@ -97,15 +117,17 @@ public class ManagerServiceImpl implements ManagerService {
         /* 校验参数 */
         Objects.requireNonNull(managerInsertModel);
         managerInsertModel.validInsertInfoIsNotNull();
-        /** 用户名不能重复 */
-        Page<TbManager> usernameManagerPage = managerMapper.selectList(new ManagerQueryModel(managerInsertModel.getUsername()));
+        /** 登录名不能重复 */
+        ManagerQueryModel managerQueryModel = new ManagerQueryModel();
+        managerQueryModel.setUsername(managerInsertModel.getUsername());
+        Page<TbManager> usernameManagerPage = managerMapper.selectList(managerQueryModel);
         if (!CollectionUtils.isEmpty(usernameManagerPage.getResult())) {
             return ResultFul.getErrorMessage("用户名不能重复");
         }
         /** 校验手机号，手机号不能为重复 */
-        ManagerQueryModel phoneQueryModel = new ManagerQueryModel();
-        phoneQueryModel.setTelphone(managerInsertModel.getTelphone());
-        Page<TbManager> phoneManagerPage = managerMapper.selectList(phoneQueryModel);
+        managerQueryModel.setUsername(null);
+        managerQueryModel.setTelphone(managerInsertModel.getTelphone());
+        Page<TbManager> phoneManagerPage = managerMapper.selectList(managerQueryModel);
         if (!CollectionUtils.isEmpty(phoneManagerPage.getResult())) {
             return ResultFul.getErrorMessage("手机号已经存在");
         }
@@ -154,21 +176,5 @@ public class ManagerServiceImpl implements ManagerService {
         return ResultFul.getSuccessList(tbManagerList, tbManagerPage.getTotal());
     }
 
-
-    /**
-     * 更新管理员信息
-     *
-     * @param managerUpdateModel 管理员信息
-     * @return 受影响条数
-     */
-    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    @Override
-    public ResultFul updateInfo(ManagerUpdateModel managerUpdateModel) {
-        int updateCount = managerMapper.updateTbManager(managerUpdateModel);
-        if (updateCount != 1) {
-            throw new RuntimeException("更新管理员失败");
-        }
-        return ResultFul.getSuccessTotal(updateCount);
-    }
 
 }

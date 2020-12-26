@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper.store;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.store.TbProductLabel;
-import com.yushang.wallpaper.model.store.LabelQueryModel;
-import com.yushang.wallpaper.model.store.LabelUpdateModel;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelQueryModel;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;

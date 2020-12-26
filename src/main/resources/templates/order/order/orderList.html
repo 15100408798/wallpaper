@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div class="container" style="background-color: white;margin-top:30px;">
+    <div class="row" style="padding-top: 30px;">
+        <div th:include="order/order/orderListQuery::orderQuery"></div>
+    </div>
+    <hr style="border: 1px solid;"/>
+    <div class="row" style="margin-bottom: 30px;">
+        <div class="col-sm-12">
+            <shiro:hasRole name="1">
+                <button type="button" class="btn btn-outline btn-danger" onclick="delOrder()">删除</button>
+            </shiro:hasRole>
+            <shiro:hasAnyRoles name="1,2">
+                <button type="button" class="btn btn-outline btn-success" onclick="sendOrder()">已发货</button>
+                <button type="button" class="btn btn-outline btn-info" onclick="harvestOrder()">已收货(未评价)</button>
+                <button type="button" class="btn btn-outline btn-primary" onclick="completeOrder()">已完成</button>
+            </shiro:hasAnyRoles>
+            <shiro:hasRole name="1">
+                <button type="button" class="btn btn-outline btn-danger" onclick="refundOrder()">已退货</button>
+            </shiro:hasRole>
+        </div>
+    </div>
+    <div class="row" style="margin: 50px 0px;">
+        <table id="orderList"></table>
+    </div>
+    <hr style="border: 1px solid;"/>
+</div>
+</body>
+<script th:include="order/order/orderListQuery::orderQueryFuntion"/>
+<script>
+    $table = $('#orderList');
+
+    $(function () {
+        $table.bootstrapTable({
+            url: 'layer/order/selectOrderList',          //请求后台的URL（*）
+            method: 'GET',                      //请求方式（*）
+            //toolbar: '#toolbar',              //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "desc",                   //排序方式
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+            pageSize: 50,                     //每页的记录行数（*）
+            pageList: [20, 50, 100],        //可供选择的每页的行数（*）
+            search: false,                      //是否显示表格搜索
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列（选择显示的列）
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "orderId",              //每一行的唯一标识，一般为主键列
+            showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            //得到查询的参数
+            queryParams: function (params) {
+                //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                var temp = {
+                    size: params.limit,                         //页面大小
+                    page: (params.offset / params.limit) + 1,   //页码
+                    shopId: $('#shopId').val(),
+                    orderNo: $('#orderNo').val(),
+                    orderStatus: $('#orderStatus').val(),
+                    payType: $('#payType').val(),
+                    sendType: $('#sendType').val(),
+                    deleteFlag: 0
+                };
+                return temp;
+            },
+            columns: [{
+                checkbox: true,
+                visible: true                  //是否显示复选框
+            }, {
+                field: 'orderNo',
+                title: '订单编号'
+            }, {
+                field: 'shopId',
+                title: '商户ID'
+            }, {
+                field: 'status',
+                title: '状态',
+                formatter: function (value, row, index) {
+                    if (value == 1) {
+                        return "<span class='label label-primary'>未付款</span>";
+                    } else if (value == 2) {
+                        return "<span class='label label-default'>待发货（已付款）</span>";
+                    } else if (value == 3) {
+                        return "<span class='label label-info'>待收货</span>";
+                    } else if (value == 4) {
+                        return "<span class='label label-inverse'>待评价</span>";
+                    } else if (value == 5) {
+                        return "<span class='label label-warning-light'>已完成</span>";
+                    } else if (value == 6) {
+                        return "<span class='label label-danger'>已退款</span>";
+                    } else {
+                        return "<span class='label label-danger'>未知状态</span>";
+                    }
+                }
+            },{
+                field: 'allMoney',
+                title: '总金额'
+            }, {
+                field: 'minusMoney',
+                title: '优惠金额'
+            }, {
+                field: 'payMoney',
+                title: '实际付款金额'
+            }, {
+                field: 'payType',
+                title: '支付方式',
+                formatter: function (value, row, index) {
+                    if (value == 1) {
+                        return "<span class='label label-primary'>微信</span>";
+                    } else if (value == 2) {
+                        return "<span class='label label-default'>余额</span>";
+                    } else if (value == 3) {
+                        return "<span class='label label-info'>支付宝</span>";
+                    } else {
+                        return "<span class='label label-danger'>未知状态</span>";
+                    }
+                }
+            },{
+                field: 'addressId',
+                title: '收获地址Id'
+            }, {
+                field: 'createTime',
+                title: '创建时间'
+            }, {
+                field: 'payTime',
+                title: '付款时间'
+            }, {
+                field: 'sendTime',
+                title: '发货时间'
+            }, {
+                field: 'completeTime',
+                title: '完成时间'
+            },  {
+                field: 'userId',
+                title: '用户id'
+            }, {
+                field: 'sendType',
+                title: '配送方式',
+                formatter: function (value, row, index) {
+                    if (value == 1) {
+                        return "<span class='label label-primary'>自提</span>";
+                    } else if (value == 2) {
+                        return "<span class='label label-default'>快递</span>";
+                    } else {
+                        return "<span class='label label-danger'>未知状态</span>";
+                    }
+                }
+            }, {
+                field: 'logisticsName',
+                title: '物流公司'
+            },  {
+                field: 'logisticsNumber',
+                title: '物流订单号'
+            },],
+            onLoadSuccess: function () {
+            },
+            onLoadError: function () {
+                window.location.href = "skip/common/error";
+            }
+        });
+    });
+
+    function select() {
+        $table.bootstrapTable('refresh');
+    }
+
+
+
+</script>
+</html>
+
+

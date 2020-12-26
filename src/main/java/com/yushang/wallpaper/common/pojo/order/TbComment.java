@@ -44,5 +44,17 @@ public class TbComment implements Serializable {
      * 删除状态：0-未删除，1-已删除
      */
     private Byte deleteFlag;
+    /**
+     * 用户ID
+     */
+    private Integer userId;
+    /**
+     * 订单编号
+     */
+    private String orderNo;
+    /**
+     * 用户昵称
+     */
+    private String userNick;
 
 }

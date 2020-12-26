@@ -15,7 +15,10 @@ public enum StatusEnum {
     DELETE_YES(1, "已删除"),
     UP(0, "上架"),
     DOWN(1, "下架"),
-
+    AVAILABLE(0, "可用"),
+    FORBIDDEN(1, "禁用"),
+    DOWN_HOME_TOP_FLAG(0, "不推荐"),
+    UP_HOME_TOP_FLAG(1, "推荐"),
 
     ;
 

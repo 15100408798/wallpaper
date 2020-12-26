@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div th:fragment="userQuery">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="username" style="line-height: 35px;">用户账号:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="username" placeholder="用户账号" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="userRole" style="line-height: 35px;">用户身份:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="userRole">
+                    <option value="">请选择</option>
+                    <option value="1">管理员</option>
+                    <option value="2">普通用户</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="isUse" style="line-height: 35px;">使用状态:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="isUse">
+                    <option value="">请选择</option>
+                    <option value="0">可用</option>
+                    <option value="1">禁用</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="userLevel" style="line-height: 35px;">用户级别:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="userLevel">
+                    <option value="">请选择</option>
+                    <option value="0">普通用户</option>
+                    <option value="1">VIP1</option>
+                    <option value="2">VIP2</option>
+                    <option value="3">VIP3</option>
+                    <option value="4">VIP4</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="mobile" style="line-height: 35px;">用户手机号:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="mobile" placeholder="用户手机号" maxlength="11" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+    </div>
+</div>
+
+<script th:fragment="userQueryFuntion">
+    function disabledUser() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/user/disabledUser', {userIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '禁用成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    swal(result.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function openUser() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/user/openUser', {userIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '开启成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    swal(result.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据')
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.userId);
+        })
+        return array;
+    }
+
+    function deleteUser() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/user/deleteUser', {userIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '删除成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    swal(result.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function addUser() {
+        parent.locationCurrMenu();
+        parent.addPage('添加用户', ctx + '/skip/user/user/userAdd');
+    }
+
+
+    window.onclickEvent = {
+        'click #updateFun': function (e, value, row, index) {
+            parent.locationCurrMenu();
+            parent.addPage('修改用户信息', ctx + '/skip/user/user/userEdit/' + row.userId);
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div th:fragment="orderQuery">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="shopId" style="line-height: 35px;">商铺ID:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="shopId" placeholder="商铺ID" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="orderNo" style="line-height: 35px;">订单编号:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="orderNo" placeholder="订单编号" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="orderStatus" style="line-height: 35px;">订单状态:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="orderStatus">
+                    <option value="">请选择</option>
+                    <option value="1">未付款</option>
+                    <option value="2">待发货</option>
+                    <option value="3">待收货</option>
+                    <option value="4">待评价</option>
+                    <option value="5">已完成</option>
+                    <option value="6">已退款</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="payType" style="line-height: 35px;">支付方式:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="payType">
+                    <option value="">请选择</option>
+                    <option value="1">微信</option>
+                    <option value="2">余额</option>
+                    <option value="3">支付宝</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="sendType" style="line-height: 35px;">配送方式:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="sendType">
+                    <option value="">请选择</option>
+                    <option value="1">自提</option>
+                    <option value="2">快递</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+    </div>
+</div>
+
+<script th:fragment="orderQueryFuntion">
+
+    function refundOrder() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/order/refundOrder', {orderIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '退货成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function completeOrder() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/order/completeOrder', {orderIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '订单已完结',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function harvestOrder() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/order/harvestOrder', {orderIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '订单已收货',
+                        'text': '待评价',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function sendOrder() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/order/sendOrder', {orderIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '订单已发货',
+                        'text': '等待客户确认收货',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function delOrder() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/order/deleteOrder', {orderIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '删除成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据');
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.orderId);
+        })
+        return array;
+    }
+
+
+</script>
+</body>
+</html>

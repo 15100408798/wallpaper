@@ -17,21 +17,30 @@
 
     <sql id="Query_Condition">
         <where>
+            <if test="productLabelId != null and productLabelId != ''">
+                AND product_label_id = #{productLabelId, jdbcType=SMALLINT}
+            </if>
+            <if test="notProductLabelId != null and notProductLabelId != ''">
+                AND product_label_id != #{notProductLabelId, jdbcType=SMALLINT}
+            </if>
             <if test="productLabelName != null and productLabelName != ''">
                 AND product_label_name = #{productLabelName, jdbcType=VARCHAR}
             </if>
-            <if test="deleteFlag != null">
+            <if test="deleteFlag != null and deleteFlag != ''">
                 AND delete_flag = #{deleteFlag, jdbcType=TINYINT}
             </if>
         </where>
     </sql>
 
     <sql id="Update_Column">
-        <set>
-            <if test="deleteFlag != null">
-                delete_flag = #{deleteFlag, jdbcType=TINYINT}
+        <trim prefix="set" suffixOverrides=",">
+            <if test="productLabelName != null and productLabelName != ''">
+                product_label_name = #{productLabelName, jdbcType=VARCHAR},
             </if>
-        </set>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+        </trim>
     </sql>
 
     <!-- 新增商品类别 -->

@@ -17,12 +17,31 @@
     </resultMap>
 
     <sql id="Base_Column">
-        product.product_id, product.shop_id, product.product_name, product.product_img, product.product_content, product.product_type,
-        product.home_top_flag, product.product_status, product.create_time, product.last_update_time, product.delete_flag, product.photo
+        product.product_id, product.shop_id, product.product_name, product.product_img, product.product_content,
+        product.product_type,product.home_top_flag, product.product_status, product.create_time, product.last_update_time,
+        product.delete_flag, product.photo
     </sql>
 
     <sql id="Query_Condition">
         <where>
+            <if test="productId != null and productId != ''">
+                AND product.product_id = #{productId, jdbcType=INTEGER}
+            </if>
+            <if test="shopId != null and shopId != ''">
+                AND product.shop_id = #{shopId, jdbcType=INTEGER}
+            </if>
+            <if test="productName != null and productName != ''">
+                AND product.product_name LIKE CONCAT(#{productName, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="productType != null and productType != ''">
+                AND product.product_type = #{productType, jdbcType=TINYINT}
+            </if>
+            <if test="homeTopFlag != null and homeTopFlag != ''">
+                AND product.home_top_flag = #{homeTopFlag, jdbcType=TINYINT}
+            </if>
+            <if test="productStatus != null and productStatus != ''">
+                AND product.product_status = #{productStatus, jdbcType=TINYINT}
+            </if>
             <if test="deleteFlag != null">
                 AND product.delete_flag = #{deleteFlag, jdbcType=TINYINT}
             </if>
@@ -30,7 +49,13 @@
     </sql>
 
     <sql id="Update_Column">
-        <set>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="productName != null and productName != ''">
+                product.product_name = #{productName, jdbcType=VARCHAR},
+            </if>
+            <if test="shopId != null">
+                product.shop_id = #{shopId, jdbcType=INTEGER},
+            </if>
             <if test="deleteFlag != null">
                 product.delete_flag = #{deleteFlag, jdbcType=TINYINT},
             </if>
@@ -43,7 +68,7 @@
             <if test="lastUpdateTime != null">
                 product.Last_update_time = #{lastUpdateTime, jdbcType=TIMESTAMP},
             </if>
-        </set>
+        </trim>
     </sql>
 
     <sql id="forProductId">
@@ -52,6 +77,15 @@
             #{id}
         </foreach>
     </sql>
+
+    <insert id="insertProductInfo">
+        INSERT INTO `tb_product` (`shop_id`, `product_name`, `product_img`, `product_content`,
+                                  `product_type`, `xc_type`, `home_top_flag`, `sku_name`, `product_label_id`,
+                                  `product_status`, `create_time`, `last_update_time`, `delete_flag`, `photo`)
+        VALUES (#{shopId}, #{productName}, #{productImg}, #{productContent}, #{productType}, #{xcType},
+                #{homeTopFlag}, #{skuName}, #{productLabelId}, #{productStatus},
+                #{createTime}, #{lastUpdateTime}, #{deleteFlag}, #{photo});
+    </insert>
 
     <!--  更新商品信息 -->
     <update id="updateProductInfo">
@@ -65,9 +99,10 @@
     <!-- 查询商品列表 -->
     <select id="selectList" resultMap="baseResult">
         SELECT <include refid="Base_Column" />
-        , shop.shop_name AS shopName
+        , shop.shop_name AS shopName,label.product_label_name AS productLabelName
         FROM tb_product AS product
         LEFT JOIN tb_shop AS shop ON shop.shop_id = product.shop_id
+        LEFT JOIN tb_product_label AS label ON label.product_label_id = product.product_type
         <include refid="Query_Condition" />
         ORDER BY product.product_id DESC
     </select>

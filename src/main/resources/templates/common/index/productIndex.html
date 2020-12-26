@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body>
+<li th:fragment="productIndex">
+    <a href="#">
+        <i class="fa fa-columns"></i>
+        <span class="nav-label">商城管理</span>
+        <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level">
+        <li>
+            <a class="J_menuItem" title="商品管理" th:href="@{/skip/store/product/productList}">商品管理</a>
+        </li>
+        <li>
+            <a class="J_menuItem" title="SKU管理" th:href="@{/skip/store/productSku/productSkuList}">SKU管理</a>
+        </li>
+        <li>
+            <a class="J_menuItem" title="类别管理" th:href="@{/skip/store/productLabel/productLabelList}">商品类别管理</a>
+        </li>
+        <!--<li>-->
+        <!--<a class="J_menuItem" title="优惠劵管理" th:href="@{/skip/store/couponList}">优惠劵管理</a>-->
+        <!--</li>-->
+    </ul>
+</li>
+</body>
+</html>

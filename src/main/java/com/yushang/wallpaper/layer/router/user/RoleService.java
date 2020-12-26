@@ -1,9 +1,9 @@
 package com.yushang.wallpaper.layer.router.user;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.user.RoleInsertModel;
-import com.yushang.wallpaper.model.user.RoleQueryModel;
-import com.yushang.wallpaper.model.user.RoleUpdateModel;
+import com.yushang.wallpaper.layer.model.user.RoleInsertModel;
+import com.yushang.wallpaper.layer.model.user.RoleQueryModel;
+import com.yushang.wallpaper.layer.model.user.RoleUpdateModel;
 import org.springframework.lang.NonNull;
 
 /**

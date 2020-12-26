@@ -101,11 +101,13 @@
                     } else if (value == 10) {
                         return "<span class='label label-default'>忽略</span>";
                     } else if (value == 11) {
-                        return "<span class='label label-default'>添加</span>";
+                        return "<span class='label label-success'>添加</span>";
                     } else if (value == 12) {
                         return "<span class='label label-default'>还原</span>";
+                    }  else if (value == 13) {
+                        return "<span class='label label-warning-light'>更新</span>";
                     } else {
-                        return "<span class='label label-default'>未知状态</span>";
+                        return "<span class='label label-danger'>未知状态</span>";
                     }
                 }
             }, {

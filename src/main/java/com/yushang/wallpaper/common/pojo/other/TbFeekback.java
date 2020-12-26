@@ -48,5 +48,9 @@ public class TbFeekback implements Serializable {
      * 用户账号
      */
     private String username;
+    /**
+     * 用户手机号
+     */
+    private String userPhone;
 
 }

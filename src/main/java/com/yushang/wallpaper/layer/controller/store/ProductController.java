@@ -3,9 +3,11 @@ package com.yushang.wallpaper.layer.controller.store;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.enums.LogEnum;
-import com.yushang.wallpaper.model.store.ProductQueryModel;
-import com.yushang.wallpaper.model.store.ProductUpdateModel;
+import com.yushang.wallpaper.common.enums.StatusEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
+import com.yushang.wallpaper.layer.model.store.product.ProductInsertModel;
+import com.yushang.wallpaper.layer.model.store.product.ProductQueryModel;
+import com.yushang.wallpaper.layer.model.store.product.ProductUpdateModel;
 import com.yushang.wallpaper.layer.router.store.ProductService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * 商品管理模块
@@ -89,6 +92,28 @@ public class ProductController {
         return productService.updateProductInfo(productUpdateModel);
     }
 
+    @PermissionName(value = "新增商品")
+    @RequiresPermissions(value = {"product:insertProductInfo"})
+    @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
+    @Log(title = "新增商品", tabName = "tb_product", operateType = 11, logEnum = LogEnum.INSERT_PRODUCT)
+    @RequestMapping("insertProductInfo")
+    public ResultFul insertProductInfo(ProductInsertModel productInsertModel) {
+        productInsertModel.setHomeTopFlag(StatusEnum.DOWN_HOME_TOP_FLAG.getCode());
+        productInsertModel.setCreateTime(new Date());
+        productInsertModel.setDeleteFlag(StatusEnum.DELETE_NO.getCode());
+        productInsertModel.setProductStatus(StatusEnum.UP.getCode());
+        return productService.insertProductInfo(productInsertModel);
+    }
 
+
+    @PermissionName(value = "修改商品")
+    @RequiresPermissions(value = {"product:updateProductInfo"})
+    @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
+    @Log(title = "修改商品", tabName = "tb_product", operateType = 13, logEnum = LogEnum.UPDATE_PRODUCT)
+    @RequestMapping("updateProductInfo")
+    public ResultFul updateProductInfo(ProductUpdateModel productUpdateModel) {
+        productUpdateModel.setLastUpdateTime(new Date());
+        return productService.updateProductInfo(productUpdateModel);
+    }
 
 }

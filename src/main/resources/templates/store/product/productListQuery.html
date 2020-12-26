@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div th:fragment="productListQuery">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="shopId" style="line-height: 35px;">商铺ID:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="shopId" placeholder="商铺ID" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="productName" style="line-height: 35px;">商品名称:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="productName" placeholder="商铺ID" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="productType" style="line-height: 35px;">商品类型:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="productType">
+                    <option value="">请选择</option>
+                    <option value="1">壁纸</option>
+                    <option value="2">墙画</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="homeTopFlag" style="line-height: 35px;">推荐:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="homeTopFlag">
+                    <option value="">请选择</option>
+                    <option value="0">不推荐</option>
+                    <option value="1">推荐</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="productStatus" style="line-height: 35px;">上下架状态:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="productStatus">
+                    <option value="">请选择</option>
+                    <option value="0">上架</option>
+                    <option value="1">下架</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+    </div>
+</div>
+
+<script th:fragment="productQueryFuntion">
+    function disabledProduct() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/product/disabledProduct', {productIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '下架成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function openProduct() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/product/openProduct', {productIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '上架成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    // 弹窗类型 success、error、warning、info
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function delProduct() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/product/delProduct', {productIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '删除成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function tuiProduct() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/product/tuiProduct', {productIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '推荐成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function butuiProduct() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/product/butuiProduct', {productIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '不推荐成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    console.log(data.message);
+                    swal(data.message, '', 'info')
+                }
+            })
+        }
+    }
+
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据')
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.productId);
+        })
+        return array;
+    }
+
+
+    window.onclickEvent = {
+        'click #updateFun': function (e, value, row, index) {
+            console.log(row)
+            parent.locationCurrMenu();
+            parent.addPage('修改商品', ctx + '/skip/store/product/productInfoEdit/' + row.productId);
+        }
+    }
+
+    function addProduct() {
+        parent.locationCurrMenu();
+        parent.addPage('添加商品', ctx + '/skip/store/product/productInfoAdd');
+    }
+</script>
+</body>
+</html>

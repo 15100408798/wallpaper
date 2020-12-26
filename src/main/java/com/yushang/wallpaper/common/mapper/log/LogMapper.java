@@ -2,7 +2,7 @@ package com.yushang.wallpaper.common.mapper.log;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.log.TbLog;
-import com.yushang.wallpaper.model.log.LogReqModel;
+import com.yushang.wallpaper.layer.model.log.LogReqModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

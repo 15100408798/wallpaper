@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div class="container" style="background-color: white;margin-top:30px;height: 80%;">
+    <div class="row" style="padding-top: 30px;">
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px;">
+                <label for="productLabelName">商品类别:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px;">
+                <div class="col-sm-1">
+                    <span style="color: red; height: 35px; line-height: 35px; float: right;">*</span>
+                </div>
+                <div class="col-sm-10">
+                    <input style="width: 400px; height: 35px;" class="form-control" placeholder="商品类别应该在1~20位之间"
+                           type="text" autocomplete="off" id="productLabelName" required/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <button type="button" class="btn btn-outline btn-success" onclick="editFun()" style="width: 100%;">
+                    添加
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input th:value="${id}" hidden id="productLabelId"/>
+</body>
+<script>
+
+    var productLabelId = $('#productLabelId').val();
+    $(function () {
+        getInfo();
+    });
+
+    function getInfo() {
+        $.post(ctx + '/layer/productLabel/selectLabelList', {
+            productLabelId: productLabelId
+        }, function (data) {
+            if (data.status == 200) {
+                var productLabel = data.rows[0];
+                $('#productLabelName').val(productLabel.productLabelName);
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+
+    function editFun() {
+        if ($('#productLabelName').val() == "" || $('#productLabelName').val().length == 0) {
+            swal('尚未检测到商品类别', '请输入商品类别', 'info');
+            return false;
+        } else if ($('#productLabelName').val().length < 1 || $('#productLabelName').val().length > 20) {
+            swal('商品类别应该在1~20位之间', '请重新输入商品类别', 'info');
+            return false;
+        }
+        $.post(ctx + '/layer/productLabel/updateProductLabel', {
+            productLabelIds: productLabelId,
+            productLabelName: $('#productLabelName').val()
+        }, function (data) {
+            if (data.status == 200) {
+                swal({
+                    'title': '修改成功',
+                    'text': '',
+                    'type': 'success'
+                }, function () {
+                    window.location.reload(true);
+                });
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+
+</script>
+</html>

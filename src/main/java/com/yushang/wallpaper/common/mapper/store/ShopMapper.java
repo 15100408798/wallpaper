@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper.store;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.store.TbShop;
-import com.yushang.wallpaper.model.store.ShopQueryModel;
-import com.yushang.wallpaper.model.store.ShopUpdateModel;
+import com.yushang.wallpaper.layer.model.store.ShopQueryModel;
+import com.yushang.wallpaper.layer.model.store.ShopUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

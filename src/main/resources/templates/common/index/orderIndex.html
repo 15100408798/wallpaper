@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body>
+<li th:fragment="orderIndex">
+    <a href="#">
+        <i class="fa fa-columns"></i>
+        <span class="nav-label">订单管理</span>
+        <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level" id="orderManagerUl">
+        <li>
+            <a class="J_menuItem" title="订单管理" th:href="@{/skip/order/order/orderList}">订单管理</a>
+        </li>
+        <li>
+            <a class="J_menuItem" title="评论管理" th:href="@{/skip/order/comment/commentlist}">评论管理</a>
+        </li>
+    </ul>
+</li>
+</body>
+</html>

@@ -6,12 +6,16 @@
         <result column="product_id" property="productId" jdbcType="BIGINT"/>
         <result column="product_name" property="productName" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="user_nick" property="userNick" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="delete_flag" property="deleteFlag" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column">
-        tcomment.comment_id,tcomment.product_id,tcomment.product_name,tcomment.`status`,tcomment.create_time,tcomment.delete_flag
+        tcomment.comment_id,tcomment.product_id,tcomment.product_name,tcomment.`status`,tcomment.create_time,tcomment.delete_flag,
+        tcomment.user_id,tcomment.order_no,tcomment.user_nick
     </sql>
 
     <sql id="Update_Column">
@@ -27,6 +31,12 @@
 
     <sql id="Query_Condition">
         <where>
+            <if test="orderNo != null and orderNo != ''">
+                AND tcomment.order_no LIKE CONCAT(#{orderNo, jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="userId != null">
+                AND tcomment.user_id = #{userId, jdbcType=INTEGER}
+            </if>
             <if test="productId != null">
                 AND tcomment.product_id = #{productId, jdbcType=BIGINT}
             </if>

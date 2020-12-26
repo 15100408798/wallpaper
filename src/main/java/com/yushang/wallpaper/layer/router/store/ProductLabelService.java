@@ -1,8 +1,8 @@
 package com.yushang.wallpaper.layer.router.store;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.store.LabelQueryModel;
-import com.yushang.wallpaper.model.store.LabelUpdateModel;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelQueryModel;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelUpdateModel;
 import org.springframework.lang.NonNull;
 
 /**
@@ -13,11 +13,11 @@ public interface ProductLabelService {
     /**
      * 查询商品类别信息列表
      *
-     * @param reqModel
-     * @return
+     * @param queryModel 筛选参数
+     * @return 商品类别信息列表
      */
     @NonNull
-    ResultFul selectLabelList(@NonNull LabelQueryModel reqModel);
+    ResultFul selectLabelList(@NonNull LabelQueryModel queryModel);
 
     /**
      * 更新商品类别信息

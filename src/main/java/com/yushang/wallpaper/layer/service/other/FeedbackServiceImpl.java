@@ -5,8 +5,8 @@ import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.mapper.other.FeekBackMapper;
 import com.yushang.wallpaper.common.pojo.other.TbFeekback;
 import com.yushang.wallpaper.layer.router.other.FeedbackService;
-import com.yushang.wallpaper.model.other.FeedbackQueryModel;
-import com.yushang.wallpaper.model.other.FeedbackUpdateModel;
+import com.yushang.wallpaper.layer.model.other.FeedbackQueryModel;
+import com.yushang.wallpaper.layer.model.other.FeedbackUpdateModel;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     public ResultFul selectFeedbackList(FeedbackQueryModel feedbackQueryModel) {
         /** 校验参数 */
         Objects.requireNonNull(feedbackQueryModel);
-        feedbackQueryModel.validPageSizeIsNull();
         feedbackQueryModel.startPage();
         // 查询反馈管理信息列表
         Page<TbFeekback> tbFeekbackPage = feekBackMapper.selectFeedbackList(feedbackQueryModel);

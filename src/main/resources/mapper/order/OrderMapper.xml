@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yushang.wallpaper.common.mapper.order.OrderMapper">
+    <resultMap id="baseResultMap" type="com.yushang.wallpaper.common.pojo.order.TbOrder">
+        <id property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="allMoney" column="all_money" jdbcType="DECIMAL"/>
+        <result property="minusMoney" column="minus_money" jdbcType="DECIMAL"/>
+        <result property="payMoney" column="pay_money" jdbcType="DECIMAL"/>
+        <result property="score" column="score" jdbcType="SMALLINT"/>
+        <result property="payType" column="pay_type" jdbcType="TINYINT"/>
+        <result property="addressId" column="address_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="payTime" column="pay_time" jdbcType="TIMESTAMP"/>
+        <result property="sendTime" column="send_time" jdbcType="TIMESTAMP"/>
+        <result property="completeTime" column="complete_time" jdbcType="TIMESTAMP"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="TINYINT"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="shopId" column="shop_id" jdbcType="INTEGER"/>
+        <result property="sendType" column="send_type" jdbcType="TINYINT"/>
+        <result property="logisticsName" column="logistics_name" jdbcType="VARCHAR"/>
+        <result property="logisticsNumber" column="logistics_number" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        order_id,
+        order_no,
+        `status`,
+        all_money,
+        minus_money,
+        pay_money,
+        score,
+        pay_type,
+        address_id,
+        create_time,
+        pay_time,
+        send_time,
+        complete_time,
+        delete_flag,
+        shop_id,
+        user_id,
+        send_type,
+        logistics_name,
+        logistics_number
+    </sql>
+
+    <sql id="Query_Column">
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                AND order_no = #{orderNo, jdbcType=VARCHAR}
+            </if>
+            <if test="shopId != null and shopId != ''">
+                AND shop_id = #{shopId, jdbcType=INTEGER}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                AND `status` = #{orderStatus, jdbcType=TINYINT}
+            </if>
+            <if test="payType != null and payType != ''">
+                AND `pay_type` = #{payType, jdbcType=TINYINT}
+            </if>
+            <if test="sendType != null and sendType != ''">
+                AND `send_type` = #{sendType, jdbcType=TINYINT}
+            </if>
+            <if test="deleteFlag != null">
+                AND `delete_flag` = #{deleteFlag, jdbcType=TINYINT}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="saveShopOneWeek">
+        insert into tb_week_money(create_time, shop_id, start_time, end_time, all_money, pay_money)
+        values (#{createTime}, #{shopId}, #{startTime}, #{endTime}, #{allMoney}, #{payMoney})
+    </insert>
+
+    <!--  微信小程序： 获取我的订单-->
+    <select id="getOrderList" resultType="com.yushang.wallpaper.common.pojo.order.TbOrder">
+
+    </select>
+
+    <!-- 通过订单编号得出订单信息 -->
+    <select id="selectOrderByNo" resultType="com.yushang.wallpaper.common.pojo.order.TbOrder">
+
+    </select>
+
+    <!-- 通过订单id获得订单信息 -->
+    <select id="selectOrderById" resultType="com.yushang.wallpaper.common.pojo.order.TbOrder">
+
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(1)
+        from tb_order
+        where is_del = 0
+          and status != 1
+          and status != 6
+    </select>
+    <select id="selectStoreMoneyList" resultType="java.util.HashMap">
+        select o.order_id                   as orderId,
+               o.shop_id                    as shopId,
+               s.shop_name                  as shopName,
+               substring(o.pay_time, 1, 10) as payTime,
+               o.all_money                  as allMoney,
+               o.score                      as score,
+               o.pay_money                  as payMoney
+        from tb_order as o
+                 left join tb_shop as s on o.shop_id = s.shop_id
+        where o.is_del = 0
+          and o.status != 1
+          and o.status != 6
+        order by o.order_id desc
+    </select>
+    <select id="selectSevenDayMoney" resultType="java.math.BigDecimal">
+        select sum(all_money)
+        from tb_order
+        where status != 1
+          and status != 6
+          and is_del = 0
+    </select>
+    <select id="selectPayMoney" resultType="java.math.BigDecimal">
+        select sum(pay_money)
+        from tb_order
+        where status != 1
+          and status != 6
+          and is_del = 0
+    </select>
+    <select id="selectOrderList" resultMap="baseResultMap">
+        SELECT
+        <include refid="Base_Column"/>
+        FROM tb_order
+        <include refid="Query_Column"/>
+    </select>
+
+    <update id="updateOrderInfo">
+        UPDATE tb_order
+        <trim prefix="set" suffixOverrides=",">
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag, jdbcType=TINYINT},
+            </if>
+            <if test="sendTime != null">
+                send_time = #{sendTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                `status` = #{orderStatus, jdbcType=TINYINT},
+            </if>
+            <if test="completeTime != null">
+                `complete_time` = #{completeTime, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+        WHERE order_id IN
+        <foreach collection="orderIdValues" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+</mapper>

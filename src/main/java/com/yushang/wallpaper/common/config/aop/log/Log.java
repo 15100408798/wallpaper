@@ -1,7 +1,7 @@
 package com.yushang.wallpaper.common.config.aop.log;
 
 import com.yushang.wallpaper.common.utils.StringTools;
-import com.yushang.wallpaper.model.enums.LogEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
 
 import java.lang.annotation.*;
 
@@ -17,12 +17,10 @@ public @interface Log {
 
     /**
      * 操作的类型
-     * 1-查询, 2-删除
-     * 3-开启, 4-禁用
-     * 5-上架, 6-下架
-     * 7-推荐, 8-不推荐
-     * 9-处理, 10-忽略
-     * 11-添加，12-还原
+     * 1-查询, 2-删除, 3-开启, 4-禁用
+     * 5-上架, 6-下架, 7-推荐, 8-不推荐
+     * 9-处理, 10-忽略, 11-添加，12-还原,
+     * 13-更新
      */
     byte operateType() default 1;
 

@@ -1,8 +1,8 @@
 package com.yushang.wallpaper.layer.router.other;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.other.FeedbackQueryModel;
-import com.yushang.wallpaper.model.other.FeedbackUpdateModel;
+import com.yushang.wallpaper.layer.model.other.FeedbackQueryModel;
+import com.yushang.wallpaper.layer.model.other.FeedbackUpdateModel;
 import org.springframework.lang.NonNull;
 
 /**

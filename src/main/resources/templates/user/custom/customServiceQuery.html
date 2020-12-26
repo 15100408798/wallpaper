@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div th:fragment="customQuery">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="customPhone" style="line-height: 35px;">手机号:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="customPhone" maxlength="11" placeholder="手机号" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+    </div>
+</div>
+
+<script th:fragment="customQueryFuntion">
+    function deleteCustom() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/custom/deleteCustom', {customIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '删除成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    swal(result.message, '', 'error')
+                }
+            })
+        }
+    }
+    
+    function addCustom() {
+        parent.locationCurrMenu();
+        parent.addPage('添加客服', ctx + '/skip/user/custom/customAdd');
+    }
+
+
+    window.onclickEvent = {
+        'click #updateFun': function (e, value, row, index) {
+            parent.locationCurrMenu();
+            parent.addPage('修改客服', ctx + '/skip/user/custom/customEdit/' + row.customId);
+        }
+    }
+
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据')
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.customId);
+        })
+        return array;
+    }
+
+</script>
+</body>
+</html>

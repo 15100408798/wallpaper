@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="common/comm :: header_web"></head>
 <body class="gray-bg">
 <div th:fragment="feekbackListQuery">
@@ -11,6 +10,16 @@
             </div>
             <div class="col-sm-7">
                 <input id="username" placeholder="用户账号" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="userPhone" style="line-height: 35px;">用户手机号:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="userPhone" placeholder="用户手机号" class="form-control"/>
             </div>
         </div>
     </div>
@@ -33,18 +42,23 @@
         <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
     </div>
 </div>
-
 <script th:fragment="feekbackQueryFuntion">
     function disabledManager() {
         var array = common();
         if (array != false) {
             //发送数据库
-            $.post('layer/feekback/disabledFeedback', {feedbackIds: array.join(',')}, function (result) {
-                if (result.status == 200) {
-                    alert('忽略成功')
-                    $table.bootstrapTable('refresh')
+            $.post('layer/feekback/disabledFeedback', {feedbackIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '忽略成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
                 } else {
-                    alert(result.message)
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
                 }
             })
         }
@@ -54,12 +68,18 @@
         var array = common();
         if (array != false) {
             //发送数据库
-            $.post('layer/feekback/openFeedback', {feedbackIds: array.join(',')}, function (result) {
-                if (result.status == 200) {
-                    alert('处理成功')
-                    $table.bootstrapTable('refresh')
+            $.post('layer/feekback/openFeedback', {feedbackIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '处理成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
                 } else {
-                    alert(result.message)
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
                 }
             })
         }
@@ -69,12 +89,18 @@
         var array = common();
         if (array != false) {
             //发送数据库
-            $.post('layer/feekback/deleteFeedback', {feedbackIds: array.join(',')}, function (result) {
-                if (result.status == 200) {
-                    alert('删除成功')
-                    $table.bootstrapTable('refresh')
+            $.post('layer/feekback/deleteFeedback', {feedbackIds: array.join(',')}, function (data) {
+                if (data.status == 200) {
+                    swal({
+                        'title': '删除成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
                 } else {
-                    alert(result.message)
+                    console.log(data.message);
+                    swal(data.message, '', 'error')
                 }
             })
         }

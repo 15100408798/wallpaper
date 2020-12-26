@@ -2,9 +2,9 @@ package com.yushang.wallpaper.common.mapper.user;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.user.TbManager;
-import com.yushang.wallpaper.model.user.ManagerInsertModel;
-import com.yushang.wallpaper.model.user.ManagerQueryModel;
-import com.yushang.wallpaper.model.user.ManagerUpdateModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerInsertModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerQueryModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

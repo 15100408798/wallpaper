@@ -120,7 +120,7 @@ public class LogAspect {
             LOGGER.info("{}|{}|{}|{}", LoggerUtils.RESPONSE, log.logEnum(), sessionId, JSONObject.toJSONString(ret));
             /* 记录日志 */
             Short managerId = (Short) SecurityUtils.getSubject().getPrincipal();
-            if (managerId != null && log.operateType() != 1) {
+            if (managerId != null) {
                 TbLog tbLog = new TbLog();
                 tbLog.setCreateTime(new Date());
                 tbLog.setManagerIp(remoteAddr);

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 /**
  * springboot类似于springmvc的前端控制器，进行页面跳转使用。
@@ -14,12 +13,30 @@ import java.util.Objects;
 @Controller
 public class DispatcherController {
 
-    @GetMapping(value = "skip/{page}/{pageDetails}")
-    public String skipPage(Object row, @PathVariable String page, @PathVariable String pageDetails, HttpServletRequest request) {
-        if (Objects.nonNull(row)) {
-            request.setAttribute("row", row);
-        }
-        return page + "/" + pageDetails;
+
+    @GetMapping(value = "skip/{page}/{firstPage}")
+    public String skipPage(@PathVariable(value = "page") String page, @PathVariable(value = "firstPage") String firstPage) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(page).append("/").append(firstPage);
+        return builder.toString();
+    }
+
+    @GetMapping(value = "skip/{page}/{firstPage}/{secondPage}")
+    public String skipPage(@PathVariable String page, @PathVariable String firstPage, @PathVariable String secondPage) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(page).append("/").append(firstPage);
+        builder.append("/").append(secondPage);
+        return builder.toString();
+    }
+
+    @GetMapping(value = "skip/{page}/{firstPage}/{secondPage}/{id}")
+    public String skipPage(@PathVariable String page, @PathVariable String firstPage, @PathVariable String secondPage,
+                           @PathVariable String id, HttpServletRequest request) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(page).append("/").append(firstPage);
+        builder.append("/").append(secondPage);
+        request.setAttribute("id", id);
+        return builder.toString();
     }
 
     @GetMapping(value = {"/", "/common/login"})

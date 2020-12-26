@@ -3,11 +3,11 @@ package com.yushang.wallpaper.layer.controller.store;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.enums.LogEnum;
-import com.yushang.wallpaper.model.store.LabelQueryModel;
-import com.yushang.wallpaper.model.store.LabelUpdateModel;
+import com.yushang.wallpaper.common.enums.StatusEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelQueryModel;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelUpdateModel;
 import com.yushang.wallpaper.layer.router.store.ProductLabelService;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -45,7 +45,7 @@ public class ProductLabelController {
     @Log(title = "删除商品类别", tabName = "tb_product_label", operateType = 2, logEnum = LogEnum.DEL_PRODUCT_LABEL)
     @RequestMapping(value = {"deleteProductLabel"})
     public ResultFul deleteProductLabel(LabelUpdateModel labelUpdateModel) {
-        labelUpdateModel.setDeleteFlag(NumberUtils.INTEGER_ONE);
+        labelUpdateModel.setDeleteFlag(StatusEnum.DELETE_YES.getCode());
         return productLabelService.updateProductLabel(labelUpdateModel);
     }
 
@@ -55,7 +55,7 @@ public class ProductLabelController {
     @Log(title = "还原商品类别", tabName = "tb_product_label", operateType = 12, logEnum = LogEnum.RED_PRODUCT_LABEL)
     @RequestMapping(value = {"reductionProductLabel"})
     public ResultFul reductionProductLabel(LabelUpdateModel labelUpdateModel) {
-        labelUpdateModel.setDeleteFlag(NumberUtils.INTEGER_ZERO);
+        labelUpdateModel.setDeleteFlag(StatusEnum.DELETE_NO.getCode());
         return productLabelService.updateProductLabel(labelUpdateModel);
     }
 
@@ -65,10 +65,18 @@ public class ProductLabelController {
     @Log(title = "新增商品类别", tabName = "tb_product_label", operateType = 11, logEnum = LogEnum.INSERT_PRODUCT_LABEL)
     @RequestMapping(value = {"insertProductLabel"})
     public ResultFul insertProductLabel(LabelUpdateModel labelUpdateModel) {
-        labelUpdateModel.setDeleteFlag(NumberUtils.INTEGER_ZERO);
+        labelUpdateModel.setDeleteFlag(StatusEnum.DELETE_NO.getCode());
         labelUpdateModel.setCreateTime(new Date());
         return productLabelService.insertProductLabel(labelUpdateModel);
     }
 
+    @PermissionName(value = "更新商品类别")
+    @RequiresPermissions(value = {"product:updateProductLabel"})
+    @RequiresRoles(value = {"1", "2"}, logical = Logical.OR)
+    @Log(title = "更新商品类别", tabName = "tb_product_label", operateType = 13, logEnum = LogEnum.UPDATE_PRODUCT_LABEL)
+    @RequestMapping(value = {"updateProductLabel"})
+    public ResultFul updateProductLabel(LabelUpdateModel labelUpdateModel) {
+        return productLabelService.updateProductLabel(labelUpdateModel);
+    }
 
 }

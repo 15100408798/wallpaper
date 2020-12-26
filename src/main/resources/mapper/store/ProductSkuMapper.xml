@@ -20,6 +20,21 @@
 
     <sql id="Query_Condition">
         <where>
+            <if test="productSkuId != null">
+                AND sku.product_sku_id = #{productSkuId, jdbcType=INTEGER}
+            </if>
+            <if test="notProductSkuId != null">
+                AND sku.product_sku_id != #{notProductSkuId, jdbcType=INTEGER}
+            </if>
+            <if test="productLabelId != null">
+                AND sku.product_label_id = #{productLabelId, jdbcType=INTEGER}
+            </if>
+            <if test="productSkuName != null and productSkuName != ''">
+                AND sku.product_sku_name = #{productSkuName, jdbcType=VARCHAR}
+            </if>
+            <if test="productSkuSize != null and productSkuSize != ''">
+                AND sku.product_sku_size = #{productSkuSize, jdbcType=VARCHAR}
+            </if>
             <if test="productSkuStatus != null">
                 AND sku.product_sku_status = #{productSkuStatus, jdbcType=TINYINT}
             </if>
@@ -39,6 +54,11 @@
             </if>
         </set>
     </sql>
+    <insert id="insertSkuProduct">
+        INSERT INTO `tb_product_sku`
+          (`product_label_id`, `product_sku_name`, `product_sku_size`, `create_time`, `last_update_time`,`product_sku_status`, `delete_flag`)
+         VALUES (#{productLabelId}, #{productSkuName}, #{productSkuSize}, #{createTime}, #{lastUpdateTime}, #{productSkuStatus}, #{deleteFlag});
+    </insert>
 
     <!-- 更新商品sku信息 -->
     <update id="updateProductSkuInfo">

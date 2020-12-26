@@ -2,7 +2,7 @@ package com.yushang.wallpaper.layer.router.log;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.pojo.log.TbLog;
-import com.yushang.wallpaper.model.log.LogReqModel;
+import com.yushang.wallpaper.layer.model.log.LogReqModel;
 import org.springframework.lang.NonNull;
 
 /**

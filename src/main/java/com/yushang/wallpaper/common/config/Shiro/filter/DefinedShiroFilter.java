@@ -45,7 +45,7 @@ public class DefinedShiroFilter {
         //3、定义登陆url
         shiroFilterFactoryBean.setLoginUrl("/skip/common/login");
         //4、定义登陆成功后跳转的url
-        shiroFilterFactoryBean.setSuccessUrl("/skip/common/index");
+        shiroFilterFactoryBean.setSuccessUrl("/skip/common/index/index");
         //5、定义无权限跳转的url
         shiroFilterFactoryBean.setUnauthorizedUrl("/skip/common/unauthorized");
         //6、定义过滤器链条

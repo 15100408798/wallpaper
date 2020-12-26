@@ -2,7 +2,7 @@ package com.yushang.wallpaper.weixin.controller.user;
 
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.enums.LogEnum;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
 import com.yushang.wallpaper.weixin.model.WxUserQueryModel;
 import com.yushang.wallpaper.weixin.service.WXUserService;
 import com.yushang.wallpaper.weixin.config.WXUserConfig;

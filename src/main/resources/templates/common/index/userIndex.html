@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body>
+<li th:fragment="userIndex">
+    <a href="#">
+        <i class="fa fa-columns"></i>
+        <span class="nav-label">用户管理</span>
+        <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level">
+        <shiro:hasAnyRoles name="1">
+            <li>
+                <a class="J_menuItem" title="管理员管理" th:href="@{/skip/user/manager/managerlist}">管理员管理</a>
+            </li>
+            <li>
+                <a class="J_menuItem" title="角色管理" th:href="@{/skip/user/role/roleList}">角色管理</a>
+            </li>
+        </shiro:hasAnyRoles>
+        <li>
+            <a class="J_menuItem" title="用户管理" th:href="@{/skip/user/user/userlist}">用户列表</a>
+        </li>
+        <shiro:hasAnyRoles name="1">
+            <li>
+                <a class="J_menuItem" title="客服中心" th:href="@{/skip/user/custom/customService}">客服中心</a>
+            </li>
+        </shiro:hasAnyRoles>
+    </ul>
+</li>
+</body>
+</html>

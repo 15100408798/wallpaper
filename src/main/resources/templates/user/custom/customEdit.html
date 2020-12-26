@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div class="container" style="background-color: white;margin-top:30px;height: 80%;">
+    <div class="row" style="padding-top: 30px;">
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px;">
+                <label for="wxOpenId">微信号:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px;">
+                <div class="col-sm-1">
+                    <span style="color: red; height: 35px; line-height: 35px; float: right;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input style="width: 400px; height: 35px;" class="form-control"
+                           onblur="checkAccount($(this).val())"
+                           type="text" autocomplete="off" id="wxOpenId" required placeholder="微信号在1~20位之间"/>
+                </div>
+                <div class="col-sm-2" style="float: right;">
+                    <span id="h1" style="height: 35px; line-height: 35px;float: left;"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="customName">客服名称:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input id="customName" style="width: 400px; height: 35px;" type="text"
+                           autocomplete="off" class="form-control"
+                           minlength="1" maxlength="20" placeholder="客服名称应在1~20字以内"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="customPhone">手机号:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input id="customPhone" style="width: 400px; height: 35px;" type="text"
+                           autocomplete="off" class="form-control"
+                           minlength="11" maxlength="11" placeholder="请输入手机号"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <button type="button" class="btn btn-outline btn-success" onclick="editFun()" style="width: 100%;">
+                    修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input th:value="${id}" hidden id="customIdEdit"/>
+</body>
+<script>
+
+    var customId = $('#customIdEdit').val();
+    $(function () {
+        getCustomInfo();
+    });
+
+    function getCustomInfo() {
+        $.post(ctx + '/layer/custom/selectList', {
+            customId: customId
+        }, function (data) {
+            if (data.status == 200) {
+                var customInfo = data.rows[0];
+                $('#customName').val(customInfo.customName);
+                $('#wxOpenId').val(customInfo.wxOpenId);
+                $('#customPhone').val(customInfo.phone);
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+    function editFun() {
+        if ($('#wxOpenId').val() == "" || $('#wxOpenId').val().length == 0) {
+            swal('尚未检测到微信号', '请输入微信号', 'info');
+            return false;
+        } else if ($('#wxOpenId').val().length < 1 || $('#wxOpenId').val().length > 20) {
+            swal('微信号应该在1~20位之间', '请重新输入微信号', 'info');
+            return false;
+        } else if ($('#customName').val().length == 0 || $('#customName').val() == "") {
+            swal('尚未检测到客服昵称', '请输入客服昵称', 'info');
+            return false;
+        } else if ($('#customName').val().length > 20 || $('#customName').val().length < 1) {
+            swal('昵称应该在1~20字以内', '请重新输入昵称', 'info');
+            return false;
+        } else if ($('#customPhone').val().length == 0 || $('#customPhone').val() == "") {
+            swal('尚未检测到手机号', '请输入手机号', 'info');
+            return false;
+        } else if ($('#customPhone').val().length != 11) {
+            swal('手机号应该在11位', '请重新输入手机号', 'info');
+            return false;
+        }
+        $.post(ctx + '/layer/custom/updateCustom', {
+            customIds: customId,
+            customName: $('#customName').val(),
+            wxOpenId: $('#wxOpenId').val(),
+            phone: $('#customPhone').val()
+        }, function (data) {
+            if (data.status == 200) {
+                swal({
+                    'title': '修改成功',
+                    'text': '',
+                    'type': 'success'
+                }, function () {
+                    window.location.reload(true);
+                });
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+
+    // 检查账号是否注册
+    function checkAccount(wxOpenId) {
+        if (wxOpenId == "" || wxOpenId.trim().length == 0) {
+            swal('尚未检测到微信号', '请输入微信号', 'info');
+            return false;
+        }
+        $.post(ctx + '/layer/custom/checkWxOpenId', {wxOpenId: wxOpenId}, function (data) {
+            $('#h1').show();
+            if (data.status == 200) {
+                $('#h1').html(data.message).css('color', 'green');
+            } else {
+                $('#h1').html(data.message).css('color', 'red');
+            }
+        });
+    }
+</script>
+</html>

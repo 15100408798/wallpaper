@@ -8,6 +8,7 @@
         <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="userRole" column="user_role" jdbcType="TINYINT"/>
         <result property="userNick" column="user_nick" jdbcType="VARCHAR"/>
         <result property="salt" column="salt" jdbcType="VARCHAR"/>
@@ -25,11 +26,17 @@
 
     <sql id="Base_Column">
         user_id,username,password, mobile, create_time,last_login_time,
-        user_role,user_nick,salt, open_id, photo,province_id, city_id,is_use,score,user_level,money, delete_flag
+        user_role,user_nick,salt, open_id, photo,province_id, city_id,is_use,score,user_level,money, delete_flag,update_time
     </sql>
 
     <sql id="Query_Column">
         <where>
+            <if test="userId != null">
+                AND user_id = #{userId, jdbcType=INTEGER}
+            </if>
+            <if test="notUserId != null">
+                AND user_id != #{notUserId, jdbcType=INTEGER}
+            </if>
             <if test="username != null and username != ''">
                 AND username = #{username, jdbcType=VARCHAR}
             </if>
@@ -51,11 +58,14 @@
             <if test="openid != null">
                 AND `open_id` = #{openid, jdbcType=VARCHAR}
             </if>
+            <if test="userLevel != null">
+                AND `user_level` = #{userLevel, jdbcType=TINYINT}
+            </if>
         </where>
     </sql>
 
     <sql id="Update_Column">
-        <set>
+        <trim prefix="set" suffixOverrides=",">
             <if test="username != null and username != ''">
                 username = #{username, jdbcType=VARCHAR},
             </if>
@@ -69,14 +79,21 @@
                 `delete_flag` = #{deleteFlag, jdbcType=TINYINT},
             </if>
             <if test="mobile != null">
-                `mobile` = #{mobile, jdbcType=VARCHAR},
+                `mobile` = #{mobile, jdbcType=VARCHAR} ,
             </if>
-        </set>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
     </sql>
 
     <!--  添加用户-->
     <insert id="insertTbUserInfo" useGeneratedKeys="true" keyProperty="userId">
-
+        INSERT INTO `tb_user`
+          (`username`, `password`, `mobile`, `create_time`, `last_login_time`, `user_role`, `user_nick`, `salt`, `open_id`,
+           `photo`, `province_id`, `city_id`, `is_use`, `score`,`user_level`, `money`, `delete_flag`, `update_time`)
+        VALUES (#{username}, #{password}, #{mobile}, #{createTime}, #{lastLoginTime}, #{userRole}, #{userNick}, #{salt}, #{openId},
+                #{photo}, #{provinceId}, #{cityId}, #{isUse}, #{score}, #{userLevel}, #{money}, #{deleteFlag}, #{updateTime});
     </insert>
 
     <!-- 更新用户信息 -->

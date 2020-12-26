@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.mapper.log.LogMapper;
 import com.yushang.wallpaper.common.pojo.log.TbLog;
-import com.yushang.wallpaper.model.log.LogReqModel;
+import com.yushang.wallpaper.layer.model.log.LogReqModel;
 import com.yushang.wallpaper.layer.router.log.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

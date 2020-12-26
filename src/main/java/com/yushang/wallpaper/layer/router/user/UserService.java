@@ -1,8 +1,9 @@
 package com.yushang.wallpaper.layer.router.user;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.user.UserQueryModel;
-import com.yushang.wallpaper.model.user.UserUpdateModel;
+import com.yushang.wallpaper.layer.model.user.user.UserInsertModel;
+import com.yushang.wallpaper.layer.model.user.user.UserQueryModel;
+import com.yushang.wallpaper.layer.model.user.user.UserUpdateModel;
 import org.springframework.lang.NonNull;
 
 /**
@@ -30,6 +31,12 @@ public interface UserService {
 
     Integer selectUserScoreById(Integer userId);
 
-
-
+    /**
+     * 新增用户信息
+     *
+     * @param userInsertModel 用户信息
+     * @return 受影响条数
+     */
+    @NonNull
+    ResultFul insertUserInfo(@NonNull UserInsertModel userInsertModel);
 }

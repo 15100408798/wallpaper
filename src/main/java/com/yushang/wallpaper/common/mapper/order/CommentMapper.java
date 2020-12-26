@@ -2,8 +2,8 @@ package com.yushang.wallpaper.common.mapper.order;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.order.TbComment;
-import com.yushang.wallpaper.model.order.CommentQueryModel;
-import com.yushang.wallpaper.model.order.CommentUpdateModel;
+import com.yushang.wallpaper.layer.model.order.comment.CommentQueryModel;
+import com.yushang.wallpaper.layer.model.order.comment.CommentUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

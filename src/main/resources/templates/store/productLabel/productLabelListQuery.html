@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div th:fragment="productLabelListQuery">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="deleteFlagStatus" style="line-height: 35px;">删除状态:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="deleteFlagStatus">
+                    <option value="">请选择</option>
+                    <option value="0">未删除</option>
+                    <option value="1">已删除</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+    </div>
+</div>
+
+<script th:fragment="productLabelQueryFuntion">
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据')
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.productLabelId);
+        })
+        console.log(array);
+        return array;
+    }
+
+    function deleteStatus() {
+        var array = common();
+        console.log(array);
+        if (array != false) {
+            //发送数据库
+            $.post('layer/productLabel/deleteProductLabel', {
+                productLabelIds: array.join(',')
+            }, function (result) {
+                if (result.status == 200) {
+                    alert('删除成功')
+                    $table.bootstrapTable('refresh')
+                } else {
+                    alert(result.message);
+                }
+            })
+        }
+    }
+
+    function reductionStatus() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/productLabel/reductionProductLabel', {
+                productLabelIds: array.join(',')
+            }, function (result) {
+                if (result.status == 200) {
+                    alert('还原成功')
+                    $table.bootstrapTable('refresh')
+                } else {
+                    alert(result.message);
+                }
+            })
+        }
+    }
+
+    window.onclickEvent = {
+        'click #updateFun': function (e, value, row, index) {
+            parent.locationCurrMenu();
+            parent.addPage('修改商品类型', ctx + '/skip/store/productLabel/productLabelInfoEdit/' + row.productLabelId);
+        }
+    }
+
+    function addProductLabelInfo() {
+        parent.locationCurrMenu();
+        parent.addPage('添加商品类型', ctx + '/skip/store/productLabel/productLabelInfoAdd');
+    }
+
+</script>
+</body>
+</html>

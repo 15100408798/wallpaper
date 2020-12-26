@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div class="container" style="background-color: white;margin-top:30px;height: 80%;">
+    <div class="row" style="padding-top: 30px;">
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="productSkuName">商品sku颜色:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input id="productSkuName" style="width: 400px; height: 35px;" type="text"
+                           autocomplete="off" class="form-control"
+                           minlength="1" maxlength="20" placeholder="商品sku颜色应在1~20字以内"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="productSkuSize">商品sku尺寸:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input id="productSkuSize" style="width: 400px; height: 35px;" type="text"
+                           autocomplete="off" class="form-control" placeholder="商品sku尺寸应在1~10字以内"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <button type="button" class="btn btn-outline btn-success" onclick="addFun()" style="width: 100%;">
+                    添加
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    function addFun() {
+        if ($('#productSkuName').val().length == 0 || $('#productSkuName').val() == "") {
+            swal('尚未检测到商品sku颜色', '请输入商品sku颜色', 'info');
+            return false;
+        } else if ($('#productSkuName').val().length > 20 || $('#productSkuName').val().length < 1) {
+            swal('商品sku颜色应该在1~20字以内', '请重新输入商品sku颜色', 'info');
+            return false;
+        } else if ($('#productSkuSize').val().length == 0 || $('#productSkuSize').val() == "") {
+            swal('尚未检测到商品sku尺寸', '请输入商品sku尺寸', 'info');
+            return false;
+        } else if ($('#productSkuSize').val().length > 10 || $('#productSkuSize').val().length < 1) {
+            swal('商品sku尺寸应该在1~10字以内', '请重新输入商品sku尺寸', 'info');
+            return false;
+        }
+        $.post(ctx + '/layer/productSku/insertSkuProduct', {
+            productSkuName: $('#productSkuName').val(),
+            productSkuSize: $('#productSkuSize').val()
+        }, function (data) {
+            if (data.status == 200) {
+                swal({
+                    'title': '添加成功',
+                    'text': '',
+                    'type': 'success'
+                }, function () {
+                    window.location.reload(true);
+                });
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+
+</script>
+</html>

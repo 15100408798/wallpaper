@@ -3,9 +3,9 @@ package com.yushang.wallpaper.layer.controller.user;
 import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.pojo.user.TbManager;
-import com.yushang.wallpaper.model.enums.LogEnum;
-import com.yushang.wallpaper.model.user.ManagerQueryModel;
-import com.yushang.wallpaper.model.user.UserLoginRequest;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerQueryModel;
+import com.yushang.wallpaper.layer.model.user.manager.UserLoginRequest;
 import com.yushang.wallpaper.layer.router.user.ManagerService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +68,7 @@ public class LoginController {
             if (savedRequest != null) {
                 return ResultFul.getSuccessRows(savedRequest.getRequestURI());
             } else {
-                return ResultFul.getSuccessRows(request.getContextPath() + "/skip/common/index");
+                return ResultFul.getSuccessRows(request.getContextPath() + "/skip/common/index/index");
             }
         } catch (UnknownAccountException e) {
             return ResultFul.getErrorMessage("账号不存在");

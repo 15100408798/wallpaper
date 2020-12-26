@@ -2,9 +2,9 @@ package com.yushang.wallpaper.common.mapper.user;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.shiro.TbRole;
-import com.yushang.wallpaper.model.user.RoleInsertModel;
-import com.yushang.wallpaper.model.user.RoleQueryModel;
-import com.yushang.wallpaper.model.user.RoleUpdateModel;
+import com.yushang.wallpaper.layer.model.user.RoleInsertModel;
+import com.yushang.wallpaper.layer.model.user.RoleQueryModel;
+import com.yushang.wallpaper.layer.model.user.RoleUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

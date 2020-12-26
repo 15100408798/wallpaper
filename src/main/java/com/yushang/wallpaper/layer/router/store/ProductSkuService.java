@@ -1,8 +1,9 @@
 package com.yushang.wallpaper.layer.router.store;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.store.ProductSkuQueryModel;
-import com.yushang.wallpaper.model.store.ProductSkuUpdateModel;
+import com.yushang.wallpaper.layer.model.store.productSku.ProductSkuInsertModel;
+import com.yushang.wallpaper.layer.model.store.productSku.ProductSkuQueryModel;
+import com.yushang.wallpaper.layer.model.store.productSku.ProductSkuUpdateModel;
 import org.springframework.lang.NonNull;
 
 /**
@@ -27,4 +28,13 @@ public interface ProductSkuService {
      */
     @NonNull
     ResultFul updateProductSkuInfo(@NonNull ProductSkuUpdateModel productSkuUpdateModel);
+
+    /**
+     * 新增商品sku信息
+     *
+     * @param productSkuInsertModel 商品sku
+     * @return 受影响条数
+     */
+    @NonNull
+    ResultFul insertSkuProduct(@NonNull ProductSkuInsertModel productSkuInsertModel);
 }

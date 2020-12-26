@@ -3,14 +3,14 @@ package com.yushang.wallpaper.weixin.service.impl;
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.config.rabbitmq.SendMessage.SendMessageService;
-import com.yushang.wallpaper.common.mapper.OrderMapper;
+import com.yushang.wallpaper.common.mapper.order.OrderMapper;
 import com.yushang.wallpaper.common.mapper.user.UserMapper;
-import com.yushang.wallpaper.common.pojo.TbOrder;
+import com.yushang.wallpaper.common.pojo.order.TbOrder;
 import com.yushang.wallpaper.common.pojo.user.TbUser;
 import com.yushang.wallpaper.common.utils.CommonUtils;
 import com.yushang.wallpaper.common.utils.redis.RedisUtils;
-import com.yushang.wallpaper.model.user.UserQueryModel;
-import com.yushang.wallpaper.model.user.UserUpdateModel;
+import com.yushang.wallpaper.layer.model.user.user.UserQueryModel;
+import com.yushang.wallpaper.layer.model.user.user.UserUpdateModel;
 import com.yushang.wallpaper.weixin.model.WxUserQueryModel;
 import com.yushang.wallpaper.weixin.service.WXUserService;
 import com.yushang.wallpaper.weixin.utils.WXStringUtils;
@@ -97,7 +97,7 @@ public class WXUserServiceImpl implements WXUserService {
 //			tbUser.setProvince(userJson.getString("province"));
 //			tbUser.setCity(userJson.getString("city"));
             //向数据库查询对象
-            userMapper.insertTbUserInfo(tbUserInfo);
+            userMapper.insertTbUserInfo(null);
         } else {
             //查看该用户是否被禁用
             tbUser = tbUserPage.getResult().get(0);

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div class="container" style="background-color: white;margin-top:30px;height: 80%;">
+    <div class="row" style="padding-top: 30px;">
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px;">
+                <label for="username">账号:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px;">
+                <div class="col-sm-1">
+                    <span style="color: red; height: 35px; line-height: 35px; float: right;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input style="width: 400px; height: 35px;" class="form-control"
+                           onblur="checkAccount($(this).val())" disabled
+                           type="text" autocomplete="off" id="username" required minlength="5"
+                           maxlength="15" placeholder="账号应在5~15位之间"/>
+                </div>
+                <div class="col-sm-2" style="float: right;">
+                    <span id="h1" style="height: 35px; line-height: 35px;float: left;"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" id="showPassword">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="password">密码:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input id="password" style="width: 400px; height: 35px;" type="password"
+                           autocomplete="off" class="form-control"
+                           minlength="6" maxlength="20" placeholder="密码应在6~20位之间"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="userNick">昵称:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input id="userNick" style="width: 400px; height: 35px;" type="text"
+                           autocomplete="off" class="form-control"
+                           minlength="1" maxlength="20" placeholder="昵称应在1~20字以内"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="mobile">手机号:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <input id="mobile" style="width: 400px; height: 35px;" type="text"
+                           autocomplete="off" class="form-control"
+                           minlength="11" maxlength="11" placeholder="请输入手机号"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="userRole">用户身份:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <select id="userRole" style="width: 400px; height: 35px;" class="form-control">
+                        <option value="1">管理员</option>
+                        <option value="2">普通用户</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="isUse">用户状态:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <select id="isUse" style="width: 400px; height: 35px;" class="form-control">
+                        <option value="0">可用</option>
+                        <option value="1">禁用</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="userLevel">用户级别:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <select id="userLevel" style="width: 400px; height: 35px;" class="form-control">
+                        <option value="0">普通用户</option>
+                        <option value="1">VIP1</option>
+                        <option value="2">VIP2</option>
+                        <option value="3">VIP3</option>
+                        <option value="4">VIP4</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <button type="button" class="btn btn-outline btn-success" onclick="editFun()" style="width: 100%;">
+                    修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input th:value="${id}" hidden id="userIdEdit"/>
+</body>
+<script>
+    var userId = $('#userIdEdit').val();
+    $(function () {
+        getUserInfo();
+    });
+
+    function getUserInfo() {
+        $.post(ctx + '/layer/user/selectList', {
+            userId: userId
+        }, function (data) {
+            if (data.status == 200) {
+                var userInfo = data.rows[0];
+                $('#username').val(userInfo.username);
+                $('#password').val(userInfo.password);
+                $('#userNick').val(userInfo.userNick);
+                $('#mobile').val(userInfo.mobile);
+                $('#userRole').val(userInfo.userRole);
+                $('#userLevel').val(userInfo.userLevel);
+                $('#isUse').val(userInfo.isUse);
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+    function editFun() {
+        if ($('#username').val() == "" || $('#username').val().length == 0) {
+            swal('尚未检测到账号', '请输入管理员账号', 'warning');
+            return false;
+        } else if ($('#username').val().length < 5 || $('#username').val().length > 15) {
+            swal('账号应该在5~15位之间', '请重新输入账号', 'warning');
+            return false;
+        } else if ($('#password').val() == "" || $('#password').val().length == 0) {
+            swal('尚未检测到密码', '请输入密码', 'warning');
+            return false;
+        } else if ($('#password').val().length < 6 || $('#password').val().length > 20) {
+            swal('密码应该在6~20位之间', '请重新输入密码', 'warning');
+            return false;
+        } else if ($('#userNick').val().length == 0 || $('#userNick').val() == "") {
+            swal('尚未检测到管理员昵称', '请输入管理员昵称', 'warning');
+            return false;
+        } else if ($('#userNick').val().length > 20 || $('#userNick').val().length < 1) {
+            swal('昵称应该在1~20字以内', '请重新输入昵称', 'warning');
+            return false;
+        } else if ($('#mobile').val().length == 0 || $('#mobile').val() == "") {
+            swal('尚未检测到手机号', '请输入手机号', 'warning');
+            return false;
+        } else if ($('#mobile').val().length != 11) {
+            swal('手机号应该在11位', '请重新输入手机号', 'warning');
+            return false;
+        }
+        $.post(ctx + '/layer/user/updateUser', {
+            userIds: userId,
+            username: $('#username').val(),
+            password: $('#password').val(),
+            userNick: $('#userNick').val(),
+            mobile: $('#mobile').val(),
+            userRole: $('#userRole').val(),
+            isUse: $('#isUse').val(),
+            userLevel: $('#userLevel').val()
+        }, function (data) {
+            if (data.status == 200) {
+                swal({
+                    'title': '修改成功',
+                    'text': '',
+                    'type': 'success'
+                }, function () {
+                    window.location.reload(true);
+                });
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+
+    // 检查账号是否注册
+    function checkAccount(username) {
+        if (username == "" || username.trim().length == 0) {
+            swal('尚未检测到账号', '请输入管理员账号', 'info');
+            return false;
+        } else if (username.trim().length < 5 || username.trim().length > 15) {
+            swal('账号长度应该在5~10之间', '请重新输入账号', 'info');
+            return false;
+        }
+        $.post(ctx + '/layer/user/checkUsername', {username: username}, function (data) {
+            $('#h1').show();
+            if (data.status == 200) {
+                $('#h1').html(data.message).css('color', 'green');
+            } else {
+                $('#h1').html(data.message).css('color', 'red');
+            }
+        });
+    }
+</script>
+</html>

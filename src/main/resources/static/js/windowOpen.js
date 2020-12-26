@@ -29,7 +29,6 @@
 		});
 		//设置蒙版展示
 		modal = new Modal();
-		console.log(setButton+","+setContents+","+setButton)
 		modal.setTitle(setTitle);
 		modal.setContents(setContents);
 				//设置按钮个数和链接

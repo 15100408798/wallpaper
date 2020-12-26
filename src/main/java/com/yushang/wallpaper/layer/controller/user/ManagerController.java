@@ -4,14 +4,16 @@ import com.yushang.wallpaper.common.config.aop.log.Log;
 import com.yushang.wallpaper.common.config.aop.shiro.PermissionName;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.config.exception.ValidException;
+import com.yushang.wallpaper.common.enums.StatusEnum;
 import com.yushang.wallpaper.common.pojo.user.TbManager;
-import com.yushang.wallpaper.model.enums.LogEnum;
-import com.yushang.wallpaper.model.user.ManagerInsertModel;
-import com.yushang.wallpaper.model.user.ManagerQueryModel;
-import com.yushang.wallpaper.model.user.ManagerUpdateModel;
+import com.yushang.wallpaper.layer.model.enums.LogEnum;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerInsertModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerQueryModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerUpdateModel;
 import com.yushang.wallpaper.layer.router.user.ManagerService;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.http.HttpStatus;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class ManagerController {
     @Log(title = "删除管理员", tabName = "tb_manager", operateType = 2, logEnum = LogEnum.DEL_MANAGER)
     @RequestMapping(value = {"deleteManager"})
     public ResultFul deleteManager(ManagerUpdateModel managerUpdateModel) {
-        managerUpdateModel.setDeleteFlag(1);
+        managerUpdateModel.setDeleteFlag(StatusEnum.DELETE_YES.getCode());
         return managerService.updateTbManager(managerUpdateModel);
     }
 
@@ -91,10 +93,10 @@ public class ManagerController {
     @PermissionName(value = "更新管理员信息")
     @RequiresPermissions(value = {"manager:updateInfo"})
     @RequiresRoles(value = {"1"})
-    @Log(title = "更新管理员信息", tabName = "tb_manager", operateType = 1, logEnum = LogEnum.UPDATE_MANAGER)
+    @Log(title = "更新管理员信息", tabName = "tb_manager", operateType = 13, logEnum = LogEnum.UPDATE_MANAGER)
     @RequestMapping(value = {"updateInfo"})
     public ResultFul updateInfo(ManagerUpdateModel managerUpdateModel) throws ValidException {
-        return managerService.updateInfo(managerUpdateModel);
+        return managerService.updateTbManager(managerUpdateModel);
     }
 
     @PermissionName(value = "检查账号是否可用")
@@ -102,11 +104,19 @@ public class ManagerController {
     @RequiresRoles(value = {"1"})
     @Log(title = "检查账号是否可用", tabName = "tb_manager", operateType = 1, logEnum = LogEnum.MANAGER_INFO)
     @RequestMapping(value = {"checkUsername"})
-    public ResultFul checkUsername(ManagerQueryModel managerQueryModel) throws ValidException {
-        managerQueryModel.setDeleteFlag(0);
+    public ResultFul checkUsername(ManagerQueryModel managerQueryModel) {
+        managerQueryModel.setDeleteFlag(StatusEnum.DELETE_NO.getCode());
         ResultFul resultFul = managerService.selectList(managerQueryModel);
+        if (resultFul.getStatus() != 200) {
+            return resultFul;
+        }
         List<TbManager> tbManagerList = (List<TbManager>) resultFul.getRows();
-        resultFul.setMessage(resultFul.getStatus() == 200 && CollectionUtils.isEmpty(tbManagerList) ? "账号可用" : "账号已存在");
+        if (CollectionUtils.isEmpty(tbManagerList)) {
+            resultFul.setMessage("账号可用");
+        } else {
+            resultFul.setMessage( "账号已存在");
+            resultFul.setStatus(HttpStatus.SC_BAD_REQUEST);
+        }
         return resultFul;
     }
 

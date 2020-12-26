@@ -1,6 +1,6 @@
 package com.yushang.wallpaper.layer.service;
 
-import com.yushang.wallpaper.common.mapper.OrderMapper;
+import com.yushang.wallpaper.common.mapper.order.OrderMapper;
 import com.yushang.wallpaper.service.AsyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;

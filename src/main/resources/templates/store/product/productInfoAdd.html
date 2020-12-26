@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div class="container" style="background-color: white;margin-top:30px;height: 80%;">
+    <div class="row" style="padding-top: 30px;">
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="shopId">商铺ID:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-10">
+                    <input style="width: 400px; height: 35px;" class="form-control"
+                           type="text" autocomplete="off" id="shopId" required/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="productName">商品名称:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-10">
+                    <input style="width: 400px; height: 35px;" class="form-control" placeholder="商品名称应该在1~20位之间"
+                           type="text" autocomplete="off" id="productName" required/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 text-right" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <label for="homeTopFlag">推荐优先展示:</label>
+            </div>
+            <div class="col-sm-10" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <div class="col-sm-1">
+                    <span style="color: red; line-height: 35px; margin-top: 15px;">*</span>
+                </div>
+                <div class="col-sm-8">
+                    <select id="homeTopFlag" style="width: 400px; height: 35px;" class="form-control">
+                        <option value="0">不推荐</option>
+                        <option value="1">推荐</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" style="height: 35px; line-height: 35px; margin-top: 15px;">
+                <button type="button" class="btn btn-outline btn-success" onclick="addFun()" style="width: 100%;">
+                    添加
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    function addFun() {
+        if ($('#productName').val() == "" || $('#productName').val().length == 0) {
+            swal('尚未检测到商品名称', '请输入商品名称', 'info');
+            return false;
+        } else if ($('#productName').val().length < 1 || $('#productName').val().length > 20) {
+            swal('商品名称应该在1~20位之间', '请重新输入商品名称', 'info');
+            return false;
+        } else if ($('#shopId').val() == "" || $('#shopId').val().length == 0) {
+            swal('尚未检测到商铺ID', '请输入商铺ID', 'info');
+            return false;
+        }
+        $.post(ctx + '/layer/product/insertProductInfo', {
+            productName: $('#productName').val(),
+            shopId: $('#shopId').val(),
+            homeTopFlag: $('#homeTopFlag').val()
+        }, function (data) {
+            if (data.status == 200) {
+                swal({
+                    'title': '添加成功',
+                    'text': '',
+                    'type': 'success'
+                }, function () {
+                    window.location.reload(true);
+                });
+            } else {
+                swal(data.message, '', 'error')
+            }
+        })
+    }
+
+
+</script>
+</html>

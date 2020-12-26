@@ -1,12 +1,11 @@
 package com.yushang.wallpaper.layer.service.store;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.mapper.store.ProductLabelMapper;
 import com.yushang.wallpaper.common.pojo.store.TbProductLabel;
-import com.yushang.wallpaper.model.store.LabelQueryModel;
-import com.yushang.wallpaper.model.store.LabelUpdateModel;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelQueryModel;
+import com.yushang.wallpaper.layer.model.store.productLabel.LabelUpdateModel;
 import com.yushang.wallpaper.layer.router.store.ProductLabelService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -31,19 +30,17 @@ public class ProductLabelServiceImpl implements ProductLabelService {
     /**
      * 查询商品类别信息列表
      *
-     * @param reqModel
-     * @return
+     * @param queryModel 筛选参数
+     * @return 商品类别信息列表
      */
     @Transactional(readOnly = true)
     @Override
-    public ResultFul selectLabelList(LabelQueryModel reqModel) {
+    public ResultFul selectLabelList(LabelQueryModel queryModel) {
         /* 校验参数 */
-        Objects.requireNonNull(reqModel);
-        reqModel.validPageSizeIsNull();
-        // 分页
-        PageHelper.startPage(reqModel.getPage(), reqModel.getSize());
+        Objects.requireNonNull(queryModel);
+        queryModel.startPage();
         // 查询商品类别信息列表
-        Page<TbProductLabel> tbProductLabelPage = productLabelMapper.selectLabelList(reqModel);
+        Page<TbProductLabel> tbProductLabelPage = productLabelMapper.selectLabelList(queryModel);
         return ResultFul.getSuccessList(tbProductLabelPage.getResult(), tbProductLabelPage.getTotal());
     }
 
@@ -66,6 +63,16 @@ public class ProductLabelServiceImpl implements ProductLabelService {
             throw new NullPointerException("商品类别ID为null");
         }
         labelUpdateModel.setProductLabelIdValues(productLabelIdValues);
+        /** 查询商品名称是否存在，存在则不添加 */
+        if (StringUtils.isNotBlank(labelUpdateModel.getProductLabelName())) {
+            LabelQueryModel labelQueryModel = new LabelQueryModel();
+            labelQueryModel.setNotProductLabelId(Integer.parseInt(labelUpdateModel.getProductLabelIds()));
+            labelQueryModel.setProductLabelName(labelUpdateModel.getProductLabelName());
+            Page<TbProductLabel> tbProductLabelPage = productLabelMapper.selectLabelList(labelQueryModel);
+            if (!CollectionUtils.isEmpty(tbProductLabelPage.getResult())) {
+                return ResultFul.getErrorMessage("该商品类别名称已经存在");
+            }
+        }
         // 更新商品类别信息
         int updateCount = productLabelMapper.updateProductLabel(labelUpdateModel);
         if (updateCount != productLabelIdValues.length) {
@@ -87,14 +94,14 @@ public class ProductLabelServiceImpl implements ProductLabelService {
         if (StringUtils.isBlank(labelUpdateModel.getProductLabelName())) {
             throw new NullPointerException("商品类别名称不能为空");
         }
-        // 查询商品名称是否存在，存在则不添加
-        LabelQueryModel labelQueryModel = new LabelQueryModel(1, 1);
+        /** 查询商品名称是否存在，存在则不添加 */
+        LabelQueryModel labelQueryModel = new LabelQueryModel();
         labelQueryModel.setProductLabelName(labelUpdateModel.getProductLabelName());
         Page<TbProductLabel> tbProductLabelPage = productLabelMapper.selectLabelList(labelQueryModel);
         if (!CollectionUtils.isEmpty(tbProductLabelPage.getResult())) {
             return ResultFul.getErrorMessage("该商品类别名称已经存在");
         }
-        // 新增商品类别
+        /** 新增商品类别 */
         int insertCount = productLabelMapper.insertProductLabel(labelUpdateModel);
         if (insertCount != 1) {
             return ResultFul.getErrorMessage("新增信息失败");

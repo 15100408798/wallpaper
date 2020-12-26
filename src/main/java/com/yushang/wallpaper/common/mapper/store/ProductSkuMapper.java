@@ -2,8 +2,9 @@ package com.yushang.wallpaper.common.mapper.store;
 
 import com.github.pagehelper.Page;
 import com.yushang.wallpaper.common.pojo.store.TbProductSku;
-import com.yushang.wallpaper.model.store.ProductSkuQueryModel;
-import com.yushang.wallpaper.model.store.ProductSkuUpdateModel;
+import com.yushang.wallpaper.layer.model.store.productSku.ProductSkuInsertModel;
+import com.yushang.wallpaper.layer.model.store.productSku.ProductSkuQueryModel;
+import com.yushang.wallpaper.layer.model.store.productSku.ProductSkuUpdateModel;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -24,4 +25,12 @@ public interface ProductSkuMapper {
      * @return 受影响条数
      */
     int updateProductSkuInfo(ProductSkuUpdateModel productSkuUpdateModel);
+
+    /**
+     * 新增商品sku信息
+     *
+     * @param productSkuInsertModel 商品sku
+     * @return 受影响条数
+     */
+    int insertSkuProduct(ProductSkuInsertModel productSkuInsertModel);
 }

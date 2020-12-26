@@ -1,8 +1,8 @@
 package com.yushang.wallpaper.layer.router.store;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
-import com.yushang.wallpaper.model.store.CouponQueryModel;
-import com.yushang.wallpaper.model.store.CouponUpdateModel;
+import com.yushang.wallpaper.layer.model.store.CouponQueryModel;
+import com.yushang.wallpaper.layer.model.store.CouponUpdateModel;
 import org.springframework.lang.NonNull;
 
 /**

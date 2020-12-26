@@ -2,9 +2,9 @@ package com.yushang.wallpaper.layer.router.user;
 
 import com.yushang.wallpaper.common.config.entity.ResultFul;
 import com.yushang.wallpaper.common.config.exception.ValidException;
-import com.yushang.wallpaper.model.user.ManagerInsertModel;
-import com.yushang.wallpaper.model.user.ManagerQueryModel;
-import com.yushang.wallpaper.model.user.ManagerUpdateModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerInsertModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerQueryModel;
+import com.yushang.wallpaper.layer.model.user.manager.ManagerUpdateModel;
 import org.springframework.lang.NonNull;
 
 /**
@@ -48,12 +48,4 @@ public interface ManagerService {
     @NonNull
     ResultFul selectInfo(@NonNull ManagerQueryModel managerQueryModel) throws ValidException;
 
-    /**
-     * 更新管理员信息
-     *
-     * @param managerUpdateModel 管理员信息
-     * @return 受影响条数
-     */
-    @NonNull
-    ResultFul updateInfo(@NonNull ManagerUpdateModel managerUpdateModel);
 }

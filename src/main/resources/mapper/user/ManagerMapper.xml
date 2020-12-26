@@ -24,6 +24,9 @@
             <if test="managerId != null">
                 AND `manager_id` = #{managerId, jdbcType=SMALLINT}
             </if>
+            <if test="notManagerId != null">
+                AND `manager_id` != #{notManagerId, jdbcType=SMALLINT}
+            </if>
             <if test="username != null and username != ''">
                 AND username = #{username, jdbcType=VARCHAR}
             </if>
@@ -57,12 +60,21 @@
     </sql>
 
     <sql id="Update_Column">
-        <set>
+        <trim prefix="set" suffixOverrides=",">
             <if test="username != null and username != ''">
-                 username = #{username, jdbcType=VARCHAR},
+                username = #{username, jdbcType=VARCHAR},
             </if>
             <if test="password != null and password != ''">
                 `password` = #{password, jdbcType=VARCHAR},
+            </if>
+            <if test="userNick != null">
+                `user_nick` = #{userNick, jdbcType=VARCHAR},
+            </if>
+            <if test="telphone != null">
+                `telphone` = #{telphone, jdbcType=VARCHAR},
+            </if>
+            <if test="userRole != null">
+                `user_role` = #{userRole, jdbcType=TINYINT},
             </if>
             <if test="isUseStatus != null">
                 `is_use` = #{isUseStatus, jdbcType=TINYINT},
@@ -70,8 +82,10 @@
             <if test="deleteFlag != null">
                 `delete_flag` = #{deleteFlag, jdbcType=TINYINT},
             </if>
-            last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP}
-        </set>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP}
+            </if>
+        </trim>
     </sql>
 
     <!--  新增管理员信息 -->

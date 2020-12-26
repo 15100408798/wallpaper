@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cmn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/comm :: header_web"></head>
+<body class="gray-bg">
+<div th:fragment="managerQuery">
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="queryUsername" style="line-height: 35px;">管理员账号:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="queryUsername" placeholder="管理员账号" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="queryUserRole" style="line-height: 35px;">管理员身份:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="queryUserRole">
+                    <option value="">请选择</option>
+                    <option value="1">超级管理员</option>
+                    <option value="2">管理员</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="queryTelphone" style="line-height: 35px;">管理员手机号:</label>
+            </div>
+            <div class="col-sm-7">
+                <input id="queryTelphone"  maxlength="11" placeholder="管理员手机号" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-5">
+                <label for="queryIsUse" style="line-height: 35px;">管理员状态:</label>
+            </div>
+            <div class="col-sm-7">
+                <select class="form-control" id="queryIsUse">
+                    <option value="">请选择</option>
+                    <option value="0">可用</option>
+                    <option value="1">禁用</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-outline btn-warning" onclick="select()">查询</button>
+    </div>
+</div>
+
+<script th:fragment="managerQueryFuntion">
+    function disabledManager() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/manager/disabledManager', {managerIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '禁用成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    swal(result.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function openManager() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/manager/openManager', {managerIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '开启成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    swal(result.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function delManager() {
+        var array = common();
+        if (array != false) {
+            //发送数据库
+            $.post('layer/manager/deleteManager', {managerIds: array.join(',')}, function (result) {
+                if (result.status == 200) {
+                    swal({
+                        'title': '删除成功',
+                        'text': '',
+                        'type': 'success'
+                    }, function () {
+                        $table.bootstrapTable('refresh')
+                    });
+                } else {
+                    swal(result.message, '', 'error')
+                }
+            })
+        }
+    }
+
+    function common() {
+        //获得选中行
+        var selOption = $table.bootstrapTable("getSelections");
+        //进行判断是否勾选了
+        if (selOption.length == 0) {
+            alert('请选择数据');
+            return false;
+        }
+        var array = [];
+        //循环遍历
+        $.each(selOption, function (index, row) {
+            array.push(row.managerId);
+        })
+        return array;
+    }
+
+    function addManager() {
+        parent.locationCurrMenu();
+        parent.addPage('添加管理员', ctx + '/skip/user/manager/managerAdd');
+    }
+
+
+    window.onclickEvent = {
+        'click #updateFun': function (e, value, row, index) {
+            parent.locationCurrMenu();
+            parent.addPage('修改管理员信息', ctx + '/skip/user/manager/managerEdit/' + row.managerId);
+        }
+    }
+
+
+</script>
+</body>
+</html>
